@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:\\Users\\kavya\\OneDrive\\Documents\\SEM5\\AI_project\\baseline\\operation_space\\output",
+        "C:\\Users\\kavya\\OneDrive\\Documents\\SEM5\\AI_project\\baseline\\operation_space\\information"
+      ]
+    }
+  }
+}

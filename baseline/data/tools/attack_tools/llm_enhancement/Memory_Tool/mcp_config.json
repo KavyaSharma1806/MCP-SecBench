@@ -1,0 +1,13 @@
+{
+    "mcpServers": {
+        "mem0-memory-mcp": {
+            "command": "C:\\Users\\kavya\\.local\\bin\\uv.EXE",
+            "args": [
+                "--directory",
+                "C:\\Users\\kavya\\OneDrive\\Documents\\SEM5\\AI_project\\baseline\\data\\tools\\attack_tools\\llm_enhancement\\Memory_Tool",
+                "run",
+                "main.py"
+            ]
+        }
+    }
+}

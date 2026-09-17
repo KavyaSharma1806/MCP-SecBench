@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "mcp-linear": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@tacticlaunch/mcp-linear"
+      ],
+      "env": {
+        "LINEAR_API_TOKEN": "REDACTED_SET_YOUR_OWN_LINEAR_API_TOKEN"
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+    "mcpServers": {
+        "pubmed-mcp-server": {
+            "command": "C:\\Users\\kavya\\.local\\bin\\uv.EXE",
+            "args": [
+                "--directory",
+                "C:\\Users\\kavya\\OneDrive\\Documents\\SEM5\\AI_project\\baseline\\data\\tools\\attack_tools\\academic_search\\PubMed_MCP_Server",
+                "run",
+                "pubmed_server.py"
+            ]
+        }
+    }
+}
