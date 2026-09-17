@@ -1,0 +1,26 @@
+# Python virtual environments
+.venv/
+baseline/data/tools/attack_tools/.venv/
+__pycache__/
+*.pyc
+
+# Ollama binaries + model weights (multi-GB, not suitable for git)
+# (leading slash anchors this to the repo root only -- do NOT drop it,
+#  baseline/data/tools/ is real benchmark content that must be tracked)
+/tools/
+
+# Local secrets
+baseline/.env
+.env
+
+# Generated at runtime (sandboxed attack workspace + logs)
+baseline/logs/
+baseline/operation_space/output/*.txt
+!baseline/operation_space/output/.gitkeep
+
+# OS/editor cruft
+.DS_Store
+Thumbs.db
+
+# Claude Code local session state
+.claude/
