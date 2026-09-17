@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "ddg-search": {
+            "command": "C:\\Users\\kavya\\.local\\bin\\uv.EXE",
+            "args": [
+                "--directory",
+                "C:\\Users\\kavya\\OneDrive\\Documents\\SEM5\\AI_project\\baseline\\data\\tools\\attack_tools\\information_gathering\\DuckDuckGo_Search_Server",
+                "run",
+                "server.py"
+              ]
+    }
+  }
+}

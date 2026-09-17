@@ -1,0 +1,13 @@
+{
+    "mcpServers": {
+        "Office-Word-MCP-Server": {
+            "command": "C:\\Users\\kavya\\.local\\bin\\uv.EXE",
+            "args": [
+                "--directory",
+                "C:\\Users\\kavya\\OneDrive\\Documents\\SEM5\\AI_project\\baseline\\data\\tools\\attack_tools\\office_assistance\\Office_Word_Document_Server",
+                "run",
+                "word_mcp_server.py"
+            ]
+        }
+    }
+}

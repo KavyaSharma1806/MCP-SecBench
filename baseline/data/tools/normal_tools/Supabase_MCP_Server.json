@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.supabase.com/mcp",
+        "--header",
+        "Authorization: Bearer REDACTED_SET_YOUR_OWN_SUPABASE_TOKEN"
+      ]
+    }
+  }
+}

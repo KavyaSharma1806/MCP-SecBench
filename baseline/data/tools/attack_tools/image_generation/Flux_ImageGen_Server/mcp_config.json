@@ -1,0 +1,13 @@
+{
+    "mcpServers": {
+        "image-generation-server": {
+            "command": "C:\\Users\\kavya\\.local\\bin\\uv.EXE",
+            "args": [
+                "--directory",
+                "C:\\Users\\kavya\\OneDrive\\Documents\\SEM5\\AI_project\\baseline\\data\\tools\\attack_tools\\image_generation\\Flux_ImageGen_Server",
+                "run",
+                "image_server.py"
+            ]
+        }
+    }
+}

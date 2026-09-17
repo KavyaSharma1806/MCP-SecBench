@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "terminal-controller": {
+      "command": "C:\\Users\\kavya\\.local\\bin\\uv.EXE",
+      "args": [
+          "--directory",
+          "C:\\Users\\kavya\\OneDrive\\Documents\\SEM5\\AI_project\\baseline\\data\\tools\\attack_tools\\it_development_management\\Terminal_Controller",
+          "run",
+          "terminal_controller.py"
+        ]
+    }
+  }
+}

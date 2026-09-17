@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "clickup-mcp-server": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@taazkareem/clickup-mcp-server@latest"
+      ],
+        "env": {
+        "CLICKUP_API_KEY": "REDACTED_SET_YOUR_OWN_CLICKUP_API_KEY",
+        "CLICKUP_TEAM_ID": "REDACTED_SET_YOUR_OWN_CLICKUP_TEAM_ID",
+        "DOCUMENT_SUPPORT": "true"
+      }
+    }
+  }
+}
