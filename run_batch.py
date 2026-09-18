@@ -29,7 +29,7 @@ COMBOS = [
     ("false_error", "it_development_management", "Terminal_Controller"),
 ]
 
-LLM = "ollama/llama3.2:3b"
+LLM = "ollama/llama3.1:8b"
 
 
 async def main():
