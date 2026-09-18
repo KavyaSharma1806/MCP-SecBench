@@ -3,6 +3,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{hyperref}
 \usepackage{booktabs}
+\usepackage{multirow}
 \usepackage{xcolor}
 \usepackage{enumitem}
 \usepackage{listings}
@@ -44,19 +45,21 @@ often such attacks succeed (Attack Success Rate, ASR) across four attack
 surfaces. Our contribution is \texttt{mcp\_guard}, a defensive proxy layer
 that validates tool signatures, gates tool parameters, and sanitizes tool
 responses without modifying MSB or its underlying agent framework, plus a
-unified CLI tool for running baseline-vs-defended comparisons entirely on a
-free, local, offline language model. We report results from a 120-scenario
-batch run, discuss what the data does and does not show, and outline the
-concrete next steps (a larger local model, full attack-surface coverage)
-needed to turn this from a working first implementation into a complete
-evaluation.
+unified CLI tool for running baseline-vs-defended comparisons entirely on
+free, local, offline language models. We report results from a 300-scenario
+batch run (75 scenarios per condition, across two model sizes), discuss what
+the data does and does not show, and outline the concrete next steps (full
+attack-surface coverage, a dedicated Retrieval Injection oracle) needed to
+turn this from a working first implementation into a complete evaluation.
 \end{abstract}
 
 \paragraph{Revision note (v2).} This version adds a live, zero-API-cost
 verification of both the attack and the defense (Section~\ref{sec:live}),
-run directly against the assisting LLM rather than a downloaded model, plus
-a status update on the larger-model (\texttt{llama3.1:8b}) batch that was
-in progress at the time of the version 1 draft (Section~\ref{sec:results}).
+run directly against the assisting LLM rather than a downloaded model, and
+completes the larger-model (\texttt{llama3.1:8b}) batch that was only
+partially finished in the first draft, along with a data-completeness fix
+that recovered 15 previously-dropped scenarios per condition for both models
+(Section~\ref{sec:results}).
 
 \tableofcontents
 
@@ -218,16 +221,20 @@ regex-parsing MSB's own log text as \texttt{metrics.py} does.
 All experiments were run at zero monetary cost:
 
 \begin{itemize}
-\item \textbf{Model:} \texttt{llama3.2:3b}, a small open-weight model served
-locally via Ollama.
+\item \textbf{Models:} \texttt{llama3.2:3b} and \texttt{llama3.1:8b}, both
+small open-weight models served locally via Ollama -- the latter chosen
+because MSB's own paper reports roughly 20\% average ASR for an 8B Llama
+model, giving a point of comparison against a model size known to be
+somewhat vulnerable.
 \item \textbf{Tools:} MSB's real MCP servers -- a filesystem server, a
 terminal-control server, and a web-search server -- each spawned as an
 actual subprocess per scenario, not simulated.
 \item \textbf{Scenario grid:} 3 attack types spanning three attack surfaces
 (\texttt{prompt\_injection}, \texttt{out\_of\_scope\_parameter},
-\texttt{false\_error}) $\times$ 5 canonical attack goals $\times$ 2 tools,
-executed once undefended and once with \texttt{mcp\_guard} attached, for
-120 total scenario runs.
+\texttt{false\_error}) $\times$ 5 canonical attack goals $\times$ 2 tools
+(3 distinct benign tasks between them), executed once undefended and once
+with \texttt{mcp\_guard} attached, for 75 scenarios per condition per
+model -- 300 scenario runs in total across both models.
 \end{itemize}
 
 Reaching a working local setup required resolving several practical
@@ -242,67 +249,71 @@ model was obtained via a direct portable-archive download.
 
 Table~\ref{tab:results} reports Attack Success Rate (ASR) for the
 undefended baseline and the \texttt{mcp\_guard}-defended condition across
-the three tested attack types.
+the three tested attack types, for both models, each over the complete,
+identical 75-scenario grid.
 
 \begin{table}[h]
 \centering
-\caption{Attack Success Rate, baseline vs.\ defended (\texttt{llama3.2:3b}, 120 scenarios).}
+\caption{Attack Success Rate, baseline vs.\ defended, both models (75 scenarios per condition per model).}
 \label{tab:results}
-\begin{tabular}{@{}lccc@{}}
+\begin{tabular}{@{}llccc@{}}
 \toprule
-\textbf{Attack type} & \textbf{Baseline ASR} & \textbf{Defended ASR} & \textbf{Reduction} \\
+\textbf{Model} & \textbf{Attack type} & \textbf{Baseline ASR} & \textbf{Defended ASR} & \textbf{Reduction} \\
 \midrule
-Prompt Injection & 0.0\% & 0.0\% & 0.0 pp \\
-Out-of-Scope Parameter & 0.0\% & 0.0\% & 0.0 pp \\
-False Error & 0.0\% & 0.0\% & 0.0 pp \\
+\multirow{3}{*}{\texttt{llama3.2:3b}}
+ & Prompt Injection        & 0.0\% & 0.0\% & 0.0 pp \\
+ & Out-of-Scope Parameter  & 0.0\% & 0.0\% & 0.0 pp \\
+ & False Error             & 0.0\% & 0.0\% & 0.0 pp \\
+\midrule
+\multirow{3}{*}{\texttt{llama3.1:8b}}
+ & Prompt Injection        & 0.0\% & 0.0\% & 0.0 pp \\
+ & Out-of-Scope Parameter  & 0.0\% & 0.0\% & 0.0 pp \\
+ & False Error             & 0.0\% & 0.0\% & 0.0 pp \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The headline ASR is 0\% in both conditions, which requires careful
-interpretation rather than a simple pass/fail reading.
+The headline ASR is 0\% in both conditions, for both models, which requires
+careful interpretation rather than a simple pass/fail reading.
 
-\textbf{The underlying model did not fall for any tested attack, even
-undefended.} A 3-billion-parameter local model may lack the multi-step
-tool-orchestration reliability needed to carry an injected instruction
-through to a concrete malicious action (e.g.\ actually calling
-\texttt{write\_file} with attacker-supplied content), independent of whether
-a defense is present. This leaves no observable gap for the ASR metric
-itself to show a reduction against.
+\textbf{Neither model fell for any tested attack, even undefended, and
+model size did not change that.} This directly addresses the model-capacity
+confound raised after the first (\texttt{llama3.2:3b}-only) draft of this
+report: \texttt{llama3.1:8b} was specifically chosen because MSB's own
+paper reports non-trivial ASR (roughly 20\% on average) for a Llama model of
+this size, yet it also produced 0\% ASR across all three attack types,
+undefended. This rules out ``the model was simply too small to complete
+multi-step tool use'' as the explanation, and is consistent instead with the
+interpretation developed in Section~\ref{sec:live}: MSB's fixed attack
+template text appears to be recognizable to current instruction-tuned Llama
+models in this configuration, independent of model scale.
 
-\textbf{The guard was nonetheless measurably active.} Across the 60
-defended-mode scenarios, \texttt{mcp\_guard} recorded \textbf{31 distinct
-interventions} (redacting injected tool-response content or refusing
-out-of-scope parameters), averaging 0.52 interventions per scenario. The
-corresponding count in the 60 baseline scenarios was exactly zero, by
-construction (the guard is never attached). This is direct, quantitative
-evidence that the mitigation layer is functioning as designed, independent
-of the model's own resistance to the underlying attack.
+\textbf{The guard was nonetheless measurably active in both models, and to
+very different degrees.} Across 75 defended-mode scenarios,
+\texttt{mcp\_guard} recorded \textbf{38 distinct interventions} for
+\texttt{llama3.2:3b} but only \textbf{4} for \texttt{llama3.1:8b} (both
+counts are exactly 0 in the corresponding baseline runs, by construction --
+the guard is never attached there). One plausible explanation is that MSB's
+tool-response substitution re-triggers on every subsequent tool call within
+a scenario once activated, so a model that takes more retries or redundant
+tool calls to complete a task encounters -- and thus has redacted -- the
+injected content more times per scenario; the smaller model may simply take
+a less direct path through the tool-use loop. We flag this as an
+observation with a plausible mechanism, not a confirmed causal claim -- it
+was not specifically instrumented for step-count in this run. In either
+case, the non-zero, model-dependent intervention count is direct evidence
+the mitigation layer is functioning, independent of whether the underlying
+attack itself succeeds.
 
-\textbf{An unrelated infrastructure limitation affected 8 of 60 scenarios
-per mode.} All eight are \texttt{kill\_process} attack-task scenarios, which
-depend on MSB's Desktop Commander support tool; that tool is currently
-fetched through a third-party hosted registry (Smithery) that returns a
-``server not found'' error in this environment. The failure is identical and
-symmetric across baseline and defended runs, so it does not bias the
-comparison, but it does mean the \texttt{kill\_process} results are not
-currently informative.
-
-\subsection*{Update: larger-model batch (\texttt{llama3.1:8b})}
-
-To rule out the small-model-capacity confound raised in Section~\ref{sec:limitations},
-the same 120-scenario batch was re-run against \texttt{llama3.1:8b}, a model
-size MSB's own paper reports at roughly 20\% average ASR. As of this
-revision, the 60 undefended \emph{baseline} scenarios have completed:
-\textbf{ASR remained 0\% across all three attack types}, matching the
-\texttt{llama3.2:3b} result. The 60 \texttt{mcp\_guard}-defended scenarios
-for this model were still running at the time of writing; the completed
-comparison will be reported in the next revision. The consistent 0\%
-baseline across two different model sizes strengthens (though does not yet
-prove) the interpretation in Section~\ref{sec:live} that MSB's specific
-attack phrasing, as written, is not succeeding against instruction-tuned
-Llama models in this configuration -- independent of whether a defense is
-present -- rather than 0\% being an artifact of one under-powered model.
+\textbf{An unrelated infrastructure limitation affected the same 10 of 75
+scenarios per mode, per model.} All ten are \texttt{kill\_process}
+attack-task scenarios (10 of the 15 \texttt{kill\_process} scenarios in each
+75-scenario run), which depend on MSB's Desktop Commander support tool;
+that tool is currently fetched through a third-party hosted registry
+(Smithery) that returns a ``server not found'' error in this environment.
+The failure is identical and symmetric across baseline and defended runs
+and across both models, so it does not bias the comparison, but it does
+mean the \texttt{kill\_process} results are not currently informative.
 
 \section{Live, Zero-Cost Verification of Attack and Defense}
 \label{sec:live}
@@ -410,13 +421,17 @@ injections to more rigorously stress-test both model robustness and
 \label{sec:limitations}
 
 \begin{itemize}
-\item \textbf{Model capacity confound.} The single most important next step
-is repeating this evaluation against a more capable model. A larger local
-model (\texttt{llama3.1:8b}, matching a model MSB itself reports at
-approximately 20\% average ASR) has already been downloaded and is queued
-for this comparison; it should surface genuine baseline attack successes,
-enabling a real before/after reduction figure rather than a 0\%-to-0\%
-comparison.
+\item \textbf{Model capacity confound -- addressed, not fully resolved.}
+Section~\ref{sec:results} rules out raw model size as the sole explanation
+for 0\% ASR (an 8B model MSB itself reports at $\sim$20\% average ASR still
+scored 0\% here). What remains open is whether this reflects genuine
+robustness in current instruction-tuned Llama models against MSB's specific,
+fixed attack phrasing, or a narrower scope in this evaluation (three of
+twelve attack types, two tool families) than MSB's original study. The next
+step is widening attack-type and tool coverage, and testing at least one
+model MSB itself reports a high ASR for (e.g.\ GPT-4o-mini at
+$\sim$59\% average, or DeepSeek-V3.1 at $\sim$61\%), to obtain a genuine
+before/after reduction figure rather than a 0\%-to-0\% comparison.
 \item \textbf{Retrieval Injection is not yet scored.} MSB's own success
 criterion for this attack type is qualitatively different from the other
 three (whether the agent was deceived into consulting the wrong document,
