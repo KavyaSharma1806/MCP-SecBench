@@ -54,6 +54,8 @@ from defenses.mcp_guard import SSH_KEY_PATTERN, apply_defense  # noqa: E402
 
 mcp_use.set_debug(0)
 
+DEFAULT_LLM = "ollama/llama3.2:3b"
+
 KILL_PROCESS_DISALLOWED_TOOLS = [
     "get_config", "set_config_value", "read_multiple_files", "create_directory",
     "move_file", "list_directory", "start_search", "get_more_search_results",
@@ -284,6 +286,7 @@ async def run_scenario(
 
     return {
         "mode": mode,
+        "llm": None,  # filled in by run_mode, which knows the --llm string
         "attack_type": attack_type,
         "attack_task": attack_task,
         "agent_name": agent_name,
@@ -313,6 +316,7 @@ async def run_mode(args: argparse.Namespace, mode: str) -> pd.DataFrame:
         if row is None:
             print("      -> skipped (no matching server config)")
             continue
+        row["llm"] = args.llm
         rows.append(row)
         status = "ATTACK SUCCEEDED" if row["attack_success"] else "attack failed"
         extra = f" ({row['error']})" if row["error"] else ""
@@ -320,7 +324,7 @@ async def run_mode(args: argparse.Namespace, mode: str) -> pd.DataFrame:
 
     df = pd.DataFrame(rows)
     out_path = RESULTS_DIR / f"{mode}_results.csv"
-    key_cols = ["mode", "attack_type", "attack_task", "agent_name", "tool_name", "agent_task"]
+    key_cols = ["mode", "llm", "attack_type", "attack_task", "agent_name", "tool_name", "agent_task"]
     if out_path.exists() and len(df):
         existing = pd.read_csv(out_path)
         combined = pd.concat([existing, df], ignore_index=True)
@@ -360,6 +364,20 @@ def run_compare(args: argparse.Namespace) -> None:
 
     b = pd.read_csv(baseline_path)
     d = pd.read_csv(defended_path)
+
+    available_llms = sorted(set(b["llm"].dropna()) | set(d["llm"].dropna()))
+    if len(available_llms) > 1:
+        if args.llm not in available_llms:
+            print(f"Multiple models found in results: {available_llms}. Pass --llm <one of these> to compare a single model.")
+            return
+        llm_filter = args.llm
+    else:
+        llm_filter = available_llms[0] if available_llms else None
+    if llm_filter:
+        b = b[b["llm"] == llm_filter]
+        d = d[d["llm"] == llm_filter]
+        print(f"Comparing llm={llm_filter} ({len(b)} baseline rows, {len(d)} defended rows)\n")
+
     b_asr = (b.groupby("attack_type")["attack_success"].mean() * 100).rename("Baseline ASR %")
     d_asr = (d.groupby("attack_type")["attack_success"].mean() * 100).rename("Defended ASR %")
     table = pd.concat([b_asr, d_asr], axis=1).fillna(0.0)
@@ -376,9 +394,10 @@ def run_compare(args: argparse.Namespace) -> None:
     }, index=["Overall"])
     print("\n" + _markdown_table(overall))
 
-    out_path = RESULTS_DIR / "comparison.md"
+    tag = re.sub(r"[^A-Za-z0-9_]+", "_", llm_filter or "unknown")
+    out_path = RESULTS_DIR / f"comparison__{tag}.md"
     out_path.write_text(
-        "# MSB Baseline vs. mcp_guard-Defended — Attack Success Rate Comparison\n\n"
+        f"# MSB Baseline vs. mcp_guard-Defended — ASR Comparison ({llm_filter})\n\n"
         f"{md}\n\n## Overall\n\n{_markdown_table(overall)}\n",
         encoding="utf-8",
     )
@@ -392,8 +411,9 @@ def run_compare(args: argparse.Namespace) -> None:
 def build_argparser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="MSB baseline vs. mcp_guard-defended attack runner")
     p.add_argument("--mode", choices=["baseline", "defended", "compare"], required=True)
-    p.add_argument("--llm", default="ollama/llama3.2:3b",
-                    help="<backend>/<model>: ollama/..., openrouter/..., openai/..., deepseek/...")
+    p.add_argument("--llm", default=DEFAULT_LLM,
+                    help="<backend>/<model>: ollama/..., openrouter/..., openai/..., deepseek/... "
+                         "(for --mode compare: filters results to one model when several are present)")
     p.add_argument("--attack_type", default="all")
     p.add_argument("--attack_task", default="all")
     p.add_argument("--agent", default="all")

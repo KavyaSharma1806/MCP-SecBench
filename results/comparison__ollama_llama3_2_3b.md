@@ -1,4 +1,4 @@
-# MSB Baseline vs. mcp_guard-Defended — Attack Success Rate Comparison
+# MSB Baseline vs. mcp_guard-Defended — ASR Comparison (ollama/llama3.2:3b)
 
 | attack_type | Baseline ASR % | Defended ASR % | Reduction (pp) |
 |---|---|---|---|
