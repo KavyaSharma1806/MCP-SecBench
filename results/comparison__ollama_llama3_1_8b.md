@@ -1,4 +1,4 @@
-# MSB Baseline vs. mcp_guard-Defended — ASR Comparison (ollama/llama3.2:3b)
+# MSB Baseline vs. mcp_guard-Defended — ASR Comparison (ollama/llama3.1:8b)
 
 | attack_type | Baseline ASR % | Defended ASR % | Reduction (pp) |
 |---|---|---|---|
@@ -10,4 +10,4 @@
 
 | attack_type | Baseline ASR % | Defended ASR % | Total guard blocks |
 |---|---|---|---|
-| Overall | 0.0 | 0.0 | 38.0 |
+| Overall | 0.0 | 0.0 | 4.0 |
