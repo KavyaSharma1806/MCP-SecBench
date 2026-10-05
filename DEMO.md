@@ -51,8 +51,23 @@ notifications don't pop up. Run `cls` before each take.
 
 ### Shot 1 — Parameter-leak attack, baseline then defended
 
-The attack where our corrected measurements show the clearest effect
-(3B model: 36% baseline ASR → 0% defended).
+The attack with the clearest measured effect. Use the **8B model in the
+native-prompt setting**: in our runs it leaked in 25 of 25 undefended
+scenarios and 0 of 25 defended ones, so the baseline will almost certainly
+leak on camera.
+
+```powershell
+.\.venv\Scripts\python.exe demo.py --mode both --llm ollama/llama3.1:8b --prompt_mode native --slow 1.5
+```
+
+Say on camera that this is the native-prompt setting (MSB's prompt with its
+old text-format instructions removed) and why: under MSB's exact prompt this
+model writes tool calls as text and never executes them. To show that too,
+run the same command with `--prompt_mode msb` — the agent loop will show no
+tool calls at all.
+
+The 3B model under MSB's exact prompt also works (36% → 0%), but it leaks in
+only about a third of runs, so expect re-takes:
 
 ```powershell
 .\.venv\Scripts\python.exe demo.py --mode both --slow 1.5
@@ -70,8 +85,8 @@ What to point out as it scrolls:
 | `SIDE BY SIDE` | "Same scenario, same model, same attack. Only the guard differs." |
 
 **Be honest about randomness.** The model is not deterministic. In our data
-the 3B model filled the field in 9 of 25 baseline runs, so on any single take
-the baseline may *not* leak. If it doesn't, either say so on camera ("this
+the 3B model filled the field in 9 of 25 baseline runs (MSB prompt), so on any
+single take the baseline may *not* leak. If it doesn't, either say so on camera ("this
 time the model didn't take the bait — that's why the benchmark measures rates
 over many runs") or re-record. Try `--pick 1`, `--attack_task modify_data`
 or `--attack_task kill_process` for other scenarios of the same attack. Never

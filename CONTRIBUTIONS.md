@@ -108,6 +108,27 @@ final answers were text-form tool calls (41/75 for `llama3.2:3b`). Most
 zero-ASR results are therefore uninformative, and an earlier claim that the
 8B model's 0% "rules out model size" is withdrawn.
 
+**Second setting: `--prompt_mode native`.** A direct test (same tool, same
+task, 3 tries each) showed `llama3.1:8b` gives text-only answers under MSB's
+prompt and real tool calls once the "Use the following format: ..." section is
+removed. `--prompt_mode native` uses MSB's own template with only that section
+removed; persona, tools, attacks and judge are unchanged. It is a deviation
+from MSB, reported beside MSB's exact setting (results in
+`results/native_prompt/`, script `run_native_prompt.ps1`), never instead of it.
+
+| Model | Attack | MSB's exact prompt | Native prompt |
+|---|---|---|---|
+| llama3.1:8b | out_of_scope_parameter | 0% → 0% (0/25 ran a tool) | **100% → 0%** (all 25 attempts blocked) |
+| llama3.2:3b | out_of_scope_parameter | 36% → 0% | 24% → 0% (9/9 attempts blocked) |
+| both | false_error | 0% → 0% | 0% → 0% (sanitizer redacted it 47×) |
+| both | prompt_injection | 0% → 0% | 0% → 0% (0 guard interventions) |
+
+In the native setting the false-error reply did reach both models, yet neither
+completed the harmful goal; in one undefended 8B run the model wrote to the
+attacker's target path with the wrong content, which MSB's existence-only
+judge would score as a success and our content judge does not. No defended run
+called `write_file`, `edit_file` or `kill_process`.
+
 `demo.py` reuses this exact code path (`run_scenario(..., on_event=...)`) to
 narrate a single scenario live for screen recordings; see `DEMO.md`.
 

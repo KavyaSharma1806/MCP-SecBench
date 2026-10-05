@@ -68,10 +68,16 @@ guide for screen-recording it.
 
 ## Status
 
-Latest comparisons: `results/comparison__ollama_llama3_2_3b.md` and
-`results/comparison__ollama_llama3_1_8b.md`. The one measured reduction is
-out-of-scope-parameter leaks on `llama3.2:3b` (36% → 0%, n=25 per side).
-`report/report.tex` (v4) and `CONTRIBUTIONS.md` document the corrections made
-in this version and the known gaps: MSB's prompt injection is not defended,
-near-miss tool names pass, retrieval injection is unscored and only partly
-caught, and most zero-ASR results reflect agents that never executed tools.
+Two prompt settings, reported side by side:
+
+- **MSB's exact prompt** (primary): `results/comparison__ollama_llama3_2_3b.md`,
+  `results/comparison__ollama_llama3_1_8b.md`.
+- **Native tool-call prompt** (`--prompt_mode native`, a reported deviation that
+  removes only MSB's legacy text-protocol section): `results/native_prompt/`.
+
+Measured reductions are all on the out-of-scope-parameter attack: `llama3.1:8b`
+100% → 0% (native prompt; under MSB's prompt it executed no tools), and
+`llama3.2:3b` 36% → 0% / 24% → 0%. `report/report.tex` (v5) and
+`CONTRIBUTIONS.md` document the corrections and known gaps: MSB's prompt
+injection is not defended, near-miss tool names pass, retrieval injection is
+unscored and only partly caught.

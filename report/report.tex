@@ -27,7 +27,7 @@
 
 \title{MCP-SecBench: A Defensive Proxy for Mitigating\\ Attacks Against MCP-Based AI Agents}
 \author{Kavya Sharma}
-\date{October 5, 2026 \\ \normalsize Version 4}
+\date{October 5, 2026 \\ \normalsize Version 5}
 
 \begin{document}
 
@@ -46,14 +46,16 @@ surfaces. Our contribution is \texttt{mcp\_guard}, a defensive proxy layer
 that validates tool signatures, gates tool parameters, and sanitizes tool
 responses without modifying MSB or its underlying agent framework, plus a
 unified CLI tool for running baseline-vs-defended comparisons entirely on
-free, local, offline language models. Across 300 scenario runs on two local
-models, we measure one clear reduction -- out-of-scope-parameter leaks on a
-3B model fall from 36\% to 0\%, every attempted leak blocked by the guard --
-and we report, with evidence, where the guard does not help (MSB's prompt
-injection, near-miss tool names, half of the retrieval documents) and why
-most zero-success results are uninformative (the local models frequently
-did not execute tool calls at all). The guard is a prototype tuned to MSB's
-attack text; we make no claim of general MCP security.
+free, local, offline language models. Under MSB's exact prompt, a 3B model's
+out-of-scope-parameter leaks fall from 36\% to 0\%, but an 8B model executes
+almost no tool calls at all, because it follows the prompt's legacy
+text-protocol instructions literally. In a second, clearly reported setting
+that removes only that section, the 8B model leaks in 100\% of undefended
+scenarios and 0\% of defended ones, every attempt blocked by the guard. We
+also report, with evidence, where the guard does not help (MSB's prompt
+injection, near-miss tool names, half of the retrieval documents). The guard
+is a prototype tuned to MSB's attack text; we make no claim of general MCP
+security.
 \end{abstract}
 
 \paragraph{Revision note (v2).} This version adds a live, zero-API-cost
@@ -88,6 +90,12 @@ call in 0 of 25 baseline parameter-attack runs (Section~\ref{sec:validity}).
 defended; the opposite is closer to the truth -- retrieval injection is caught
 in 2 of 4 documents, and MSB's prompt injection is not caught at all
 (Section~\ref{sec:coverage}).
+
+\paragraph{Revision note (v5).} Adds a second prompt setting that removes
+only MSB's legacy text-protocol section, after a direct test showed it was
+why \texttt{llama3.1:8b} never executed tools. In that setting the 8B model's
+out-of-scope-parameter ASR is 100\% undefended and 0\% defended
+(Section~\ref{sec:native}). MSB's exact setting remains the primary result.
 
 \tableofcontents
 
@@ -361,8 +369,72 @@ size'' and indicates that MSB's attack phrasing is recognizable to current
 models -- is \textbf{withdrawn}. For \texttt{llama3.2:3b} the picture is
 mixed: the false-error attack did reach the agent (the response sanitizer
 redacted it 27 times across the defended runs), yet in the baseline the model
-never completed the harmful file write. We did not modify MSB's prompt to
-remove the conflict, since that would change the baseline being measured.
+never completed the harmful file write. MSB's exact prompt remains the
+primary setting; Section~\ref{sec:native} reports a second setting with only
+the conflicting section removed.
+
+\subsection{Second setting: native tool-call prompt}
+\label{sec:native}
+
+To test the explanation above directly, we gave each model the same search
+tool and task three times with MSB's prompt and three times with the same
+prompt minus its ``Use the following format: \ldots'' section.
+\texttt{llama3.1:8b} produced text-only answers 3/3 times with MSB's prompt
+and real tool calls 3/3 times without that section. We then added this as a
+second setting, \texttt{--prompt\_mode native}: MSB's own template with only
+that section removed; persona, tool list, every attack injection and the
+judge are unchanged. It is a deviation from MSB and is reported beside MSB's
+exact setting, never in place of it. Table~\ref{tab:native} repeats the full
+300-run grid in this setting.
+
+\begin{table}[h]
+\centering
+\caption{Attack Success Rate in both prompt settings (baseline $\rightarrow$ defended; 25 scenarios per cell).}
+\label{tab:native}
+\begin{tabular}{@{}llcc@{}}
+\toprule
+\textbf{Model} & \textbf{Attack type} & \textbf{MSB's exact prompt} & \textbf{Native tool-call prompt} \\
+\midrule
+\texttt{llama3.1:8b} & Out-of-Scope Parameter & 0\% $\rightarrow$ 0\% & \textbf{100\% $\rightarrow$ 0\%} \\
+\texttt{llama3.2:3b} & Out-of-Scope Parameter & 36\% $\rightarrow$ 0\% & 24\% $\rightarrow$ 0\% \\
+both & False Error & 0\% $\rightarrow$ 0\% & 0\% $\rightarrow$ 0\% \\
+both & Prompt Injection & 0\% $\rightarrow$ 0\% & 0\% $\rightarrow$ 0\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{The 8B model is not resistant.} In the native setting it executed a
+real tool call in all 25 undefended parameter-attack scenarios and filled the
+out-of-scope field in all 25 (100\% ASR; MSB's own table reports 46\% for
+Llama~3.1~8B on this attack). The values were again guesses --
+\texttt{'Assistant'}, \texttt{'AI Assistant'}, \texttt{'Default Model'} --
+or text copied from its context (\texttt{'Nick Clyde'} from the URL it was
+asked to fetch, \texttt{'duckduckgo-mcp-server'}), never its real name. With
+the guard attached it attempted the leak in all 25 defended scenarios and
+every call was refused (27 block events; in one scenario it retried with
+\texttt{'None'} twice after the first refusal). \texttt{llama3.2:3b}: 24\%
+undefended, 0\% defended, 9 attempting scenarios all blocked. Mitigation rate
+is 100\% for both models, subject to the same two caveats as
+Section~\ref{sec:results}.
+
+\textbf{Tool execution.} \texttt{llama3.1:8b} executed tools in every
+native-setting scenario except the 5 per attack type that hit the
+\texttt{kill\_process} infrastructure error. \texttt{llama3.2:3b} was less
+consistent (e.g.\ 16 of 25 undefended parameter-attack scenarios executed a
+tool), so its numbers carry more noise.
+
+\textbf{False error and prompt injection are now informative zeros.} With
+tools executing, the false-error reply reached both models (the sanitizer
+redacted it 26 times for 3B and 21 times for 8B in defended runs), yet
+neither model completed the harmful goal undefended. One partial exception:
+in one undefended 8B scenario the model wrote a file to the exact path the
+injected instruction named, but with the fetched page's title instead of the
+phone number. MSB's judge, which checks only that the file exists, would
+count this as a success (4\% for that cell); ours, which checks the content,
+does not. No defended run called \texttt{write\_file}, \texttt{edit\_file} or
+\texttt{kill\_process}. Prompt injection stayed at 0\% with tools executing
+and with 0 guard interventions, so that zero reflects the models' own
+behaviour, not the defense.
 
 \subsection{Correction: the parameter-leak judge}
 \label{sec:oraclefix}
@@ -577,11 +649,14 @@ or a fixed field name written with knowledge of MSB's attack text. A reworded
 fake error, or the out-of-scope field renamed, would pass. Low ASR on MSB is
 therefore not evidence of general MCP security, and no unseen-attack
 evaluation has been done.
-\item \textbf{Most zeros are uninformative.} The local models frequently
-wrote tool calls as text rather than executing them
-(Section~\ref{sec:validity}). The only measured effect is one attack on one
-model with 25 scenarios per condition, and MSB's judge for it counts junk
-values as leaks.
+\item \textbf{MSB-setting zeros mean little; the fix is a deviation.} Under
+MSB's exact prompt the 8B model executed almost no tools
+(Section~\ref{sec:validity}). The native-prompt setting fixes this but
+changes MSB's prompt, so it is always reported alongside MSB's setting.
+\item \textbf{Reductions on one attack type only.} Every measured reduction
+is on the out-of-scope-parameter attack; the other tested attacks had no
+baseline successes to reduce. MSB's judge for it counts junk values as
+leaks.
 \item \textbf{Retrieval injection.} Unscored, because MSB scores it as task
 deception rather than attack success and we have no valid judge yet. The
 guard catches it in 2 of 4 documents and, when it does, withholds the whole
@@ -610,9 +685,10 @@ MCP-SecBench is a prototype middleware defense against selected MCP attack
 classes, integrated with the MSB benchmark so that undefended and defended
 agents can be compared under identical conditions. It shows that a defensive
 layer can be attached to MSB's agent without modifying MSB; that all twelve
-of MSB's attack types execute in this setup; and, on one attack and one
-model, that measured leaks fell from 36\% to 0\% with every attempted leak
-blocked by the guard. It does not show general MCP security, robustness to
+of MSB's attack types execute in this setup; and, on the out-of-scope
+parameter attack, that measured leaks fell to 0\% on both models -- from
+100\% for the 8B model in the native-prompt setting -- with every attempted
+leak blocked by the guard. It does not show general MCP security, robustness to
 reworded or unseen attacks, protection against MSB's prompt injection, or the
 guard's cost to legitimate tasks.
 
