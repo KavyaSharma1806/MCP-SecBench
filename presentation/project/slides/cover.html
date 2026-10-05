@@ -1,4 +1,4 @@
-<section id="cover" data-transition="magic" style="background:linear-gradient(160deg,#0B0E14 0%,#0D1420 60%,#0B0E14 100%);color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;display:flex;flex-direction:column;justify-content:center;padding:128px">
+<section id="cover" data-transition="fade" style="background:linear-gradient(160deg,#0B0E14 0%,#0D1420 60%,#0B0E14 100%);color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;display:flex;flex-direction:column;justify-content:center;padding:128px">
 <p style="font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:600;color:#34D399;letter-spacing:6px;text-transform:uppercase;margin:0">MCP Security</p>
 <h1 style="font-size:150px;font-weight:700;line-height:1.02;margin:24px 0 0 0;color:#E8EAED">MCP-SecBench</h1>
 <p style="font-size:38px;font-weight:400;color:#8B95A7;max-width:1300px;line-height:1.4;margin:36px 0 0 0">Security benchmarking and defensive middleware for MCP-based LLM agents</p>
@@ -12,5 +12,9 @@
 <div id="pbox-client" style="position:absolute;left:920px;top:860px;width:80px;height:50px;background:#141925;border:1px solid #232A3B;border-radius:8px;opacity:0.4"></div>
 <div id="pbox-server" style="position:absolute;left:1032px;top:860px;width:80px;height:50px;background:#141925;border:1px solid #232A3B;border-radius:8px;opacity:0.4"></div>
 <div id="pbox-tools" style="position:absolute;left:1144px;top:860px;width:80px;height:50px;background:#141925;border:1px solid #232A3B;border-radius:8px;opacity:0.4"></div>
-<aside>Title slide. MCP-SecBench extends the MCP Security Bench academic benchmark with a defensive proxy middleware. This deck walks through the problem, the architecture, the measured results, and an honest account of what is and is not proven.</aside>
+<aside>Welcome. This talk is about a new kind of security problem that appears the moment you let an AI model take actions in the real world, and about a practical attempt to defend against it.
+
+Here's the plan. First, I'll build up the background from scratch: what an AI "tool" actually is, how the Model Context Protocol connects models to tools, and exactly where an attacker can get in. Second, I'll explain MCP Security Bench, or MSB, a published research benchmark that measures these attacks, and walk through how its benchmarking actually works, step by step, because the details matter. Third, I'll show what we added on top of MSB, which I'll call our delta, and I'll be strict about separating what MSB already does from what is genuinely new. Fourth, the results, measured on real local models, including some honest surprises and one bug in our own scoring that we found and fixed while preparing this. And finally, the limitations, because a security prototype that can't state its own limits isn't trustworthy.
+
+The faint row of boxes at the bottom of this slide is the pipeline we're about to zoom into.</aside>
 </section>

@@ -24,5 +24,15 @@
 <p style="font-size:34px;font-weight:700;color:#34D399;margin:0;font-family:'JetBrains Mono',monospace">5</p>
 </div>
 <p style="position:absolute;left:280px;top:762px;width:1400px;font-size:24px;margin:0"><b style="color:#34D399">Unseen-attack evaluation.</b> <span style="color:#8B95A7">Train/eval split with paraphrases and novel payloads &mdash; the only way to claim the defense generalizes.</span></p>
-<aside>Deliberately presented as a roadmap, not a backlog of claims. Each level keeps the architecture and adds one more layer of sophistication, in increasing order of effort.</aside>
+<aside>Where should this go next? Here's a roadmap, deliberately ordered from the smallest, safest step to the most ambitious. To be clear, none of these are done yet; this is a plan, not a list of results.
+
+Level one: fix the gap we found. Our signature check only catches exact duplicate tool names, while MSB's real attacks use near-misses. Normalizing names, ignoring case and suffixes like v1, and checking similarity rather than equality is a small, concrete change to the existing heuristics.
+
+Level two: semantic detection. Right now the guard looks for specific phrases. An attacker who rephrases, "disregard the guidance supplied earlier" instead of "ignore previous instructions," can slip past. A classifier that asks "is this text data, an instruction, or a malicious instruction?" judges meaning rather than wording.
+
+Level three: policy-based authorization. Instead of only asking "does this text look malicious?", ask "is this action permitted for this request?" If the user asked to find a report, reading the report is fine, but emailing it somewhere or reading a passwords file is not automatically allowed, however innocent the request looks.
+
+Level four: behavioral monitoring. Watch the sequence of actions. Search, read credentials, send email, delete file is a suspicious chain even if no single step contains a suspicious phrase.
+
+Level five, and in some ways the most important: evaluation on unseen attacks. Our guard was built with knowledge of MSB's attack text. The only honest way to claim it generalizes is to test it on attacks it has never seen: paraphrases, new payloads, new tool names. Until that's done, a good score on MSB tells you the guard handles MSB, not that it handles attacks in general.</aside>
 </section>

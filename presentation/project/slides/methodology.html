@@ -35,5 +35,15 @@
 <p style="font-size:19px;color:#8B95A7;margin:0;line-height:1.6">attack &middot; task &middot; model &middot; tool &middot; parameters &middot; environment</p>
 <p style="font-size:19px;color:#34D399;margin:8px 0 0 0;font-weight:600">Only the defensive layer differs.</p>
 </div>
-<aside>cli_runner.py --mode baseline and --mode defended run the identical scenario grid against the identical LLM, the only difference being whether apply_defense() was called. --mode compare then produces the ASR table from the two result sets.</aside>
+<aside>How do we know whether the guard helps? With the oldest idea in experimental science: a controlled comparison.
+
+At the top is one MSB attack scenario: a specific attack type, a specific innocent task, a specific attack goal. We run it twice.
+
+On the left, the baseline agent: MSB exactly as published, no guard. On the right, the defended agent: the identical scenario, with our guard attached. Each run produces a result, the judge decides whether the attack succeeded, and at the bottom we compare the two attack success rates.
+
+The list on the right is the heart of it. Held identical: the attack, the task, the model, the tool, the parameters, and the environment. Only the defensive layer differs. If we changed anything else at the same time, say a different model or a different task, and the numbers changed, we couldn't tell whether the guard caused it.
+
+In practice this is three commands. cli_runner.py with mode baseline runs the grid without the guard. Mode defended runs the same grid with it. Mode compare reads both result files and produces the table you'll see in a moment, with attack success rates, mitigation rate, and guard interventions.
+
+One caveat worth saying out loud: language models are not fully deterministic. Run the same scenario twice and the model may behave slightly differently even with no guard at all. That's one reason we run many scenarios and report rates rather than trusting any single run.</aside>
 </section>

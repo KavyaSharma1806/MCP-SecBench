@@ -3,13 +3,13 @@
   "createdOnFiles": {"v": 1, "at": "2026-10-05T12:00:00Z"},
   "lists": "css",
   "title": "MCP-SecBench",
-  "order": ["cover", "motivation", "architecture", "msb", "attack-surface", "project", "guard-architecture", "methodology", "results", "live-demo", "coverage", "limitations", "future-work", "conclusion"],
+  "order": ["cover", "motivation", "mcp-basics", "architecture", "attack-surface", "attack-examples", "msb", "msb-pipeline", "attack-goals", "metrics", "delta-overview", "where-guard", "project", "guard-architecture", "guard-in-action", "hooks", "methodology", "backend-run", "results", "validity", "live-demo", "coverage", "limitations", "future-work", "conclusion"],
   "sections": {
-    "intro": {"description": "The security problem and the benchmark this builds on", "start": "cover"},
-    "system": {"description": "How MCP works and where mcp_guard fits in the pipeline", "start": "architecture"},
-    "evaluation": {"description": "Methodology, measured results, and a live zero-cost demo", "start": "methodology"},
-    "coverage": {"description": "Full attack-type coverage and what we actually found", "start": "coverage"},
-    "close": {"description": "Limitations, future work, and conclusion", "start": "limitations"}
+    "intro": {"description": "The security problem: what tools are and where attacks get in", "start": "cover"},
+    "benchmark": {"description": "How MSB benchmarks attacks: scenarios, goals, judges, metrics", "start": "msb"},
+    "delta": {"description": "Our delta: what exists here and not in MSB, and how the guard works", "start": "delta-overview"},
+    "evaluation": {"description": "Methodology, a backend walkthrough, and the measured results", "start": "methodology"},
+    "close": {"description": "Coverage, limitations, roadmap, and conclusion", "start": "coverage"}
   },
   "faces": {
     "ibm-plex-sans": {"family": "IBM Plex Sans", "href": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"},

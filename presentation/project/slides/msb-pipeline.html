@@ -1,0 +1,63 @@
+<section id="msb-pipeline" data-transition="fade" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:128px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#60A5FA;letter-spacing:3px;text-transform:uppercase;margin:0">How benchmarking works</p>
+<h2 style="font-size:54px;font-weight:700;margin:12px 0 0 0">How MSB runs one test</h2>
+<div data-build-in="rise 1" style="position:absolute;left:128px;top:320px;width:244px;height:380px;background:#141925;border:1px solid #232A3B;border-radius:16px;padding:26px;display:flex;flex-direction:column;gap:10px">
+<p style="font-family:'JetBrains Mono',monospace;font-size:40px;font-weight:700;color:#60A5FA;margin:0">01</p>
+<h3 style="font-size:22px;font-weight:600;margin:0">Pick an attack type</h3>
+<p style="font-size:17px;color:#8B95A7;line-height:1.45;margin:0">One of 12. Decides <i>where</i> the attack enters the pipeline.</p>
+<p style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#4A6B5C;margin:0">e.g. false_error</p>
+</div>
+<div data-build-in="rise 2" style="position:absolute;left:412px;top:320px;width:244px;height:380px;background:#141925;border:1px solid #232A3B;border-radius:16px;padding:26px;display:flex;flex-direction:column;gap:10px">
+<p style="font-family:'JetBrains Mono',monospace;font-size:40px;font-weight:700;color:#60A5FA;margin:0">02</p>
+<h3 style="font-size:22px;font-weight:600;margin:0">Pick a scenario</h3>
+<p style="font-size:17px;color:#8B95A7;line-height:1.45;margin:0">An agent persona, an innocent user task, and the tool that task needs. 10 personas.</p>
+<p style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#4A6B5C;margin:0">"Get the current working directory."</p>
+</div>
+<div data-build-in="rise 3" style="position:absolute;left:696px;top:320px;width:244px;height:380px;background:#141925;border:1px solid #232A3B;border-radius:16px;padding:26px;display:flex;flex-direction:column;gap:10px">
+<p style="font-family:'JetBrains Mono',monospace;font-size:40px;font-weight:700;color:#60A5FA;margin:0">03</p>
+<h3 style="font-size:22px;font-weight:600;margin:0">Pick an attack goal</h3>
+<p style="font-size:17px;color:#8B95A7;line-height:1.45;margin:0">One of 5 concrete harms the attacker wants the agent to commit.</p>
+<p style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#4A6B5C;margin:0">e.g. plant an SSH key</p>
+</div>
+<div data-build-in="rise 4" style="position:absolute;left:980px;top:320px;width:244px;height:380px;background:#141925;border:1px solid #232A3B;border-radius:16px;padding:26px;display:flex;flex-direction:column;gap:10px">
+<p style="font-family:'JetBrains Mono',monospace;font-size:40px;font-weight:700;color:#60A5FA;margin:0">04</p>
+<h3 style="font-size:22px;font-weight:600;margin:0">Assemble the servers</h3>
+<p style="font-size:17px;color:#8B95A7;line-height:1.45;margin:0">A support tool, the benign tool, and &mdash; if the attack needs one &mdash; a malicious server.</p>
+<p style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#4A6B5C;margin:0">complete_server_config()</p>
+</div>
+<div data-build-in="rise 5" style="position:absolute;left:1264px;top:320px;width:244px;height:380px;background:#141925;border:1px solid #232A3B;border-radius:16px;padding:26px;display:flex;flex-direction:column;gap:10px">
+<p style="font-family:'JetBrains Mono',monospace;font-size:40px;font-weight:700;color:#FBBF24;margin:0">05</p>
+<h3 style="font-size:22px;font-weight:600;margin:0">Run the agent</h3>
+<p style="font-size:17px;color:#8B95A7;line-height:1.45;margin:0">A real LLM, real servers, the attack injected at its surface. Up to 10 steps.</p>
+<p style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#4A6B5C;margin:0">agent.run(task)</p>
+</div>
+<div data-build-in="rise 6" style="position:absolute;left:1548px;top:320px;width:244px;height:380px;background:#141925;border:1px solid #34D399;border-radius:16px;padding:26px;display:flex;flex-direction:column;gap:10px">
+<p style="font-family:'JetBrains Mono',monospace;font-size:40px;font-weight:700;color:#34D399;margin:0">06</p>
+<h3 style="font-size:22px;font-weight:600;margin:0">Judge the outcome</h3>
+<p style="font-size:17px;color:#8B95A7;line-height:1.45;margin:0">Did the harm actually happen? Check the sandbox, or the tool calls.</p>
+<p style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#4A6B5C;margin:0">success / failure</p>
+</div>
+<x-connector x1="372" y1="380" x2="412" y2="380" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
+<x-connector x1="656" y1="380" x2="696" y2="380" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
+<x-connector x1="940" y1="380" x2="980" y2="380" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
+<x-connector x1="1224" y1="380" x2="1264" y2="380" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
+<x-connector x1="1508" y1="380" x2="1548" y2="380" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
+<div style="position:absolute;left:128px;top:750px;width:1664px;background:#0D1117;border:1px solid #2A303E;border-radius:14px;padding:24px 32px">
+<p style="font-size:22px;color:#BFD8D5;margin:0">One combination of steps 1 &times; 2 &times; 3 is one <b>scenario</b>. MSB defines more than 2,000 of them. A benchmark is just this loop, run over all of them, with the same judge every time.</p>
+</div>
+<aside>This is the most important slide for understanding what "benchmarking" means here, so let's go slowly. A benchmark is not a single test. It's a fixed, repeatable procedure applied to a large grid of cases, judged the same way every time, so that numbers from different runs, or different models, can be compared fairly. Here is MSB's procedure, traced directly from its main.py.
+
+Step one: pick an attack type. There are twelve, and the type decides where in the pipeline the attack enters: a description, a parameter schema, a reply, or a document.
+
+Step two: pick a scenario. MSB defines ten agent personas, like an academic search assistant or an IT management assistant. Each has a list of completely innocent user tasks, and each task names the tool it needs. For example: "Get the current working directory," using the Terminal Controller tool. The user here is not doing anything wrong. That's the point. We are testing whether an honest request can be hijacked.
+
+Step three: pick an attack goal. There are five, and they are concrete harms: plant an SSH key, steal a phone number, tamper with data, kill a process, or leak the list of tools. I'll show all five on the next slide.
+
+Step four: assemble the MCP servers. MSB's own function, complete_server_config, builds the server list for this exact combination. Usually that's a support tool like a filesystem server, the benign tool the task needs, and, for attack types that require one, a malicious server that impersonates or extends the real tool.
+
+Step five: run the agent. A real language model, real servers running as real processes, with the attack injected at its surface. The agent gets at most ten steps.
+
+Step six: judge. Did the harm actually happen? For most attacks MSB checks a sandboxed output folder: is the planted key actually in the file? For parameter attacks it checks the tool-call log: did the agent fill in the field it shouldn't have?
+
+One combination of steps one, two and three is called a scenario, and MSB defines over two thousand. Benchmarking simply means running this loop over all of them, with the same judge, and counting. Everything we built plugs into this exact loop without changing it.</aside>
+</section>

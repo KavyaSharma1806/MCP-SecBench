@@ -32,5 +32,11 @@
 <x-connector x1="1324" y1="530" x2="1338" y2="530" head="end" route="straight" style="color:#34D399;border-width:3px"></x-connector>
 <x-connector x1="1558" y1="530" x2="1572" y2="530" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
 <p style="position:absolute;left:128px;bottom:64px;font-size:22px;color:#8B95A7;font-family:'JetBrains Mono',monospace;margin:0">baseline/ stays byte-for-byte unmodified &mdash; defenses/mcp_guard.py composes with it</p>
-<aside>This is the architectural core of the project: a proxy, not a patch. The guard wraps an already-initialized agent instance rather than editing mcp_use or langchain source, so a baseline run and a defended run are an apples-to-apples comparison of the identical scenario.</aside>
+<aside>Here's our project in one picture. Watch the pipeline: everything you saw before is still there, but a new green box has been inserted between the MCP client and the MCP server. That's the SecurityGuard, and the server and tools have shifted right to make room.
+
+Why put it exactly there? Because that's the doorway every attack has to pass through. Tool descriptions come from the server side and flow toward the agent. Tool calls, with their parameters, flow from the agent toward the server. Tool replies and retrieved documents flow back from the server toward the agent. A checkpoint standing between the client and the server can see all of it.
+
+The other important design choice is in the footer. We didn't modify MSB. Its code sits in a folder called baseline, untouched. Our guard lives in a separate file, defenses/mcp_guard.py, and attaches itself to an agent after MSB has built it. Security people would call this a proxy rather than a patch.
+
+Why does that matter so much? Because our whole claim rests on a comparison. If we had edited MSB's code to add the defense, then our "undefended baseline" would no longer be MSB's real behavior, and nobody could trust the comparison. By leaving MSB alone and attaching from outside, a baseline run is MSB exactly as published, and a defended run differs from it in one way only.</aside>
 </section>

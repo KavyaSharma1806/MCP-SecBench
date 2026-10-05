@@ -32,5 +32,17 @@
 <x-connector x1="1090" y1="530" x2="1181" y2="530" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
 <x-connector x1="1441" y1="530" x2="1532" y2="530" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
 <p style="position:absolute;left:128px;bottom:64px;font-size:22px;color:#8B95A7;font-family:'JetBrains Mono',monospace;margin:0">Tool results flow back the same path, right to left</p>
-<aside>Walk the pipeline left to right: user, agent, MCP client, MCP server, tools. The next slide overlays the four points in this exact pipeline where an attacker can inject something malicious.</aside>
+<aside>Now let's place that tool loop inside the full system. This is the architecture of any MCP-based agent, and it has five stages.
+
+On the far left is the user, who types an ordinary request, for example "get me the current working directory."
+
+Next is the LLM agent. This is the language model plus a small amount of code that runs the think, act, observe loop we just saw. It reads the request, reads the descriptions of the tools available, and decides which tool to call and with what arguments.
+
+The MCP client is the plumbing on the agent's side. It turns the agent's decision into a protocol message and routes it to the right server. Think of it as the agent's network card for tools.
+
+The MCP server is a separate program that hosts one or more tools. It might be written by the same team, or downloaded from a third party. Crucially, it is the server that tells the agent what its tools are called and what they do.
+
+Finally, the tools themselves: the code that actually touches files, APIs or the shell.
+
+The request flows left to right, and the tool's reply flows all the way back right to left, into the agent's context. Every arrow on this slide is a hop where one component trusts the text it receives from the next. On the next slide, we'll mark the four hops an attacker targets.</aside>
 </section>

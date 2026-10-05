@@ -1,0 +1,50 @@
+<section id="metrics" data-transition="fade" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:120px 128px 90px;display:flex;flex-direction:column;gap:28px">
+<div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#60A5FA;letter-spacing:3px;text-transform:uppercase;margin:0">Reading the numbers</p>
+<h2 style="font-size:52px;font-weight:700;margin:10px 0 0 0">The scorecard</h2>
+</div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:18px;color:#8B95A7;margin:0">IN MSB (metrics.py)</p>
+<div style="display:flex;gap:28px">
+<div style="flex:1;background:#141925;border:1px solid #232A3B;border-radius:16px;padding:30px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:700;color:#F87171;margin:0">ASR</p>
+<p style="font-family:'JetBrains Mono',monospace;font-size:19px;color:#E8EAED;margin:0">successful attacks / attacks</p>
+<p style="font-size:18px;color:#8B95A7;line-height:1.45;margin:0">Attack Success Rate. Lower is better. The headline number.</p>
+</div>
+<div style="flex:1;background:#141925;border:1px solid #232A3B;border-radius:16px;padding:30px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:700;color:#60A5FA;margin:0">PUA</p>
+<p style="font-family:'JetBrains Mono',monospace;font-size:19px;color:#E8EAED;margin:0">tasks completed / attacks</p>
+<p style="font-size:18px;color:#8B95A7;line-height:1.45;margin:0">How often the user's real task still got done while under attack.</p>
+</div>
+<div style="flex:1;background:#141925;border:1px solid #232A3B;border-radius:16px;padding:30px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:700;color:#60A5FA;margin:0">NRP</p>
+<p style="font-family:'JetBrains Mono',monospace;font-size:19px;color:#E8EAED;margin:0">PUA &times; (1 &minus; ASR)</p>
+<p style="font-size:18px;color:#8B95A7;line-height:1.45;margin:0">One number for "stayed useful <i>and</i> stayed safe."</p>
+</div>
+</div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:18px;color:#34D399;margin:6px 0 0 0">ADDED BY MCP-SECBENCH</p>
+<div style="display:flex;gap:28px">
+<div style="flex:1;background:#17201B;border:1px solid #2A4A36;border-radius:16px;padding:30px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:#34D399;margin:0">Mitigation Rate</p>
+<p style="font-family:'JetBrains Mono',monospace;font-size:18px;color:#E8EAED;margin:0">(baseline successes &minus; defended successes) / baseline successes</p>
+<p style="font-size:18px;color:#BFD8D5;line-height:1.45;margin:0">Of the attacks that worked without us, what share did the guard stop? Undefined if nothing worked.</p>
+</div>
+<div style="flex:1;background:#17201B;border:1px solid #2A4A36;border-radius:16px;padding:30px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:#34D399;margin:0">Guard interventions</p>
+<p style="font-family:'JetBrains Mono',monospace;font-size:18px;color:#E8EAED;margin:0">count of block / redact events, per component</p>
+<p style="font-size:18px;color:#BFD8D5;line-height:1.45;margin:0">Evidence the defense actually acted &mdash; not just that attacks happened to fail.</p>
+</div>
+</div>
+<aside>Before we look at any results, let's agree on how to read them.
+
+MSB's metrics.py computes three numbers. The first, and the one everyone quotes, is ASR, attack success rate: of all the attack scenarios we ran, what fraction ended with the harm actually happening? If we run twenty scenarios and the key gets planted in five of them, the ASR is twenty-five percent. Lower is better.
+
+But a low ASR alone can be misleading. Imagine an agent that refuses to do anything at all. It would never be hijacked, so its ASR would be zero, and it would also be useless. That's why MSB has the other two. PUA measures how often the user's actual task, the innocent one, still got completed while the attack was going on. And NRP multiplies them: PUA times one minus ASR. It's a single number that is only high when the agent stayed both useful and safe.
+
+Now the two green cards are things we added, because MSB has no defense and therefore never needed them.
+
+Mitigation rate answers the question a defense actually has to answer: of the attacks that succeeded without our guard, what share did our guard stop? Notice it is undefined when nothing succeeded in the first place. If the baseline is zero, you cannot claim you mitigated anything, and we will not report a number in that case.
+
+Guard interventions is a simple count: how many times did the guard actually block a call or redact a response, broken down by which of its three components did it. This matters because an attack can fail for reasons that have nothing to do with us. Maybe the model just ignored it. Interventions show the defense genuinely did something.
+
+One honest gap: we have not yet implemented PUA and NRP in our own runner. So we can say how often attacks were stopped, but we cannot yet say whether the guard ever stopped the user's legitimate work as a side effect. That is listed in our limitations.</aside>
+</section>

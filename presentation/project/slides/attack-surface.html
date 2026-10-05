@@ -1,4 +1,4 @@
-<section id="attack-surface" data-transition="magic" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:128px;display:flex;flex-direction:column;gap:12px">
+<section id="attack-surface" data-transition="fade" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:128px;display:flex;flex-direction:column;gap:12px">
 <p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#F87171;letter-spacing:3px;text-transform:uppercase;margin:0">The attack surface</p>
 <h2 style="font-size:60px;font-weight:700;margin:12px 0 0 0">Four entry points, one pipeline</h2>
 <div id="pbox-user" style="position:absolute;left:128px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
@@ -34,5 +34,15 @@
 <x-shape kind="arrow-up" data-build-in="rise 4" style="position:absolute;left:1642px;top:630px;width:40px;height:55px;background:#F87171"></x-shape>
 <p data-build-in="rise 4" style="position:absolute;left:1532px;top:695px;width:260px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:600;color:#F87171;margin:0">Retrieval Injection</p>
 <p style="position:absolute;left:128px;bottom:64px;font-size:22px;color:#8B95A7;font-family:'JetBrains Mono',monospace;margin:0">A malicious name, a smuggled parameter, a faked response, a poisoned document</p>
-<aside>Each red arrow is one of MSB's four attack surfaces, mapped onto the exact pipeline stage it corrupts: tool signature attacks target what the agent is shown about a tool; parameter attacks target the call itself; response attacks target what comes back; retrieval injection hides instructions inside legitimate-looking content.</aside>
+<aside>Same pipeline, but now with the four attack surfaces that MSB defines, each placed at the stage it corrupts.
+
+First arrow, tool signature. The signature is everything the agent is told about a tool before calling it: its name and its description. An attacker can register a fake tool whose name is confusingly close to a real one, or write a description that contains hidden instructions. This hits the agent at the moment it is deciding what to do.
+
+Second, tool parameter. Here the malicious tool's input schema asks for something it shouldn't, like the name of the model calling it. This hits the call itself, as it's being constructed and sent through the client.
+
+Third, tool response. Whatever the real tool would have returned is replaced with attacker-written text, a fake error or a fake message from the user. This hits the reply on its way back from the server.
+
+Fourth, retrieval injection. The agent is asked to read a document, and the document itself contains instructions disguised as normal content. This hits at the tools stage, because the poison is in the data the tool fetched.
+
+Notice the pattern: none of these attacks touch the model's weights or hack the computer. They all work by placing text where the agent will read it and trust it. That's also why a defense can sit in the pipeline: if attacks travel as text through these hops, a checkpoint on those hops can inspect them.</aside>
 </section>

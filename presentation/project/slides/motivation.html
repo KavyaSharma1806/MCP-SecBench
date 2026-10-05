@@ -19,5 +19,13 @@
 <x-icon name="Warning" style="color:#F87171;width:36px;height:36px"></x-icon>
 <p style="font-size:28px;color:#F87171;font-weight:500;margin:0">Every tool name, every parameter, every response, and every retrieved document is now part of the attack surface.</p>
 </div>
-<aside>The core argument: MCP turns a conversational model into an acting one. That capability is the whole value proposition, and it is also the whole new risk. This sets up the next slide, which shows exactly where in the pipeline that trust can be abused.</aside>
+<aside>Let's start with why this matters at all.
+
+For most of their history, language models could only produce text. If a model was confused or manipulated, the worst outcome was a wrong or harmful answer on the screen. A human still had to read it and decide whether to act on it. The model itself couldn't touch anything.
+
+That has changed. With the Model Context Protocol, the same model can be connected to tools: it can read and write your files, call web APIs, search the internet, and run commands in a terminal. And it does this on your behalf, with your permissions. That is genuinely useful, it's the whole point of an "agent." But think about what it means for security. Now, if the model can be manipulated, the manipulation doesn't stop at words. It turns into actions: a file gets written, data gets copied, a process gets killed.
+
+And here is the uncomfortable part, shown in the red bar. The model decides what to do partly by reading text that other people wrote: the names and descriptions of tools, the parameters those tools ask for, the replies they send back, and any documents the agent reads along the way. Every one of those is a place an attacker can put words in front of the model. So the attack surface isn't the model; it's everything the model reads.
+
+Keep that sentence in mind, because the rest of this talk is about exactly those four places.</aside>
 </section>
