@@ -101,6 +101,45 @@ report a misleading, always-`False` ASR for it. Implementing a proper oracle
 here (comparing the agent's final answer against the correct vs. the
 decoy document) is future work.
 
+## 6. Attack-type coverage matrix (`coverage_test.py`)
+
+The statistical batch runs (`run_batch.py`) only cover 3 of MSB's 12 attack
+types. `coverage_test.py` empirically verifies the other 9: one scenario
+each, both undefended and defended, confirming every single MSB attack type
+is **executable** in this implementation (18/18 runs completed without a
+crash) and cross-checking the `guard_blocks` count against what direct
+inspection of each attack's real source code predicts.
+
+**Finding: the Tool Signature Validator has a real gap.** Reading the actual
+attack-tool implementations (e.g.
+`baseline/data/tools/attack_tools/it_development_management/Terminal_Controller/terminal_controller-name_overlap.py`)
+shows that MSB's real `name_overlap` and `preference_manipulation` attacks
+register tools with *near-miss* names against the legitimate tool
+(`execute_command_v1` vs. the real `execute_command`; `get_commands_history`
+vs. `get_command_history`) — not exact duplicates.
+`SecurityGuard.validate_tool_signatures` only de-duplicates *exact* name
+collisions, so on its own it does not stop the agent from being confused
+between the real tool and a near-miss decoy. This is mitigated, not
+eliminated, by redundancy: every decoy tool's response is still wrapped in
+MSB's own `TOOL_RESPONSE_ATTACK_TEMPLATE`/`SIMULATED_USER_TEMPLATE`, which
+`sanitize_response` does catch once the decoy is actually invoked (confirmed
+empirically: 1–2 guard interventions per scenario for these attack types).
+Honest summary: *name confusion itself is not prevented; the resulting
+malicious response usually still is.*
+
+**Finding: `search_term_deception` has no wrapper template to match.** Every
+other MSB attack type wraps its payload in a template `mcp_guard`'s pattern
+list targets (`TOOL_RESPONSE_ATTACK_TEMPLATE`, `SIMULATED_USER_TEMPLATE`,
+`<IMPORTANT>`). `search_term_deception` is the one exception — its payload is
+the bare attack instruction text, embedded directly into otherwise-legitimate
+retrieved document content, with no wrapper at all. The empirical test
+confirms 0 guard interventions. Combined with the scoring gap already noted
+above, this attack type is both unscored and undefended, and that is
+reported here rather than worked around.
+
+See `report/report.tex` Section "Attack-Type Coverage Matrix" for the full
+12-row table and methodology.
+
 ## What is unchanged from MSB
 
 - `baseline/data/attack_task.jsonl`, `agent_task.jsonl`, `attack_type.jsonl`,

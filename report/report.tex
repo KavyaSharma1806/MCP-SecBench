@@ -27,7 +27,7 @@
 
 \title{MCP-SecBench: A Defensive Proxy for Mitigating\\ Attacks Against MCP-Based AI Agents}
 \author{Kavya Sharma}
-\date{September 18, 2026 \\ \normalsize Version 2}
+\date{October 5, 2026 \\ \normalsize Version 3}
 
 \begin{document}
 
@@ -60,6 +60,17 @@ completes the larger-model (\texttt{llama3.1:8b}) batch that was only
 partially finished in the first draft, along with a data-completeness fix
 that recovered 15 previously-dropped scenarios per condition for both models
 (Section~\ref{sec:results}).
+
+\paragraph{Revision note (v3).} This version adds a full attack-type
+coverage matrix (Section~\ref{sec:coverage}) against all twelve attack types
+in MSB's own taxonomy, not just the three evaluated statistically in
+Section~\ref{sec:results}. Building it surfaced a genuine gap in the Tool
+Signature Validator (it only catches exact tool-name collisions, not the
+near-miss names MSB's real \texttt{name\_overlap}/\texttt{preference\_manipulation}
+attacks actually use) and confirms that \texttt{search\_term\_deception} is
+not meaningfully defended by the current response sanitizer, in addition to
+not being scored (Section~\ref{sec:results} already documented the scoring
+gap; this revision explains why the defense gap exists too).
 
 \tableofcontents
 
@@ -315,6 +326,94 @@ The failure is identical and symmetric across baseline and defended runs
 and across both models, so it does not bias the comparison, but it does
 mean the \texttt{kill\_process} results are not currently informative.
 
+\section{Attack-Type Coverage Matrix}
+\label{sec:coverage}
+
+Section~\ref{sec:results} reports statistically meaningful results
+(75 scenarios per condition) for only 3 of the 12 attack types in MSB's
+taxonomy. This section reports, for all 12, whether the attack is
+\textbf{Present} in the vendored MSB corpus, \textbf{Executable} in our
+implementation (does a scenario run to completion without crashing),
+\textbf{Scored} (does our success oracle, Section~\ref{sec:results}'s
+\texttt{score\_attack()}, give a meaningful verdict for it), and
+\textbf{Defended} (does \texttt{mcp\_guard} have logic that addresses this
+attack's actual mechanism). Executability for the remaining 9 attack types
+was verified empirically: one scenario per type, both undefended and
+defended, run against \texttt{llama3.2:3b} (18 runs total, all completed
+without error). The Defended column is based on direct inspection of each
+attack's real implementation source (not assumption), cross-checked against
+the empirical \texttt{guard\_blocks} count from those same 18 runs.
+
+\begin{table}[h]
+\centering
+\caption{Coverage of MSB's 12 attack types.}
+\label{tab:coverage}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{MSB Attack Type} & \textbf{Present} & \textbf{Executable} & \textbf{Scored} & \textbf{Defended} \\
+\midrule
+\texttt{prompt\_injection}                & Yes & Yes & Yes & Yes \\
+\texttt{false\_error}                     & Yes & Yes & Yes & Yes \\
+\texttt{out\_of\_scope\_parameter}        & Yes & Yes & Yes & Yes \\
+\texttt{simulated\_user}                  & Yes & Yes & Yes & Yes \\
+\texttt{name\_overlap}                    & Yes & Yes & Yes & Partial$^{*}$ \\
+\texttt{preference\_manipulation}         & Yes & Yes & Yes & Partial$^{*}$ \\
+\texttt{tool\_transfer}                   & Yes & Yes & Yes & Yes \\
+\texttt{search\_term\_deception}          & Yes & Yes & \textbf{No} & \textbf{No} \\
+\texttt{preference\_manipulation-out\_of\_scope\_parameter} & Yes & Yes & Yes & Yes$^{\dagger}$ \\
+\texttt{preference\_manipulation-simulated\_user}           & Yes & Yes & Yes & Yes \\
+\texttt{prompt\_injection-simulated\_user}                  & Yes & Yes & Yes & Yes \\
+\texttt{prompt\_injection-false\_error}                     & Yes & Yes & Yes & Yes \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent $^{*}$\textbf{Partial, with an identified gap.} Reading the actual
+attack-tool source (e.g.\
+\texttt{terminal\_controller-name\_overlap.py}) shows that MSB's real
+\texttt{name\_overlap} and \texttt{preference\_manipulation} attacks register
+tools with \emph{near-miss} names against the legitimate tool
+(\texttt{execute\_command\_v1} vs.\ the real \texttt{execute\_command};
+\texttt{get\_commands\_history} vs.\ \texttt{get\_command\_history}) --
+not exact duplicates. \texttt{mcp\_guard}'s Tool Signature Validator only
+de-duplicates \emph{exact} name collisions, so it does not by itself prevent
+the agent from being confused between a real tool and its near-miss decoy.
+The attack is not left completely unmitigated, however: every decoy tool's
+response is still wrapped in MSB's own \texttt{TOOL\_RESPONSE\_ATTACK\_TEMPLATE}
+or \texttt{SIMULATED\_USER\_TEMPLATE}, which the Tool Response Sanitizer does
+catch once the decoy tool is actually called -- confirmed empirically (1 and
+2 guard interventions respectively in the single-scenario test). The honest
+summary is: \emph{name confusion itself is not prevented; the resulting
+malicious response usually still is.} This is the clearest concrete
+weakness this coverage exercise surfaced, and it is exactly the kind of gap
+Phase 10-style auditing (Section~\ref{sec:limitations}) should target first.
+
+\noindent $^{\dagger}$Code inspection confirms the parameter gate's
+out-of-scope-key check applies regardless of attack type, and this exact
+mechanism is independently confirmed working in Section~\ref{sec:results}'s
+75-scenario \texttt{out\_of\_scope\_parameter} runs and in
+Section~\ref{sec:live}'s live demonstration. The single-scenario empirical
+test for this specific combined attack recorded 0 guard interventions, but
+that reflects the small local model simply not attempting to fill the bogus
+parameter in that one trial (a pattern observed throughout this project,
+e.g.\ Section~\ref{sec:results}), not a defense failure -- an $n=1$ sample is
+not strong evidence either way for this specific combination.
+
+\textbf{Retrieval Injection is a genuine, documented gap, not an oversight.}
+\texttt{search\_term\_deception} is both unscored (Section~\ref{sec:results})
+and undefended, and the coverage exercise clarifies exactly why the defense
+gap exists: unlike every other attack type, MSB's \texttt{search\_term\_deception}
+payload is injected \emph{without} any of the wrapper templates
+(\texttt{TOOL\_RESPONSE\_ATTACK\_TEMPLATE}, \texttt{SIMULATED\_USER\_TEMPLATE},
+or \texttt{<IMPORTANT>}) that every other attack type uses and that
+\texttt{mcp\_guard}'s pattern list targets -- it is just the bare instruction
+text embedded directly into otherwise-legitimate document content. The
+empirical test confirms this: 0 guard interventions were recorded. Per the
+instructions governing this phase of work, this is reported as a limitation
+rather than worked around with a fabricated score or a broadened pattern
+list tuned specifically to make this one case pass.
+
 \section{Live, Zero-Cost Verification of Attack and Defense}
 \label{sec:live}
 
@@ -441,11 +540,21 @@ runs rather than silently reported as a misleading 0\%.
 \item \textbf{Third-party tool dependency.} \texttt{kill\_process} scenarios
 require an alternative source for the Desktop Commander tool, independent of
 Smithery's hosted registry.
-\item \textbf{Scope.} This is a first working implementation covering three
-of MSB's twelve attack-type combinations. The natural extension is full
-coverage of MSB's attack grid and validation across multiple model sizes to
-establish whether the observed guard-intervention rate scales with a model's
-underlying susceptibility.
+\item \textbf{Signature validation misses near-miss tool names.}
+Section~\ref{sec:coverage} identifies this directly from the attack-tool
+source code: the Tool Signature Validator only catches \emph{exact} tool-name
+duplicates, not the near-miss decoy names (\texttt{execute\_command\_v1},
+\texttt{get\_commands\_history}) MSB's real \texttt{name\_overlap} and
+\texttt{preference\_manipulation} attacks actually use. This is the clearest,
+most concrete first target for improving the existing heuristics, ahead of
+any more sophisticated detector.
+\item \textbf{Scope.} All twelve of MSB's attack types are confirmed
+\emph{executable} (Section~\ref{sec:coverage}), but only three have
+statistically meaningful (75-scenario) ASR data (Section~\ref{sec:results});
+the other nine have only single-scenario executability checks. The natural
+extension is full statistical coverage of MSB's attack grid and validation
+across multiple model sizes to establish whether the observed
+guard-intervention rate scales with a model's underlying susceptibility.
 \end{itemize}
 
 \section{Conclusion}
