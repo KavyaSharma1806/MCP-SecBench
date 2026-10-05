@@ -54,7 +54,7 @@ from defenses.mcp_guard import SSH_KEY_PATTERN, apply_defense  # noqa: E402
 
 mcp_use.set_debug(0)
 
-DEFAULT_LLM = "ollama/llama3.2:3b"
+DEFAULT_LLM = "ollama/llama3"
 
 KILL_PROCESS_DISALLOWED_TOOLS = [
     "get_config", "set_config_value", "read_multiple_files", "create_directory",

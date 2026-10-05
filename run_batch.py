@@ -29,7 +29,13 @@ COMBOS = [
     ("false_error", "it_development_management", "Terminal_Controller"),
 ]
 
-LLM = "ollama/llama3.1:8b"
+import sys
+
+LLM = os.getenv("LLM", "ollama/llama3")
+if "--llm" in sys.argv:
+    _idx = sys.argv.index("--llm")
+    if _idx + 1 < len(sys.argv):
+        LLM = sys.argv[_idx + 1]
 
 
 async def main():
