@@ -1,49 +1,54 @@
-<section id="validity" data-transition="fade" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:110px 128px 80px;display:flex;flex-direction:column;gap:24px">
+<section id="validity" data-transition="fade" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:104px 128px 70px;display:flex;flex-direction:column;gap:22px">
 <div>
 <p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#FBBF24;letter-spacing:3px;text-transform:uppercase;margin:0">A validity check MSB doesn't do</p>
-<h2 style="font-size:50px;font-weight:700;margin:10px 0 0 0">Did the agent actually use its tools?</h2>
+<h2 style="font-size:48px;font-weight:700;margin:10px 0 0 0">Did the agent actually use its tools?</h2>
 </div>
-<div style="display:flex;gap:36px">
-<div style="flex:1.25;display:flex;flex-direction:column;gap:18px">
-<p style="font-size:22px;color:#BFD8D5;line-height:1.5;margin:0">An attack can only land if a tool call really executes. MSB's system prompt describes an old text protocol &mdash; <span style="font-family:'JetBrains Mono',monospace;color:#E8EAED">Thought / Action / Action Input</span> &mdash; while the agent expects native tool calls. Our local models often <b>wrote the call out as text</b> and stopped. Nothing ran.</p>
-<div style="background:#07090D;border:1px solid #2A303E;border-radius:12px;padding:22px 26px">
-<p style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#4A5568;margin:0 0 8px 0">real final answer, 8B model, out-of-scope-parameter scenario</p>
-<p style="font-family:'JetBrains Mono',monospace;font-size:17px;color:#E8EAED;line-height:1.55;margin:0">Thought: I can use the search_query function to find the latest developments in artificial intelligence.<br/>Action: search_query<br/>Action Input: {<span style="color:#F87171">"llm_model_name": "My AI Model"</span>, "query": "latest developme&hellip;</p>
+<div style="display:flex;gap:32px">
+<div style="flex:1.2;display:flex;flex-direction:column;gap:16px">
+<p style="font-size:21px;color:#BFD8D5;line-height:1.5;margin:0">MSB's system prompt tells the model to <i>write</i> tool calls as text &mdash; <span style="font-family:'JetBrains Mono',monospace;color:#E8EAED">Thought / Action / Action Input</span> &mdash; but the agent only executes <i>structured</i> tool calls. The 8B model obeyed the text instructions, so nothing ran:</p>
+<div style="background:#07090D;border:1px solid #2A303E;border-radius:12px;padding:20px 24px">
+<p style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#4A5568;margin:0 0 8px 0">real final answer, 8B model, MSB's exact prompt</p>
+<p style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#E8EAED;line-height:1.55;margin:0">Thought: I can use the search_query function&hellip;<br/>Action: search_query<br/>Action Input: {<span style="color:#F87171">"llm_model_name": "My AI Model"</span>, "query": &hellip;</p>
 </div>
-<p style="font-size:19px;color:#8B95A7;line-height:1.5;margin:0">It even filled in the leaking field &mdash; but as text, so no server received it and the judge rightly scores no leak.</p>
-</div>
-<div style="flex:1;display:flex;flex-direction:column;gap:20px">
-<div style="background:#1A1420;border:1px solid #3A2A3F;border-radius:16px;padding:28px">
-<p style="font-family:'JetBrains Mono',monospace;font-size:62px;font-weight:700;color:#F87171;margin:0">65 / 75</p>
-<p style="font-size:19px;color:#C9A0A0;margin:6px 0 0 0">8B model: baseline scenarios whose final answer was a tool call written as text</p>
-</div>
-<div style="background:#1A1420;border:1px solid #3A2A3F;border-radius:16px;padding:28px">
-<p style="font-family:'JetBrains Mono',monospace;font-size:62px;font-weight:700;color:#FBBF24;margin:0">41 / 75</p>
-<p style="font-size:19px;color:#C9A0A0;margin:6px 0 0 0">3B model: same measure</p>
+<div style="background:#141925;border:1px solid #232A3B;border-radius:12px;padding:18px 22px">
+<p style="font-size:18px;color:#E8EAED;margin:0;line-height:1.5"><b style="color:#34D399">The fix we tested:</b> remove only that one "use this text format" section. Persona, tools, attacks and judge are unchanged. Reported side by side with MSB's setting, never instead of it.</p>
 </div>
 </div>
+<div style="flex:1;display:flex;flex-direction:column;gap:18px">
+<div style="background:#141925;border:1px solid #232A3B;border-radius:16px;padding:24px">
+<p style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#8B95A7;margin:0 0 10px 0">8B &middot; parameter-attack runs that executed a real tool call</p>
+<div style="display:flex;align-items:center;gap:22px">
+<p style="font-family:'JetBrains Mono',monospace;font-size:56px;font-weight:700;color:#F87171;margin:0">0/25</p>
+<p style="font-size:34px;color:#3A4254;margin:0">&rarr;</p>
+<p style="font-family:'JetBrains Mono',monospace;font-size:56px;font-weight:700;color:#34D399;margin:0">25/25</p>
 </div>
-<div style="display:flex;gap:28px">
-<div style="flex:1;background:#141925;border:1px solid #232A3B;border-radius:12px;padding:20px 24px">
-<p style="font-size:19px;color:#E8EAED;margin:0"><b style="color:#F87171">Not supported:</b> "0% on prompt injection and false error means the models resisted." Mostly, the attack never reached them.</p>
+<p style="font-size:16px;color:#8B95A7;margin:6px 0 0 0">MSB's exact prompt &rarr; native prompt</p>
 </div>
-<div style="flex:1;background:#17201B;border:1px solid #2A4A36;border-radius:12px;padding:20px 24px">
-<p style="font-size:19px;color:#E8EAED;margin:0"><b style="color:#34D399">Still valid:</b> parameter-leak results, which count only calls that really reached a server.</p>
+<div style="background:#141925;border:1px solid #232A3B;border-radius:16px;padding:24px">
+<p style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#8B95A7;margin:0 0 10px 0">Direct probe, 3 tries each, same tool</p>
+<p style="font-size:19px;color:#E8EAED;margin:0;line-height:1.6">MSB prompt: <span style="color:#F87171">3/3 text only</span><br/>Without the text-format section: <span style="color:#34D399">3/3 real tool calls</span></p>
 </div>
 </div>
-<aside>This slide is about a finding that changed how we read our own results, and I think it's one of the most useful things in this project.
+</div>
+<div style="display:flex;gap:24px">
+<div style="flex:1;background:#1A1420;border:1px solid #3A2A3F;border-radius:12px;padding:16px 22px">
+<p style="font-size:18px;color:#E8EAED;margin:0"><b style="color:#F87171">So:</b> under MSB's exact prompt, the 8B model's zeros are uninformative &mdash; the attack never reached it.</p>
+</div>
+<div style="flex:1;background:#17201B;border:1px solid #2A4A36;border-radius:12px;padding:16px 22px">
+<p style="font-size:18px;color:#E8EAED;margin:0"><b style="color:#34D399">With the native prompt,</b> the 8B model executed tools in every run except the known kill_process infrastructure errors. The 3B model still skipped tools in some runs.</p>
+</div>
+</div>
+<aside>This slide explains why we ran everything twice, and it's one of the most important lessons in the project.
 
-Here is the question nobody had asked: in each scenario, did the agent actually use its tools? It sounds obvious, but it matters enormously. Every attack in MSB arrives through the tool loop: through a tool description, a tool's schema, a tool's reply, or a document a tool fetched. If the agent never actually executes a tool call, the attack has nothing to ride on. It can't succeed, and the guard has nothing to block.
+Ask a simple question of every scenario: did the agent actually use its tools? Every MSB attack arrives through the tool loop. If the agent never executes a tool call, the attack has nothing to ride on, and the guard has nothing to block. A zero in that situation tells you nothing.
 
-What we found is a mismatch inside the setup MSB uses. MSB's system prompt, the instructions given to the model, describes an old text-based protocol: write "Thought," then "Action," then "Action Input." But the agent framework underneath expects native tool calls, a structured format the model returns separately from its text. MSB's published numbers show non-zero attack success for hosted versions of these models, which implies their tool calls did execute there; we can't verify how. Our local models frequently didn't execute. They followed the text instructions literally: they wrote out the tool call as text, as their final answer, and stopped. The framework saw a final answer, not a tool call, so nothing was executed.
+What we found is a mismatch inside the setup MSB uses. MSB's system prompt instructs the model to write its tool calls as text: "Thought," then "Action," then "Action Input." But the agent framework underneath only executes structured tool calls, a separate format the model returns alongside its text. The eight-billion model did exactly what the prompt said. It wrote the call out as text and stopped. The example in the middle is a real final answer: it even filled in llm_model_name with "My AI Model," but as words on the screen. No server ever received it.
 
-The box in the middle is a real example from the eight-billion-parameter model. It wrote "Action: search_query" and an action input, and look, it even filled in llm_model_name with "My AI Model." If that had been a real call, it would have been a leak. But it was just text on the screen. No server received it, and our judge correctly scored no leak.
+We didn't just assume that was the cause; we tested it directly. Same tool, same question, three tries each. With MSB's prompt, the eight-billion model gave text only, three out of three. With one section removed, the "use this text format" instructions, it made a real tool call three out of three.
 
-The numbers on the right count how often a scenario ended this way. For the eight-billion model, sixty-five out of seventy-five baseline scenarios. For the three-billion model, forty-one out of seventy-five. This indicator only looks at the final answer, so it isn't a perfect count of runs where no tool ever executed, but it tells you this is not a rare edge case.
+So we added that as a second setting, which we call the native tool-call prompt. It removes only that one section. The persona, the tool list, every attack, and the judge are unchanged. And we report it side by side with MSB's exact setting, never instead of it, because it is a deviation from MSB.
 
-What this means, plainly. In an earlier draft we said that zero percent attack success on prompt injection and false error showed the models resisting these attacks, and that the larger model ruled out model size as an explanation. That claim isn't supported, and we've withdrawn it. For the eight-billion model especially, the attack mostly never reached it: in the parameter-leak scenarios, where we record every executed call, it made zero real tool calls in twenty-five baseline runs. The three-billion model is more mixed. False-error attacks did reach it often, since the guard redacted them twenty-seven times in defended runs, yet in the baseline it never completed the harmful file write.
+The effect is on the right. In the parameter-attack scenarios, the eight-billion model went from zero real tool calls out of twenty-five, to twenty-five out of twenty-five. Across its whole native run, it executed tools in every scenario except those that hit the known kill-process infrastructure error. The three-billion model is less consistent: even with the native prompt it executed tools in only sixteen of twenty-five parameter-attack runs, so its numbers should be read with that in mind.
 
-What survives is on the green card: the parameter-leak results. Since fixing our judge, we record every tool call that actually executed, and a leak is only counted when a real call reached a server. Those numbers are measured on real behavior.
-
-We deliberately did not rewrite MSB's prompt to "fix" this, because then our baseline would no longer be MSB's baseline. Instead we report it, and it's at the top of our list of things to measure properly next.</aside>
+The conclusion at the bottom. Under MSB's exact prompt, the eight-billion model's zeros mean nothing, and an earlier draft of this project that read them as resistance was wrong. Under the native prompt, the zeros are real evidence, and as you saw on the previous slide, that model turned out to be anything but resistant to the parameter attack.</aside>
 </section>

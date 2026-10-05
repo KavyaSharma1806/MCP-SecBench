@@ -17,6 +17,7 @@
 <tr style="background:#111621"><td style="padding:11px 16px">Models</td><td style="padding:11px 16px;color:#8B95A7">Hosted APIs that need keys (OpenRouter, DeepSeek, Tongyi)</td><td style="padding:11px 16px;color:#34D399">+ local Ollama models: zero cost, fully offline</td></tr>
 <tr><td style="padding:11px 16px">Platform</td><td style="padding:11px 16px;color:#8B95A7">Linux / macOS setup script</td><td style="padding:11px 16px;color:#34D399">Windows-safe setup that keeps baseline/ intact</td></tr>
 <tr style="background:#111621"><td style="padding:11px 16px">Audit</td><td style="padding:11px 16px;color:#8B95A7">&mdash;</td><td style="padding:11px 16px;color:#34D399">12/12 attack types executability-checked; guard gaps and our own judge bug found and documented</td></tr>
+<tr><td style="padding:11px 16px">Validity</td><td style="padding:11px 16px;color:#8B95A7">&mdash;</td><td style="padding:11px 16px;color:#34D399">Checks whether each agent really executed tools; a native tool-call prompt variant, reported beside MSB's exact one</td></tr>
 </table>
 <p style="font-size:20px;color:#8B95A7;margin:0">Rule we followed: if MSB already does it, it is not our contribution &mdash; even if we re-implemented it.</p>
 <aside>This is the slide that answers "so what did you actually do?" And I want to be strict about it: if MSB already does something, it is not our contribution, even if we wrote our own version of it.
@@ -37,5 +38,7 @@ Models: MSB is wired to hosted APIs that need keys. We added local models throug
 
 Platform: MSB's setup script assumes Linux or macOS and moves a file in a way that would delete it from the benchmark folder. Ours runs on Windows and keeps the benchmark intact.
 
-And audit: we checked that all twelve attack types actually execute, we read each attack's source code to see what our guard really catches, and in doing so we found gaps in our own guard and a bug in our own judge. All of that is documented, not hidden.</aside>
+And audit: we checked that all twelve attack types actually execute, we read each attack's source code to see what our guard really catches, and in doing so we found gaps in our own guard and a bug in our own judge. All of that is documented, not hidden.
+
+Last row, validity. MSB never checks whether the agent actually executed its tools in each scenario, and it turns out that matters enormously: under MSB's exact prompt, our eight-billion model almost never did. We measure it, and we added a second prompt setting that removes the one instruction causing the problem, reported side by side with MSB's.</aside>
 </section>
