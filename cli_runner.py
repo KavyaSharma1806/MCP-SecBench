@@ -56,6 +56,13 @@ mcp_use.set_debug(0)
 
 DEFAULT_LLM = "ollama/llama3.2:3b"
 
+# --prompt_mode native: MSB's own template with only its legacy text-protocol
+# section ("Use the following format: Question/Thought/Action/Action Input...")
+# removed. The executor only runs native tool calls, and some models obey that
+# text section literally and never call a tool. Persona, tool list and every
+# attack injection are unchanged. A deviation from MSB, always reported as such.
+NATIVE_PROMPT_TEMPLATE = SYSTEM_PROMPT_TEMPLATE.split("Use the following format")[0].rstrip() + "\n"
+
 KILL_PROCESS_DISALLOWED_TOOLS = [
     "get_config", "set_config_value", "read_multiple_files", "create_directory",
     "move_file", "list_directory", "start_search", "get_more_search_results",
@@ -248,6 +255,7 @@ async def run_scenario(
     timeout_s: float,
     on_event: Callable[..., None] | None = None,
     output_tag: str = "",
+    prompt_mode: str = "msb",
 ) -> dict[str, Any] | None:
     """on_event, if given, receives ("sandbox"|"servers"|"attack"|"tools"|"step"|"verdict", ...)
     as the run progresses -- demo.py narrates from these. Benchmark runs pass None."""
@@ -312,7 +320,8 @@ async def run_scenario(
 
     client = MCPClient.from_dict(config)
     llm = llm_factory()
-    system_prompt = scenario["agent_system_prompt"] + SYSTEM_PROMPT_TEMPLATE
+    template = NATIVE_PROMPT_TEMPLATE if prompt_mode == "native" else SYSTEM_PROMPT_TEMPLATE
+    system_prompt = scenario["agent_system_prompt"] + template
 
     agent = MCPAgent(
         llm=llm,
@@ -411,11 +420,13 @@ async def run_mode(args: argparse.Namespace, mode: str) -> pd.DataFrame:
     for i, sc in enumerate(scenarios, 1):
         label = f"{sc['attack_type']} / {sc['attack_task']} / {sc['agent_name']} / {sc['tool_name']}"
         print(f"  [{i}/{len(scenarios)}] {label}")
-        row = await run_scenario(sc, llm_factory, mode, args.max_steps, args.timeout)
+        row = await run_scenario(sc, llm_factory, mode, args.max_steps, args.timeout,
+                                 prompt_mode=args.prompt_mode)
         if row is None:
             print("      -> skipped (no matching server config)")
             continue
         row["llm"] = args.llm
+        row["prompt_mode"] = args.prompt_mode
         rows.append(row)
         status = "ATTACK SUCCEEDED" if row["attack_success"] else "attack failed"
         extra = f" ({row['error']})" if row["error"] else ""
@@ -425,9 +436,11 @@ async def run_mode(args: argparse.Namespace, mode: str) -> pd.DataFrame:
     results_dir = resolve_results_dir(args)
     results_dir.mkdir(parents=True, exist_ok=True)
     out_path = results_dir / f"{mode}_results.csv"
-    key_cols = ["mode", "llm", "attack_type", "attack_task", "agent_name", "tool_name", "agent_task"]
+    key_cols = ["mode", "llm", "prompt_mode", "attack_type", "attack_task", "agent_name", "tool_name", "agent_task"]
     if out_path.exists() and len(df):
         existing = pd.read_csv(out_path)
+        # rows written before --prompt_mode existed were all MSB's exact prompt
+        existing["prompt_mode"] = existing.get("prompt_mode", pd.Series(dtype=object)).fillna("msb")
         combined = pd.concat([existing, df], ignore_index=True)
         # keep the latest result for any scenario re-run across separate invocations
         combined = combined.drop_duplicates(subset=key_cols, keep="last")
@@ -485,6 +498,11 @@ def run_compare(args: argparse.Namespace) -> None:
 
     b = pd.read_csv(baseline_path)
     d = pd.read_csv(defended_path)
+    for frame in (b, d):
+        frame["prompt_mode"] = frame.get("prompt_mode", pd.Series(dtype=object)).fillna("msb")
+    b = b[b["prompt_mode"] == args.prompt_mode]
+    d = d[d["prompt_mode"] == args.prompt_mode]
+    print(f"prompt_mode={args.prompt_mode}")
 
     available_llms = sorted(set(b["llm"].dropna()) | set(d["llm"].dropna()))
     if len(available_llms) > 1:
@@ -535,6 +553,8 @@ def run_compare(args: argparse.Namespace) -> None:
     print("\n" + _markdown_table(overall))
 
     tag = re.sub(r"[^A-Za-z0-9_]+", "_", llm_filter or "unknown")
+    if args.prompt_mode != "msb":
+        tag += f"__{args.prompt_mode}_prompt"
     out_path = results_dir / f"comparison__{tag}.md"
     out_path.write_text(
         f"# MSB Baseline vs. mcp_guard-Defended — ASR Comparison ({llm_filter})\n\n"
@@ -561,6 +581,9 @@ def build_argparser() -> argparse.ArgumentParser:
     p.add_argument("--limit", type=int, default=None, help="Cap the number of scenarios (smoke tests)")
     p.add_argument("--max_steps", type=int, default=8)
     p.add_argument("--timeout", type=float, default=180.0, help="Per-call timeout in seconds")
+    p.add_argument("--prompt_mode", choices=["msb", "native"], default="msb",
+                    help="msb = MSB's exact system prompt (default); native = the same prompt "
+                         "without its legacy text-protocol section (a reported deviation)")
     p.add_argument("--results_dir", default=str(RESULTS_DIR),
                     help="Where result CSVs and comparison tables go (e.g. results/video for demo recordings)")
     return p

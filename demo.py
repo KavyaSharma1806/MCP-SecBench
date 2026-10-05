@@ -138,6 +138,8 @@ async def main() -> None:
     p.add_argument("--max_steps", type=int, default=8)
     p.add_argument("--timeout", type=float, default=180.0)
     p.add_argument("--slow", type=float, default=0.0, help="seconds to pause between stages")
+    p.add_argument("--prompt_mode", choices=["msb", "native"], default="msb",
+                   help="native = MSB's prompt without its legacy text-protocol section")
     args = p.parse_args()
     SLOW = args.slow
 
@@ -152,7 +154,7 @@ async def main() -> None:
     scenario = scenarios[min(args.pick, len(scenarios) - 1)]
 
     print(paint("\nMCP-SecBench live demo", "bold"))
-    print(wrap(f"Model: {args.llm}"))
+    print(wrap(f"Model: {args.llm}   ·   prompt: {'MSB exact' if args.prompt_mode == 'msb' else 'native tool-calling (MSB minus its text-protocol section)'}"))
     print(wrap(f"User's innocent request: \"{scenario['agent_task']}\"  (tool: {scenario['tool_name']})"))
 
     modes = ["baseline", "defended"] if args.mode == "both" else [args.mode]
@@ -161,7 +163,7 @@ async def main() -> None:
         print("\n" + paint(f"██████  {mode.upper()} RUN  ██████", "bold", "green" if mode == "defended" else "red"))
         rows[mode] = await run_scenario(
             scenario, make_llm_factory(args.llm), mode, args.max_steps, args.timeout,
-            on_event=make_printer(mode), output_tag="demo",
+            on_event=make_printer(mode), output_tag="demo", prompt_mode=args.prompt_mode,
         )
 
     if len(rows) == 2:
