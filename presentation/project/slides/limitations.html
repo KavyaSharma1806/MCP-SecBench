@@ -1,63 +1,37 @@
-<section id="limitations" data-transition="fade" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:100px 128px 70px;display:flex;flex-direction:column;gap:26px">
-<div>
-<p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#F87171;letter-spacing:3px;text-transform:uppercase;margin:0">Said plainly</p>
-<h2 style="font-size:50px;font-weight:700;margin:10px 0 0 0">What this does not solve</h2>
+<section id="limitations" data-transition="fade" style="background:#0C1017;color:#ECEFF4;font-family:'IBM Plex Sans', sans-serif;padding:200px 128px 128px;display:flex;flex-direction:column;gap:40px">
+<p id="eyebrow" style="position:absolute;left:128px;top:112px;width:1400px;font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#2DD4BF">05 · Journey and next steps</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1">What this does not solve</h2>
+<div style="flex:1;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:24px">
+<div style="background:#2A1A10;border:1px solid #6B3A16;border-radius:16px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;line-height:1.2;color:#FB923C">Prompt injection is not defended</p>
+<p style="font-size:24px;line-height:1.4;color:#C5CCD8">MSB puts it in the system prompt; the guard scans only tool descriptions. 0 actions in 50 defended runs.</p>
 </div>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr 1fr;gap:20px;flex:1">
-<div style="background:#1A1420;border:1px solid #3A2A3F;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:8px">
-<h3 style="font-size:21px;font-weight:600;margin:0;color:#F87171">Prompt injection: undefended</h3>
-<p style="font-size:16px;color:#C9A0A0;margin:0;line-height:1.45">MSB injects into the system prompt; the guard only scans tool descriptions. 0 interventions in 50 defended runs.</p>
+<div style="background:#2A1A10;border:1px solid #6B3A16;border-radius:16px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;line-height:1.2;color:#FB923C">Fixed patterns, tuned to MSB</p>
+<p style="font-size:24px;line-height:1.4;color:#C5CCD8">Rename llm_model_name or reword the fake error and it passes. A low ASR on MSB is not general MCP security.</p>
 </div>
-<div style="background:#141925;border:1px solid #232A3B;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:8px">
-<h3 style="font-size:21px;font-weight:600;margin:0">Near-miss tool names pass</h3>
-<p style="font-size:16px;color:#8B95A7;margin:0;line-height:1.45">Only exact duplicates are caught. execute_command_v1 sits beside execute_command unchallenged.</p>
+<div style="background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;line-height:1.2">Near-miss tool names pass</p>
+<p style="font-size:24px;line-height:1.4;color:#C5CCD8">Only exact duplicates are caught; execute_command_v1 sits beside execute_command.</p>
 </div>
-<div style="background:#141925;border:1px solid #232A3B;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:8px">
-<h3 style="font-size:21px;font-weight:600;margin:0">Fixed patterns, tuned to MSB</h3>
-<p style="font-size:16px;color:#8B95A7;margin:0;line-height:1.45">Reword the fake error or rename llm_model_name and it passes. Low ASR on MSB is not general MCP security.</p>
+<div style="background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;line-height:1.2">Usefulness not measured</p>
+<p style="font-size:24px;line-height:1.4;color:#C5CCD8">No PUA, NRP or false-positive rate yet: we can't say how often the guard blocks legitimate work.</p>
 </div>
-<div style="background:#141925;border:1px solid #232A3B;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:8px">
-<h3 style="font-size:21px;font-weight:600;margin:0">Retrieval injection</h3>
-<p style="font-size:16px;color:#8B95A7;margin:0;line-height:1.45">Unscored. Caught in 2 of 4 documents &mdash; and when caught, the whole document is withheld, legitimate content included.</p>
+<div style="background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;line-height:1.2">Retrieval injection unscored</p>
+<p style="font-size:24px;line-height:1.4;color:#C5CCD8">Caught in 2 of 4 documents, and then the whole document is withheld, real content included.</p>
 </div>
-<div style="background:#1A1420;border:1px solid #3A2A3F;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:8px">
-<h3 style="font-size:21px;font-weight:600;margin:0;color:#F87171">MSB-prompt zeros mean little</h3>
-<p style="font-size:16px;color:#C9A0A0;margin:0;line-height:1.45">Under MSB's exact prompt the 8B model made 0 real calls in 25 parameter-attack runs. The fix is a reported deviation.</p>
-</div>
-<div style="background:#141925;border:1px solid #232A3B;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:8px">
-<h3 style="font-size:21px;font-weight:600;margin:0">Reductions on one attack only</h3>
-<p style="font-size:16px;color:#8B95A7;margin:0;line-height:1.45">Every measured reduction is the parameter attack. MSB's judge counts junk values as "leaks."</p>
-</div>
-<div style="background:#141925;border:1px solid #232A3B;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:8px">
-<h3 style="font-size:21px;font-weight:600;margin:0">Utility not measured</h3>
-<p style="font-size:16px;color:#8B95A7;margin:0;line-height:1.45">No PUA / NRP yet, no false-positive rate. We can't say how often the guard breaks legitimate work.</p>
-</div>
-<div style="background:#141925;border:1px solid #232A3B;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:8px">
-<h3 style="font-size:21px;font-weight:600;margin:0">Not MSB's exact setup</h3>
-<p style="font-size:16px;color:#8B95A7;margin:0;line-height:1.45">8 agent steps vs MSB's 10; local quantized models; a native-prompt variant; kill_process depends on a broken registry.</p>
-</div>
-<div style="background:#141925;border:1px solid #232A3B;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:8px">
-<h3 style="font-size:21px;font-weight:600;margin:0">Monkey-patching</h3>
-<p style="font-size:16px;color:#8B95A7;margin:0;line-height:1.45">Attaches by replacing a LangChain method on one object. Effective here; breaks if those internals change.</p>
+<div style="background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;line-height:1.2">Not MSB's exact setup</p>
+<p style="font-size:24px;line-height:1.4;color:#C5CCD8">8 steps instead of 10, small local models, a native-prompt variant, and a broken kill_process dependency.</p>
 </div>
 </div>
-<aside>This slide exists on purpose. A security prototype that can't state its own limits isn't trustworthy, whatever its numbers say. Everything here is backed by evidence from our own runs or code.
+<aside>We want to be clear about the limits, because a security prototype that can't state its limits isn't trustworthy.
 
-Top left, in red: prompt injection is undefended. MSB inserts that attack into the system prompt itself, and our signature check only looks at tool description fields. Zero interventions across fifty defended runs.
+Prompt injection isn't defended at all: MSB puts it in the system prompt, and our guard only scans tool descriptions. Zero interventions in fifty defended runs.
 
-Next: near-miss tool names. The check catches exact duplicates only, and MSB's real name-collision attacks use names like execute_command_v1.
+Every check is a fixed pattern tuned to MSB's attack text. Rename llm_model_name to model_id, or reword the fake error, and the guard won't notice. So a low score on MSB is not general MCP security.
 
-Third, and the most fundamental: every check is a fixed pattern or a fixed field name, written with knowledge of MSB's attack text. Reword the fake error message, or rename llm_model_name to model_id, and the guard won't notice. That's why low attack success on MSB must not be read as general MCP security.
-
-Retrieval injection: not scored, because we have no valid judge. The guard catches it in two of MSB's four documents. And when it does catch one, it withholds the whole document, so the agent loses the legitimate content too, for example the museum's real opening hours. That's a utility cost.
-
-Middle, in red: under MSB's exact prompt, many of our zeros mean little. The eight-billion model made zero real tool calls in twenty-five parameter-attack runs. Our fix, the native-prompt setting, is itself a deviation from MSB, which is why we always report both side by side.
-
-Next: every reduction we measured is on one attack type, the out-of-scope parameter attack, where the eight-billion model went from one hundred percent to zero and the three-billion model from twenty-four or thirty-six percent to zero. On the other attacks there was no baseline success to reduce. And remember what MSB's judge counts as a leak: any non-empty value, including junk like None and Assistant.
-
-Utility: we haven't implemented MSB's task-completion metrics in our runner, and we haven't measured false positives, so we can't say how often the guard gets in the way of legitimate work.
-
-Setup: our agent gets eight steps where MSB's gets ten; we use local, quantized models rather than MSB's hosted APIs; our second setting changes MSB's prompt; and the kill-process goal depends on a third-party registry that is currently broken.
-
-And finally portability: the guard attaches by replacing one LangChain method on one object. That's what lets it leave MSB untouched, but it also means a change in those library internals could break it.</aside>
+Near-miss tool names pass. We haven't measured usefulness or false positives, so we can't say how often the guard gets in the way of legitimate work. Retrieval injection is unscored and only partly caught, and when it is caught, the whole document is withheld. And our setup differs from MSB's: eight steps instead of ten, small local models, the native-prompt variant, and a third-party dependency for the kill-process goal that is currently broken.</aside>
 </section>

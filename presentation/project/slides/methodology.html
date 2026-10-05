@@ -1,49 +1,42 @@
-<section id="methodology" data-transition="fade" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:128px 128px 96px;display:flex;flex-direction:column">
-<p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#60A5FA;letter-spacing:3px;text-transform:uppercase;margin:0">Evaluation</p>
-<h2 style="font-size:56px;font-weight:700;margin:10px 0 0 0">Same attack, two conditions</h2>
-<div style="position:absolute;left:860px;top:150px;width:200px;height:100px;background:#1A1420;border:2px solid #F87171;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
-<x-icon name="Warning" style="color:#F87171;width:26px;height:26px"></x-icon>
-<p style="font-size:19px;font-weight:700;margin:0;color:#F87171">MSB Attack</p>
+<section id="methodology" data-transition="fade" style="background:#0C1017;color:#ECEFF4;font-family:'IBM Plex Sans', sans-serif;padding:200px 128px 128px;display:flex;flex-direction:column;gap:40px">
+<p id="eyebrow" style="position:absolute;left:128px;top:112px;width:1400px;font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#2DD4BF">04 · Results</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1">How we ran the experiments</h2>
+<div style="position:absolute;left:344px;top:330px;width:400px;height:90px;background:#2A1A10;border:1px solid #FB923C;border-radius:14px;display:flex;align-items:center;justify-content:center">
+<p style="font-size:28px;font-weight:700;color:#FB923C">MSB attack scenario</p>
 </div>
-<div style="position:absolute;left:280px;top:370px;width:460px;height:130px;background:#141925;border:1px solid #232A3B;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
-<p style="font-size:26px;font-weight:700;margin:0">Baseline Agent</p>
-<p style="font-size:17px;color:#8B95A7;margin:0;font-family:'JetBrains Mono',monospace">no defensive proxy</p>
+<x-connector x1="544" y1="420" x2="544" y2="460" head="none" style="color:#3A4560;border-width:3px"></x-connector>
+<x-connector x1="318" y1="460" x2="770" y2="460" head="none" style="color:#3A4560;border-width:3px"></x-connector>
+<x-connector x1="318" y1="460" x2="318" y2="500" head="end" style="color:#3A4560;border-width:3px"></x-connector>
+<x-connector x1="770" y1="460" x2="770" y2="500" head="end" style="color:#3A4560;border-width:3px"></x-connector>
+<div data-build-in="fade 1 auto" style="position:absolute;left:128px;top:500px;width:380px;height:110px;background:#161F2D;border:1px solid #26324A;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
+<p style="font-size:28px;font-weight:700">Baseline agent</p>
+<p style="font-size:24px;color:#A0AABB">no guard</p>
 </div>
-<div style="position:absolute;left:1180px;top:370px;width:460px;height:130px;background:#17201B;border:2px solid #34D399;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
-<x-icon name="Lock" style="color:#34D399;width:24px;height:24px"></x-icon>
-<p style="font-size:26px;font-weight:700;margin:0;color:#34D399">Defended Agent</p>
-<p style="font-size:17px;color:#8B95A7;margin:0;font-family:'JetBrains Mono',monospace">mcp_guard attached</p>
+<div data-build-in="fade 1 auto" style="position:absolute;left:580px;top:500px;width:380px;height:110px;background:#0F2A27;border:2px solid #2DD4BF;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
+<p style="font-size:28px;font-weight:700;color:#2DD4BF">Defended agent</p>
+<p style="font-size:24px;color:#A0AABB">mcp_guard attached</p>
 </div>
-<div style="position:absolute;left:280px;top:590px;width:460px;height:90px;background:#0D1117;border:1px solid #2A303E;border-radius:12px;display:flex;align-items:center;justify-content:center">
-<p style="font-size:20px;color:#8B95A7;margin:0">Result recorded</p>
+<x-connector data-build-in="fade 2 auto" x1="318" y1="610" x2="318" y2="665" head="none" style="color:#3A4560;border-width:3px"></x-connector>
+<x-connector data-build-in="fade 2 auto" x1="770" y1="610" x2="770" y2="665" head="none" style="color:#3A4560;border-width:3px"></x-connector>
+<x-connector data-build-in="fade 2 auto" x1="318" y1="665" x2="770" y2="665" head="none" style="color:#3A4560;border-width:3px"></x-connector>
+<x-connector data-build-in="fade 2 auto" x1="544" y1="665" x2="544" y2="720" head="end" style="color:#3A4560;border-width:3px"></x-connector>
+<div data-build-in="fade 2 auto" style="position:absolute;left:344px;top:720px;width:400px;height:90px;background:#161F2D;border:1px solid #26324A;border-radius:14px;display:flex;align-items:center;justify-content:center">
+<p style="font-size:28px;font-weight:700">Judge, then compare ASR</p>
 </div>
-<div style="position:absolute;left:1180px;top:590px;width:460px;height:90px;background:#0D1117;border:1px solid #2A303E;border-radius:12px;display:flex;align-items:center;justify-content:center">
-<p style="font-size:20px;color:#8B95A7;margin:0">Result recorded</p>
+<p style="position:absolute;left:128px;top:840px;width:832px;font-size:24px;line-height:1.4;color:#A0AABB">Held identical: attack, task, model, tools, environment. Only the guard differs.</p>
+<div style="position:absolute;left:1040px;top:330px;width:752px">
+<table style="width:752px;font-family:'IBM Plex Sans', sans-serif;font-size:24px;color:#ECEFF4">
+<tr style="background:#161F2D"><th style="width:30%;text-align:left;padding:12px 20px">Setting</th><th style="width:70%;text-align:left;padding:12px 20px">Value</th></tr>
+<tr><td style="padding:12px 20px;color:#A0AABB">Models</td><td style="padding:12px 20px">llama3.2:3b, llama3.1:8b (Ollama)</td></tr>
+<tr style="background:#121A26"><td style="padding:12px 20px;color:#A0AABB">Attacks</td><td style="padding:12px 20px">Out-of-scope parameter, false error, prompt injection</td></tr>
+<tr><td style="padding:12px 20px;color:#A0AABB">Tools</td><td style="padding:12px 20px">DuckDuckGo Search, Terminal Controller</td></tr>
+<tr style="background:#121A26"><td style="padding:12px 20px;color:#A0AABB">Runs</td><td style="padding:12px 20px">25 per model × attack × mode, all 5 goals</td></tr>
+<tr><td style="padding:12px 20px;color:#A0AABB">Prompts</td><td style="padding:12px 20px">MSB's exact prompt, plus native tool-call</td></tr>
+<tr style="background:#121A26"><td style="padding:12px 20px;color:#A0AABB">Agent steps</td><td style="padding:12px 20px">8 per run (MSB uses 10)</td></tr>
+<tr><td style="padding:12px 20px;color:#A0AABB">Hardware</td><td style="padding:12px 20px">One laptop, RTX 3050 (4 GB)</td></tr>
+</table>
 </div>
-<div style="position:absolute;left:760px;top:770px;width:400px;height:100px;background:#141925;border:1px solid #60A5FA;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
-<x-icon name="Chart" style="color:#60A5FA;width:26px;height:26px"></x-icon>
-<p style="font-size:24px;font-weight:700;margin:0;color:#60A5FA">Compare ASR</p>
-</div>
-<x-connector x1="920" y1="250" x2="510" y2="370" head="end" route="hv" style="color:#3A4254;border-width:3px"></x-connector>
-<x-connector x1="1000" y1="250" x2="1410" y2="370" head="end" route="hv" style="color:#3A4254;border-width:3px"></x-connector>
-<x-connector x1="510" y1="500" x2="510" y2="590" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
-<x-connector x1="1410" y1="500" x2="1410" y2="590" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
-<x-connector x1="510" y1="680" x2="860" y2="770" head="end" route="hv" style="color:#3A4254;border-width:3px"></x-connector>
-<x-connector x1="1410" y1="680" x2="1060" y2="770" head="end" route="hv" style="color:#3A4254;border-width:3px"></x-connector>
-<div style="position:absolute;right:128px;top:200px;width:380px;display:flex;flex-direction:column;gap:12px">
-<p style="font-size:20px;font-weight:600;color:#E8EAED;margin:0;font-family:'JetBrains Mono',monospace">Held identical:</p>
-<p style="font-size:19px;color:#8B95A7;margin:0;line-height:1.6">attack &middot; task &middot; model &middot; tool &middot; parameters &middot; environment</p>
-<p style="font-size:19px;color:#34D399;margin:8px 0 0 0;font-weight:600">Only the defensive layer differs.</p>
-</div>
-<aside>How do we know whether the guard helps? With the oldest idea in experimental science: a controlled comparison.
+<aside>The design is a controlled comparison. Each MSB scenario runs twice: once with a plain agent, and once with our guard attached. Everything else is held identical: the attack, the task, the model, the tools and the environment. So any difference in the outcome comes from the guard.
 
-At the top is one MSB attack scenario: a specific attack type, a specific innocent task, a specific attack goal. We run it twice.
-
-On the left, the baseline agent: MSB exactly as published, no guard. On the right, the defended agent: the identical scenario, with our guard attached. Each run produces a result, the judge decides whether the attack succeeded, and at the bottom we compare the two attack success rates.
-
-The list on the right is the heart of it. Held identical: the attack, the task, the model, the tool, the parameters, and the environment. Only the defensive layer differs. If we changed anything else at the same time, say a different model or a different task, and the numbers changed, we couldn't tell whether the guard caused it.
-
-In practice this is three commands. cli_runner.py with mode baseline runs the grid without the guard. Mode defended runs the same grid with it. Mode compare reads both result files and produces the table you'll see in a moment, with attack success rates, mitigation rate, and guard interventions.
-
-One caveat worth saying out loud: language models are not fully deterministic. Run the same scenario twice and the model may behave slightly differently even with no guard at all. That's one reason we run many scenarios and report rates rather than trusting any single run.</aside>
+On the right is the setup. Two local models through Ollama. Three attack types, one from each surface we defend. Two tools. Twenty-five scenarios per model, attack and mode, covering all five attack goals. MSB's exact prompt, plus our native variant, which I'll explain in a moment. Our agent gets eight steps where MSB allows ten. And all of it ran on one laptop GPU.</aside>
 </section>

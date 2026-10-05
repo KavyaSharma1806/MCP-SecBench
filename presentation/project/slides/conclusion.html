@@ -1,38 +1,31 @@
-<section id="conclusion" data-transition="fade" style="background:linear-gradient(160deg,#0B0E14 0%,#0D1420 60%,#0B0E14 100%);color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:110px 128px 80px;display:flex;flex-direction:column;gap:30px">
-<div>
-<p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#34D399;letter-spacing:3px;text-transform:uppercase;margin:0">Conclusion</p>
-<h2 style="font-size:52px;font-weight:700;margin:10px 0 0 0">What this project actually shows</h2>
+<section id="conclusion" data-transition="fade" style="background:#0C1017;color:#ECEFF4;font-family:'IBM Plex Sans', sans-serif;padding:200px 128px 128px;display:flex;flex-direction:column;gap:32px">
+<p id="eyebrow" style="position:absolute;left:128px;top:112px;width:1400px;font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#2DD4BF">Conclusion</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1">What this project shows</h2>
+<div style="background:#0F2A27;border:1px solid #1F5E55;border-radius:20px;padding:36px">
+<p style="font-size:28px;line-height:1.4">MCP-SecBench is a <b style="color:#2DD4BF">prototype middleware defense against selected MCP attack classes</b>, integrated with MSB so undefended and defended agents can be compared under identical conditions.</p>
 </div>
-<div style="background:#141925;border:1px solid #232A3B;border-left:5px solid #34D399;border-radius:4px 16px 16px 4px;padding:32px 42px">
-<p style="font-size:25px;color:#E8EAED;line-height:1.55;margin:0">MCP-SecBench is a <b style="color:#34D399">prototype middleware defense against selected MCP attack classes</b>, integrated with the MSB benchmark so that undefended and defended agents can be compared under identical conditions.</p>
+<div style="flex:1;display:flex;gap:24px">
+<div style="flex:1;background:#161F2D;border:1px solid #26324A;border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<x-icon name="CheckCircle" style="color:#2DD4BF;width:40px;height:40px"></x-icon>
+<p style="font-size:28px;font-weight:700">We showed</p>
+<p style="font-size:24px;line-height:1.4;color:#C5CCD8">A guard attaches to MSB's agent without changing MSB. Parameter leaks fell to 0%: from 100% (8B) and 36% (3B).</p>
 </div>
-<div style="display:flex;gap:32px;flex:1">
-<div style="flex:1;background:#17201B;border:1px solid #2A4A36;border-radius:16px;padding:30px;display:flex;flex-direction:column;gap:14px">
-<x-icon name="CheckCircle" style="color:#34D399;width:30px;height:30px"></x-icon>
-<h3 style="font-size:24px;font-weight:600;margin:0">We showed</h3>
-<p style="font-size:19px;color:#BFD8D5;line-height:1.5;margin:0">A proxy can be attached to MSB's agent without changing MSB. All 12 attack types execute. On the parameter attack, leaks fell to 0% on both models &mdash; from 100% on the 8B model &mdash; with every attempt blocked by the guard.</p>
+<div style="flex:1;background:#161F2D;border:1px solid #26324A;border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<x-icon name="Warning" style="color:#FB923C;width:40px;height:40px"></x-icon>
+<p style="font-size:28px;font-weight:700">We did not show</p>
+<p style="font-size:24px;line-height:1.4;color:#C5CCD8">General MCP security, defense against reworded or unseen attacks, or protection from MSB's prompt injection.</p>
 </div>
-<div style="flex:1;background:#1A1420;border:1px solid #3A2A3F;border-radius:16px;padding:30px;display:flex;flex-direction:column;gap:14px">
-<x-icon name="Warning" style="color:#F87171;width:30px;height:30px"></x-icon>
-<h3 style="font-size:24px;font-weight:600;margin:0">We did not show</h3>
-<p style="font-size:19px;color:#D9B8B8;line-height:1.5;margin:0">General MCP security, defense against reworded or unseen attacks, protection from MSB's prompt injection, or anything about the cost to legitimate tasks.</p>
-</div>
-<div style="flex:1;background:#141925;border:1px solid #232A3B;border-radius:16px;padding:30px;display:flex;flex-direction:column;gap:14px">
-<x-icon name="Search" style="color:#FBBF24;width:30px;height:30px"></x-icon>
-<h3 style="font-size:24px;font-weight:600;margin:0">We learned</h3>
-<p style="font-size:19px;color:#C8C2A8;line-height:1.5;margin:0">Check that the agent really used its tools, and that your judge measures what the attack does. Both mistakes were in our first draft &mdash; and fixing them turned "0%" into "100% &rarr; 0%."</p>
+<div style="flex:1;background:#161F2D;border:1px solid #26324A;border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<x-icon name="Lightbulb" style="color:#2DD4BF;width:40px;height:40px"></x-icon>
+<p style="font-size:28px;font-weight:700">We learned</p>
+<p style="font-size:24px;line-height:1.4;color:#C5CCD8">Check that the agent really ran its tools, and that the judge measures what the attack does.</p>
 </div>
 </div>
-<p style="font-size:22px;color:#8B95A7;text-align:center;margin:0">github.com/KavyaSharma1806/MCP-SecBench</p>
-<aside>Let's close by being precise about what this project actually shows.
+<aside>To close, here is our claim, worded carefully. MCP-SecBench is a prototype middleware defense against selected MCP attack classes, integrated with MSB so that undefended and defended agents can be compared under identical conditions.
 
-The box at the top is the claim, and I've chosen the words carefully: MCP-SecBench is a prototype middleware defense against selected MCP attack classes, integrated with the MSB benchmark so undefended and defended agents can be compared under identical conditions. Not "a solution to MCP security." Not "detects prompt injection." A prototype, against selected classes, measured under controlled conditions.
+We showed that a guard can attach to MSB's agent without changing MSB, and that on the parameter attack it drove leaks to zero on both models: from one hundred percent on the 8B and thirty-six percent on the 3B.
 
-What we showed. First, that a defensive layer can be attached to MSB's agent from the outside, without editing MSB, which is what makes the comparison trustworthy. Second, that all twelve of MSB's attack types execute in this setup. Third, a measured effect on the out-of-scope parameter attack, on both models. With the native prompt, the eight-billion model leaked in all twenty-five undefended scenarios and in none of the twenty-five defended ones; the three-billion model went from twenty-four or thirty-six percent, depending on the prompt setting, to zero. In every defended scenario where a model attempted the leak, the guard was the reason it failed.
+We did not show general MCP security. We didn't show it holds up against reworded or unseen attacks, and it doesn't protect against MSB's prompt injection.
 
-What we did not show. We didn't show general MCP security. We didn't show the guard holds up against attacks that are reworded or that it has never seen, and given that it matches fixed patterns, we expect it often wouldn't. It doesn't protect against MSB's prompt injection at all. And we haven't measured what it costs legitimate tasks.
-
-And the third card is the lesson I'd most like you to take away, because it applies to any security evaluation, not just this one. Two mistakes in our first draft nearly led us to the wrong conclusions. One: we didn't check whether the agent was actually executing tools, so we read "zero percent" as "resisted" when often the attack never arrived. Two: our judge for parameter attacks was looking for a file that attack never creates, which hid the effect entirely. Fixing both turned a meaningless "zero percent" for the larger model into "one hundred percent, down to zero." Verifying the measurement is as important as building the defense.
-
-Thank you. The code, the results, and this analysis are all in the repository.</aside>
+And the lesson we'd most like you to take away applies to any security evaluation: verify the measurement. Check that the agent actually ran its tools, and that your judge measures what the attack really does. Both mistakes were in our first draft, and fixing them is what turned a meaningless zero into one hundred percent down to zero.</aside>
 </section>

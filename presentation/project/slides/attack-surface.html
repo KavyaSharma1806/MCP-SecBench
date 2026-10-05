@@ -1,48 +1,57 @@
-<section id="attack-surface" data-transition="fade" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:128px;display:flex;flex-direction:column;gap:12px">
-<p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#F87171;letter-spacing:3px;text-transform:uppercase;margin:0">The attack surface</p>
-<h2 style="font-size:60px;font-weight:700;margin:12px 0 0 0">Four entry points, one pipeline</h2>
-<div id="pbox-user" style="position:absolute;left:128px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
-<x-icon name="Users" style="color:#60A5FA;width:36px;height:36px"></x-icon>
-<p style="font-size:26px;font-weight:600;margin:0">User</p>
+<section id="attack-surface" data-transition="fade" style="background:#0C1017;color:#ECEFF4;font-family:'IBM Plex Sans', sans-serif;padding:200px 128px 128px;display:flex;flex-direction:column;gap:40px">
+<p id="eyebrow" style="position:absolute;left:128px;top:112px;width:1400px;font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#2DD4BF">01 · How MCP agents work</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1">Four places an attacker gets in</h2>
+<div id="pbox-user" style="position:absolute;left:128px;top:340px;width:260px;height:150px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+<x-icon name="Users" style="color:#A0AABB;width:40px;height:40px"></x-icon>
+<p style="font-size:28px;font-weight:600;text-align:center">User</p>
 </div>
-<div id="pbox-agent" style="position:absolute;left:479px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
-<x-icon name="Code" style="color:#60A5FA;width:36px;height:36px"></x-icon>
-<p style="font-size:26px;font-weight:600;margin:0">LLM Agent</p>
+<div id="pbox-agent" style="position:absolute;left:468px;top:340px;width:260px;height:150px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+<x-icon name="Lightbulb" style="color:#A0AABB;width:40px;height:40px"></x-icon>
+<p style="font-size:28px;font-weight:600;text-align:center">LLM agent</p>
 </div>
-<div id="pbox-client" style="position:absolute;left:830px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
-<x-icon name="Link" style="color:#60A5FA;width:36px;height:36px"></x-icon>
-<p style="font-size:26px;font-weight:600;margin:0">MCP Client</p>
+<div id="pbox-client" style="position:absolute;left:808px;top:340px;width:260px;height:150px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+<x-icon name="Link" style="color:#A0AABB;width:40px;height:40px"></x-icon>
+<p style="font-size:28px;font-weight:600;text-align:center">MCP client</p>
 </div>
-<div id="pbox-server" style="position:absolute;left:1181px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
-<x-icon name="Database" style="color:#60A5FA;width:36px;height:36px"></x-icon>
-<p style="font-size:26px;font-weight:600;margin:0">MCP Server</p>
+<div id="pbox-server" style="position:absolute;left:1148px;top:340px;width:260px;height:150px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+<x-icon name="Database" style="color:#A0AABB;width:40px;height:40px"></x-icon>
+<p style="font-size:28px;font-weight:600;text-align:center">MCP server</p>
 </div>
-<div id="pbox-tools" style="position:absolute;left:1532px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
-<x-icon name="Wrench" style="color:#60A5FA;width:36px;height:36px"></x-icon>
-<p style="font-size:26px;font-weight:600;margin:0">Tools</p>
+<div id="pbox-tools" style="position:absolute;left:1488px;top:340px;width:260px;height:150px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+<x-icon name="Wrench" style="color:#A0AABB;width:40px;height:40px"></x-icon>
+<p style="font-size:28px;font-weight:600;text-align:center">Tool</p>
 </div>
-<x-connector x1="388" y1="530" x2="479" y2="530" head="end" route="straight" style="color:#2A303E;border-width:3px"></x-connector>
-<x-connector x1="739" y1="530" x2="830" y2="530" head="end" route="straight" style="color:#2A303E;border-width:3px"></x-connector>
-<x-connector x1="1090" y1="530" x2="1181" y2="530" head="end" route="straight" style="color:#2A303E;border-width:3px"></x-connector>
-<x-connector x1="1441" y1="530" x2="1532" y2="530" head="end" route="straight" style="color:#2A303E;border-width:3px"></x-connector>
-<x-shape kind="arrow-up" data-build-in="rise 1" style="position:absolute;left:589px;top:630px;width:40px;height:55px;background:#F87171"></x-shape>
-<p data-build-in="rise 1" style="position:absolute;left:479px;top:695px;width:260px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:600;color:#F87171;margin:0">Tool Signature</p>
-<x-shape kind="arrow-up" data-build-in="rise 2" style="position:absolute;left:940px;top:630px;width:40px;height:55px;background:#F87171"></x-shape>
-<p data-build-in="rise 2" style="position:absolute;left:830px;top:695px;width:260px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:600;color:#F87171;margin:0">Tool Parameter</p>
-<x-shape kind="arrow-up" data-build-in="rise 3" style="position:absolute;left:1291px;top:630px;width:40px;height:55px;background:#F87171"></x-shape>
-<p data-build-in="rise 3" style="position:absolute;left:1181px;top:695px;width:260px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:600;color:#F87171;margin:0">Tool Response</p>
-<x-shape kind="arrow-up" data-build-in="rise 4" style="position:absolute;left:1642px;top:630px;width:40px;height:55px;background:#F87171"></x-shape>
-<p data-build-in="rise 4" style="position:absolute;left:1532px;top:695px;width:260px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:600;color:#F87171;margin:0">Retrieval Injection</p>
-<p style="position:absolute;left:128px;bottom:64px;font-size:22px;color:#8B95A7;font-family:'JetBrains Mono',monospace;margin:0">A malicious name, a smuggled parameter, a faked response, a poisoned document</p>
-<aside>Same pipeline, but now with the four attack surfaces that MSB defines, each placed at the stage it corrupts.
+<x-connector x1="388" y1="415" x2="468" y2="415" head="end" style="color:#3A4560;border-width:3px"></x-connector>
+<x-connector x1="728" y1="415" x2="808" y2="415" head="end" style="color:#3A4560;border-width:3px"></x-connector>
+<x-connector x1="1068" y1="415" x2="1148" y2="415" head="end" style="color:#3A4560;border-width:3px"></x-connector>
+<x-connector x1="1408" y1="415" x2="1488" y2="415" head="end" style="color:#3A4560;border-width:3px"></x-connector>
+<div style="position:absolute;left:128px;top:600px;width:260px;height:300px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;line-height:1.2">The user</p>
+<p style="font-size:24px;line-height:1.4;color:#A0AABB">is innocent in every MSB scenario</p>
+</div>
+<x-shape kind="arrow-up" data-build-in="rise 1 auto" style="position:absolute;left:582px;top:516px;width:32px;height:64px;background:#FB923C"></x-shape>
+<div data-build-in="rise 1 auto" style="position:absolute;left:468px;top:600px;width:260px;height:300px;background:#2A1A10;border:1px solid #6B3A16;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;line-height:1.2;color:#FB923C">Tool signature</p>
+<p style="font-size:24px;line-height:1.4">Lookalike names or hidden instructions in descriptions</p>
+</div>
+<x-shape kind="arrow-up" data-build-in="rise 2 auto" style="position:absolute;left:922px;top:516px;width:32px;height:64px;background:#FB923C"></x-shape>
+<div data-build-in="rise 2 auto" style="position:absolute;left:808px;top:600px;width:260px;height:300px;background:#2A1A10;border:1px solid #6B3A16;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;line-height:1.2;color:#FB923C">Tool parameter</p>
+<p style="font-size:24px;line-height:1.4">A field the tool has no reason to ask for</p>
+</div>
+<x-shape kind="arrow-up" data-build-in="rise 3 auto" style="position:absolute;left:1262px;top:516px;width:32px;height:64px;background:#FB923C"></x-shape>
+<div data-build-in="rise 3 auto" style="position:absolute;left:1148px;top:600px;width:260px;height:300px;background:#2A1A10;border:1px solid #6B3A16;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;line-height:1.2;color:#FB923C">Tool response</p>
+<p style="font-size:24px;line-height:1.4">A fake error or fake user message replaces the reply</p>
+</div>
+<x-shape kind="arrow-up" data-build-in="rise 4 auto" style="position:absolute;left:1602px;top:516px;width:32px;height:64px;background:#FB923C"></x-shape>
+<div data-build-in="rise 4 auto" style="position:absolute;left:1488px;top:600px;width:260px;height:300px;background:#2A1A10;border:1px solid #6B3A16;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;line-height:1.2;color:#FB923C">Retrieval injection</p>
+<p style="font-size:24px;line-height:1.4">Orders hidden inside a document the agent reads</p>
+</div>
+<aside>MSB groups its attacks into four surfaces, each hitting a different hop of that pipeline.
 
-First arrow, tool signature. The signature is everything the agent is told about a tool before calling it: its name and its description. An attacker can register a fake tool whose name is confusingly close to a real one, or write a description that contains hidden instructions. This hits the agent at the moment it is deciding what to do.
+Tool signature: a lookalike tool name, or instructions hidden inside a tool's description. Tool parameter: a tool whose inputs ask for something it has no business knowing, like the name of the model calling it. Tool response: the real reply is thrown away and replaced with a fake error, or a fake message pretending to come from the user. And retrieval injection: instructions hidden inside a document the agent was asked to read.
 
-Second, tool parameter. Here the malicious tool's input schema asks for something it shouldn't, like the name of the model calling it. This hits the call itself, as it's being constructed and sent through the client.
-
-Third, tool response. Whatever the real tool would have returned is replaced with attacker-written text, a fake error or a fake message from the user. This hits the reply on its way back from the server.
-
-Fourth, retrieval injection. The agent is asked to read a document, and the document itself contains instructions disguised as normal content. This hits at the tools stage, because the poison is in the data the tool fetched.
-
-Notice the pattern: none of these attacks touch the model's weights or hack the computer. They all work by placing text where the agent will read it and trust it. That's also why a defense can sit in the pipeline: if attacks travel as text through these hops, a checkpoint on those hops can inspect them.</aside>
+Notice the card on the left. The user is innocent in every scenario. These attacks hijack completely honest requests.</aside>
 </section>

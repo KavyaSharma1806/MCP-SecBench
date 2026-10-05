@@ -3,13 +3,14 @@
   "createdOnFiles": {"v": 1, "at": "2026-10-05T12:00:00Z"},
   "lists": "css",
   "title": "MCP-SecBench",
-  "order": ["cover", "motivation", "mcp-basics", "architecture", "attack-surface", "attack-examples", "msb", "msb-pipeline", "attack-goals", "metrics", "delta-overview", "where-guard", "project", "guard-architecture", "guard-in-action", "hooks", "methodology", "backend-run", "results", "validity", "live-demo", "coverage", "limitations", "future-work", "conclusion"],
+  "order": ["cover", "agenda", "problem", "div-1", "tool-anatomy", "mcp-pipeline", "attack-surface", "attack-examples", "div-2", "msb", "msb-pipeline", "judge", "metrics", "div-3", "where-guard", "guard-architecture", "guard-flow", "guard-in-action", "toolkit", "live-demo", "div-4", "methodology", "headline", "results", "validity", "coverage", "div-5", "journey", "limitations", "delta-done-1", "delta-done-2", "delta-future", "conclusion", "thanks"],
   "sections": {
-    "intro": {"description": "The security problem: what tools are and where attacks get in", "start": "cover"},
-    "benchmark": {"description": "How MSB benchmarks attacks: scenarios, goals, judges, metrics", "start": "msb"},
-    "delta": {"description": "Our delta: what exists here and not in MSB, and how the guard works", "start": "delta-overview"},
-    "evaluation": {"description": "Methodology, a backend walkthrough, and the measured results", "start": "methodology"},
-    "close": {"description": "Coverage, limitations, roadmap, and conclusion", "start": "coverage"}
+    "intro": {"description": "Why tool-using AI agents need protection", "start": "cover"},
+    "background": {"description": "How MCP agents work and where attacks get in", "start": "div-1"},
+    "benchmark": {"description": "How MSB measures attacks: scenarios, judges and metrics", "start": "div-2"},
+    "system": {"description": "What we built: mcp_guard and the toolkit around it", "start": "div-3"},
+    "results": {"description": "Experiments, measured results, validity and coverage", "start": "div-4"},
+    "close": {"description": "Journey, limitations, the delta so far and the proposed delta", "start": "div-5"}
   },
   "faces": {
     "ibm-plex-sans": {"family": "IBM Plex Sans", "href": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"},

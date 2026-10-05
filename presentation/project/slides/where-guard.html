@@ -1,44 +1,55 @@
-<section id="where-guard" data-transition="magic" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:128px;display:flex;flex-direction:column;gap:12px">
-<p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#34D399;letter-spacing:3px;text-transform:uppercase;margin:0">Back to the pipeline</p>
-<h2 style="font-size:60px;font-weight:700;margin:12px 0 0 0">Where should a defense go?</h2>
-<p style="font-size:26px;color:#8B95A7;margin:8px 0 0 0;max-width:1400px">Every attack is text crossing a hop. One hop sees all four kinds of traffic.</p>
-<div id="pbox-user" style="position:absolute;left:128px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
-<x-icon name="Users" style="color:#60A5FA;width:34px;height:34px"></x-icon>
-<p style="font-size:24px;font-weight:600;margin:0">User</p>
+<section id="where-guard" data-transition="magic" style="background:#0C1017;color:#ECEFF4;font-family:'IBM Plex Sans', sans-serif;padding:200px 128px 128px;display:flex;flex-direction:column;gap:40px">
+<p id="eyebrow" style="position:absolute;left:128px;top:112px;width:1400px;font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#2DD4BF">03 · What we built</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1">The guard sits between the agent and its tools</h2>
+<div id="pbox-user" style="position:absolute;left:128px;top:380px;width:220px;height:150px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+<x-icon name="Users" style="color:#A0AABB;width:36px;height:36px"></x-icon>
+<p style="font-size:28px;font-weight:600;text-align:center">User</p>
 </div>
-<div id="pbox-agent" style="position:absolute;left:479px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
-<x-icon name="Code" style="color:#60A5FA;width:34px;height:34px"></x-icon>
-<p style="font-size:24px;font-weight:600;margin:0">LLM Agent</p>
+<div id="pbox-agent" style="position:absolute;left:398px;top:380px;width:220px;height:150px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+<x-icon name="Lightbulb" style="color:#A0AABB;width:36px;height:36px"></x-icon>
+<p style="font-size:28px;font-weight:600;text-align:center">LLM agent</p>
 </div>
-<div id="pbox-client" style="position:absolute;left:830px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
-<x-icon name="Link" style="color:#60A5FA;width:34px;height:34px"></x-icon>
-<p style="font-size:24px;font-weight:600;margin:0">MCP Client</p>
+<div id="pbox-guard" style="position:absolute;left:668px;top:380px;width:314px;height:150px;background:#0F2A27;border:2px solid #2DD4BF;border-radius:16px;box-shadow:0 0 48px rgba(45,212,191,0.3);padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+<x-icon name="Lock" style="color:#2DD4BF;width:36px;height:36px"></x-icon>
+<p style="font-family:'JetBrains Mono', monospace;font-size:28px;font-weight:700;color:#2DD4BF;text-align:center">mcp_guard</p>
+<p style="font-size:24px;color:#A0AABB;text-align:center">our proxy</p>
 </div>
-<div id="pbox-server" style="position:absolute;left:1181px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
-<x-icon name="Database" style="color:#60A5FA;width:34px;height:34px"></x-icon>
-<p style="font-size:24px;font-weight:600;margin:0">MCP Server</p>
+<div id="pbox-client" style="position:absolute;left:1032px;top:380px;width:220px;height:150px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+<x-icon name="Link" style="color:#A0AABB;width:36px;height:36px"></x-icon>
+<p style="font-size:28px;font-weight:600;text-align:center">MCP client</p>
 </div>
-<div id="pbox-tools" style="position:absolute;left:1532px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
-<x-icon name="Wrench" style="color:#60A5FA;width:34px;height:34px"></x-icon>
-<p style="font-size:24px;font-weight:600;margin:0">Tools</p>
+<div id="pbox-server" style="position:absolute;left:1302px;top:380px;width:220px;height:150px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+<x-icon name="Database" style="color:#A0AABB;width:36px;height:36px"></x-icon>
+<p style="font-size:28px;font-weight:600;text-align:center">MCP server</p>
 </div>
-<x-connector x1="388" y1="530" x2="479" y2="530" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
-<x-connector x1="739" y1="530" x2="830" y2="530" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
-<x-connector x1="1090" y1="530" x2="1181" y2="530" head="end" route="straight" style="color:#34D399;border-width:4px"></x-connector>
-<x-connector x1="1441" y1="530" x2="1532" y2="530" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
-<p data-build-in="pop" style="position:absolute;left:1035px;top:372px;width:200px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:52px;font-weight:700;color:#34D399;margin:0">?</p>
-<div data-build-in="rise 2" style="position:absolute;left:830px;top:660px;width:611px;background:#17201B;border:1px solid #2A4A36;border-radius:12px;padding:18px 22px">
-<p style="font-size:19px;color:#BFD8D5;line-height:1.5;margin:0">Outbound: tool calls and their parameters.<br/>Inbound: tool descriptions, replies, retrieved documents.</p>
+<div id="pbox-tools" style="position:absolute;left:1572px;top:380px;width:220px;height:150px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+<x-icon name="Wrench" style="color:#A0AABB;width:36px;height:36px"></x-icon>
+<p style="font-size:28px;font-weight:600;text-align:center">Tool</p>
 </div>
-<aside>Before we look inside our guard, let's reason about where a defense should live, because the answer follows directly from everything we've learned so far.
+<x-connector x1="348" y1="455" x2="398" y2="455" head="end" style="color:#3A4560;border-width:3px"></x-connector>
+<x-connector x1="618" y1="455" x2="668" y2="455" head="end" style="color:#2DD4BF;border-width:3px"></x-connector>
+<x-connector x1="982" y1="455" x2="1032" y2="455" head="end" style="color:#2DD4BF;border-width:3px"></x-connector>
+<x-connector x1="1252" y1="455" x2="1302" y2="455" head="end" style="color:#3A4560;border-width:3px"></x-connector>
+<x-connector x1="1522" y1="455" x2="1572" y2="455" head="end" style="color:#3A4560;border-width:3px"></x-connector>
+<div data-build-in="rise 1 auto" style="position:absolute;left:128px;top:620px;width:540px;height:230px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:8px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:600;letter-spacing:2px;color:#2DD4BF">AT START-UP</p>
+<p style="font-size:28px;font-weight:700">Re-check the tool list</p>
+<p style="font-size:24px;line-height:1.4;color:#A0AABB">Drop duplicate names, clean descriptions, add a security policy</p>
+</div>
+<div data-build-in="rise 2 auto" style="position:absolute;left:690px;top:620px;width:540px;height:230px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:8px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:600;letter-spacing:2px;color:#2DD4BF">BEFORE EVERY CALL</p>
+<p style="font-size:28px;font-weight:700">Inspect the arguments</p>
+<p style="font-size:24px;line-height:1.4;color:#A0AABB">Refuse out-of-scope fields, secrets and risky payloads</p>
+</div>
+<div data-build-in="rise 3 auto" style="position:absolute;left:1252px;top:620px;width:540px;height:230px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:8px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:600;letter-spacing:2px;color:#2DD4BF">AFTER EVERY REPLY</p>
+<p style="font-size:28px;font-weight:700">Scan the response</p>
+<p style="font-size:24px;line-height:1.4;color:#A0AABB">Redact known attack text before the model reads it</p>
+</div>
+<p data-build-in="fade 4 auto" style="position:absolute;left:128px;top:880px;width:1664px;font-size:28px;color:#A0AABB">MSB's code, the model and the servers stay unchanged.</p>
+<aside>Here's where our guard sits: between the agent and the MCP client, on the path every single tool call takes.
 
-We said every attack is text crossing one of these hops. So ask: which single hop sees all four kinds of attack traffic?
+It acts at three moments. At start-up, it re-checks the list of tools the servers advertised. Before every call leaves, it inspects the arguments. And after every reply comes back, it scans the response before the model gets to read it.
 
-Look at the hop between the MCP client and the MCP server, highlighted in green. Going outward, toward the server, it carries every tool call the agent makes, including the parameters, so a parameter attack has to cross it. Coming back, toward the agent, it carries the tool descriptions the server advertises, every tool reply, and every document a tool fetches. Signature attacks, response attacks and retrieval attacks all arrive across it.
-
-You could put a defense inside the model, by retraining it. That's powerful but expensive, and you'd have to redo it for every model. You could put it inside each tool server, but the whole problem is that you don't control the malicious server. The client-server hop is the one place you control that every attack must pass through.
-
-One caveat we'll come back to. In a real deployment, a malicious tool description comes from the server, so it crosses this hop. But MSB simulates its prompt-injection attack differently: it inserts the injected text inside the agent process, straight into the system prompt. In the benchmark, that attack never crosses this hop at all, which is exactly why our guard turns out to miss it.
-
-So that's where we put it. Watch what happens on the next slide.</aside>
+The model, MSB's code and the servers are all unchanged. We only add this one layer, which is what keeps the comparison with MSB fair.</aside>
 </section>

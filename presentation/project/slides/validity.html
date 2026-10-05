@@ -1,54 +1,35 @@
-<section id="validity" data-transition="fade" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:104px 128px 70px;display:flex;flex-direction:column;gap:22px">
-<div>
-<p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#FBBF24;letter-spacing:3px;text-transform:uppercase;margin:0">A validity check MSB doesn't do</p>
-<h2 style="font-size:48px;font-weight:700;margin:10px 0 0 0">Did the agent actually use its tools?</h2>
+<section id="validity" data-transition="fade" style="background:#0C1017;color:#ECEFF4;font-family:'IBM Plex Sans', sans-serif;padding:200px 128px 128px;display:flex;flex-direction:column;gap:40px">
+<p id="eyebrow" style="position:absolute;left:128px;top:112px;width:1400px;font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#2DD4BF">04 · Results</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1">Did the agent actually run its tools?</h2>
+<div style="flex:1;display:flex;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:28px;line-height:1.4">MSB's prompt asks for tool calls written as text (Thought / Action / Action Input). The agent only executes structured tool calls. The 8B model wrote text, so nothing ran.</p>
+<div style="background:#07090D;border:1px solid #26324A;border-radius:16px;padding:24px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;color:#A0AABB">Real final answer · 8B · MSB's exact prompt</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:24px;line-height:1.5">Thought: I can use the search_query function…<br>Action: search_query<br>Action Input: {<span style="color:#FB923C">"llm_model_name": "My AI Model"</span>, "query": …</p>
 </div>
-<div style="display:flex;gap:32px">
-<div style="flex:1.2;display:flex;flex-direction:column;gap:16px">
-<p style="font-size:21px;color:#BFD8D5;line-height:1.5;margin:0">MSB's system prompt tells the model to <i>write</i> tool calls as text &mdash; <span style="font-family:'JetBrains Mono',monospace;color:#E8EAED">Thought / Action / Action Input</span> &mdash; but the agent only executes <i>structured</i> tool calls. The 8B model obeyed the text instructions, so nothing ran:</p>
-<div style="background:#07090D;border:1px solid #2A303E;border-radius:12px;padding:20px 24px">
-<p style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#4A5568;margin:0 0 8px 0">real final answer, 8B model, MSB's exact prompt</p>
-<p style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#E8EAED;line-height:1.55;margin:0">Thought: I can use the search_query function&hellip;<br/>Action: search_query<br/>Action Input: {<span style="color:#F87171">"llm_model_name": "My AI Model"</span>, "query": &hellip;</p>
-</div>
-<div style="background:#141925;border:1px solid #232A3B;border-radius:12px;padding:18px 22px">
-<p style="font-size:18px;color:#E8EAED;margin:0;line-height:1.5"><b style="color:#34D399">The fix we tested:</b> remove only that one "use this text format" section. Persona, tools, attacks and judge are unchanged. Reported side by side with MSB's setting, never instead of it.</p>
+<div style="background:#0F2A27;border:1px solid #1F5E55;border-radius:16px;padding:24px 28px">
+<p style="font-size:28px;line-height:1.4"><b style="color:#2DD4BF">Our fix:</b> remove only that text-format section. Reported beside MSB's setting, never instead of it.</p>
 </div>
 </div>
-<div style="flex:1;display:flex;flex-direction:column;gap:18px">
-<div style="background:#141925;border:1px solid #232A3B;border-radius:16px;padding:24px">
-<p style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#8B95A7;margin:0 0 10px 0">8B &middot; parameter-attack runs that executed a real tool call</p>
-<div style="display:flex;align-items:center;gap:22px">
-<p style="font-family:'JetBrains Mono',monospace;font-size:56px;font-weight:700;color:#F87171;margin:0">0/25</p>
-<p style="font-size:34px;color:#3A4254;margin:0">&rarr;</p>
-<p style="font-family:'JetBrains Mono',monospace;font-size:56px;font-weight:700;color:#34D399;margin:0">25/25</p>
+<div style="width:600px;display:flex;flex-direction:column;gap:24px">
+<div style="background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;line-height:1.4;color:#A0AABB">8B parameter-attack runs that executed a real tool call</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:64px;font-weight:700;line-height:1.1"><span style="color:#FB923C">0/25</span> → <span style="color:#2DD4BF">25/25</span></p>
+<p style="font-size:24px;color:#A0AABB">MSB's prompt → native prompt</p>
 </div>
-<p style="font-size:16px;color:#8B95A7;margin:6px 0 0 0">MSB's exact prompt &rarr; native prompt</p>
-</div>
-<div style="background:#141925;border:1px solid #232A3B;border-radius:16px;padding:24px">
-<p style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#8B95A7;margin:0 0 10px 0">Direct probe, 3 tries each, same tool</p>
-<p style="font-size:19px;color:#E8EAED;margin:0;line-height:1.6">MSB prompt: <span style="color:#F87171">3/3 text only</span><br/>Without the text-format section: <span style="color:#34D399">3/3 real tool calls</span></p>
+<div style="background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;color:#A0AABB">Direct probe, same tool, 3 tries each</p>
+<p style="font-size:28px;line-height:1.5">MSB's prompt: <span style="color:#FB923C">3/3 text only</span><br>Without the section: <span style="color:#2DD4BF">3/3 real calls</span></p>
 </div>
 </div>
 </div>
-<div style="display:flex;gap:24px">
-<div style="flex:1;background:#1A1420;border:1px solid #3A2A3F;border-radius:12px;padding:16px 22px">
-<p style="font-size:18px;color:#E8EAED;margin:0"><b style="color:#F87171">So:</b> under MSB's exact prompt, the 8B model's zeros are uninformative &mdash; the attack never reached it.</p>
-</div>
-<div style="flex:1;background:#17201B;border:1px solid #2A4A36;border-radius:12px;padding:16px 22px">
-<p style="font-size:18px;color:#E8EAED;margin:0"><b style="color:#34D399">With the native prompt,</b> the 8B model executed tools in every run except the known kill_process infrastructure errors. The 3B model still skipped tools in some runs.</p>
-</div>
-</div>
-<aside>This slide explains why we ran everything twice, and it's one of the most important lessons in the project.
+<p style="font-size:28px;color:#FB923C">Under MSB's exact prompt, the 8B's 0% means the attack never arrived, not resistance.</p>
+<aside>Why two prompt settings? Because under MSB's exact prompt, the eight-billion model scored zero, and that zero meant nothing.
 
-Ask a simple question of every scenario: did the agent actually use its tools? Every MSB attack arrives through the tool loop. If the agent never executes a tool call, the attack has nothing to ride on, and the guard has nothing to block. A zero in that situation tells you nothing.
+MSB's prompt asks the model to write its tool calls out as text: Thought, Action, Action Input. But the agent framework underneath only executes structured tool calls. The eight-billion model obediently wrote text, like this real output where it even fills in llm_model_name, and nothing ever ran.
 
-What we found is a mismatch inside the setup MSB uses. MSB's system prompt instructs the model to write its tool calls as text: "Thought," then "Action," then "Action Input." But the agent framework underneath only executes structured tool calls, a separate format the model returns alongside its text. The eight-billion model did exactly what the prompt said. It wrote the call out as text and stopped. The example in the middle is a real final answer: it even filled in llm_model_name with "My AI Model," but as words on the screen. No server ever received it.
+We confirmed the cause with a direct probe: three out of three text-only answers with MSB's prompt, three out of three real tool calls without that one section.
 
-We didn't just assume that was the cause; we tested it directly. Same tool, same question, three tries each. With MSB's prompt, the eight-billion model gave text only, three out of three. With one section removed, the "use this text format" instructions, it made a real tool call three out of three.
-
-So we added that as a second setting, which we call the native tool-call prompt. It removes only that one section. The persona, the tool list, every attack, and the judge are unchanged. And we report it side by side with MSB's exact setting, never instead of it, because it is a deviation from MSB.
-
-The effect is on the right. In the parameter-attack scenarios, the eight-billion model went from zero real tool calls out of twenty-five, to twenty-five out of twenty-five. Across its whole native run, it executed tools in every scenario except those that hit the known kill-process infrastructure error. The three-billion model is less consistent: even with the native prompt it executed tools in only sixteen of twenty-five parameter-attack runs, so its numbers should be read with that in mind.
-
-The conclusion at the bottom. Under MSB's exact prompt, the eight-billion model's zeros mean nothing, and an earlier draft of this project that read them as resistance was wrong. Under the native prompt, the zeros are real evidence, and as you saw on the previous slide, that model turned out to be anything but resistant to the parameter attack.</aside>
+So the native setting removes only that section. Persona, tools, attacks and judge are unchanged, and we always report it beside MSB's exact setting, never instead of it. The 3B model is less consistent: even in the native setting it ran tools in only sixteen of its twenty-five parameter-attack runs.</aside>
 </section>

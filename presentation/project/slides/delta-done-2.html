@@ -1,0 +1,21 @@
+<section id="delta-done-2" data-transition="fade" style="background:#0C1017;color:#ECEFF4;font-family:'IBM Plex Sans', sans-serif;padding:200px 128px 128px;display:flex;flex-direction:column;gap:40px">
+<p id="eyebrow" style="position:absolute;left:128px;top:112px;width:1400px;font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#2DD4BF">05 · Our delta over MSB · 2 of 2</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1">Delta so far: measurement and tooling</h2>
+<table style="width:1664px;font-family:'IBM Plex Sans', sans-serif;font-size:28px;color:#ECEFF4">
+<tr style="background:#161F2D"><th style="width:16%;text-align:left;padding:14px 20px">Area</th><th style="width:22%;text-align:left;padding:14px 20px">In MSB</th><th style="width:32%;text-align:left;padding:14px 20px;color:#2DD4BF">We added</th><th style="width:30%;text-align:left;padding:14px 20px">Why it helps</th></tr>
+<tr><td style="padding:14px 20px;font-weight:700">Judging</td><td style="padding:14px 20px;color:#A0AABB">Parses logs; checks a file exists</td><td style="padding:14px 20px;color:#2DD4BF">In-process judge: content checks, leak oracle</td><td style="padding:14px 20px;color:#C5CCD8">A harmless file no longer counts as a success</td></tr>
+<tr style="background:#121A26"><td style="padding:14px 20px;font-weight:700">Evidence and validity</td><td style="padding:14px 20px;color:#A0AABB">Not recorded</td><td style="padding:14px 20px;color:#2DD4BF">Every tool call saved; per-run tool-execution check</td><td style="padding:14px 20px;color:#C5CCD8">Exposes zeros where the attack never arrived</td></tr>
+<tr><td style="padding:14px 20px;font-weight:700">Prompt setting</td><td style="padding:14px 20px;color:#A0AABB">Text-format prompt only</td><td style="padding:14px 20px;color:#2DD4BF">Native tool-call setting, reported beside MSB's</td><td style="padding:14px 20px;color:#C5CCD8">Made the 8B results meaningful: 100% → 0%</td></tr>
+<tr style="background:#121A26"><td style="padding:14px 20px;font-weight:700">Coverage and tooling</td><td style="padding:14px 20px;color:#A0AABB">12 attack types; main.py batch runs</td><td style="padding:14px 20px;color:#2DD4BF">12-type check, 3-mode CLI, live demo, local models</td><td style="padding:14px 20px;color:#C5CCD8">Anyone can rerun it offline at zero cost</td></tr>
+</table>
+<p style="font-size:28px;color:#A0AABB">All of it is in the repository: defenses/, cli_runner.py, demo.py, results/.</p>
+<aside>Part two of our delta: measurement and tooling.
+
+Judging: MSB parses its logs after the run and, for three goals, only checks that a file exists. Our judge runs in-process, checks the file's content, and has a proper oracle for parameter leaks. So a file with harmless text no longer counts as a success.
+
+Evidence and validity: we save every tool call for every scenario, and check that each run actually executed tools. That check is what exposed the meaningless zeros under MSB's prompt.
+
+Prompt setting: the native tool-call setting, always reported next to MSB's, is what made the 8B results meaningful.
+
+And coverage and tooling: the twelve-type executability check, the three-mode CLI, the live demo and the local models mean anyone can rerun all of this offline, at zero cost.</aside>
+</section>

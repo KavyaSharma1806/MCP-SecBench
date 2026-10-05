@@ -1,0 +1,66 @@
+<section id="delta-future" data-transition="fade" style="background:#0C1017;color:#ECEFF4;font-family:'IBM Plex Sans', sans-serif;padding:200px 128px 128px;display:flex;flex-direction:column;gap:40px">
+<p id="eyebrow" style="position:absolute;left:128px;top:112px;width:1400px;font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#2DD4BF">05 · Proposed delta</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1">Proposed delta: what comes next</h2>
+<x-connector x1="140" y1="322" x2="1780" y2="322" head="end" style="color:#2DD4BF;border-width:3px"></x-connector>
+<div data-build-in="rise 1" style="position:absolute;left:128px;top:356px;width:522px;height:540px;background:#161F2D;border:1px solid #26324A;border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:600;letter-spacing:2px;color:#2DD4BF">NEAR TERM</p>
+<p style="font-size:28px;font-weight:700">Close the gaps we found</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px">
+<p style="font-size:24px;font-weight:700">Prompt-injection coverage</p>
+<p style="font-size:24px;line-height:1.4;color:#A0AABB">Scan the full system prompt, not only tool descriptions</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px">
+<p style="font-size:24px;font-weight:700">Fuzzy tool-name matching</p>
+<p style="font-size:24px;line-height:1.4;color:#A0AABB">Catch near-miss names like execute_command_v1</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px">
+<p style="font-size:24px;font-weight:700">Usefulness metrics</p>
+<p style="font-size:24px;line-height:1.4;color:#A0AABB">PUA, NRP and false positives on benign tasks</p>
+</div>
+</div>
+<div data-build-in="rise 2" style="position:absolute;left:699px;top:356px;width:522px;height:540px;background:#161F2D;border:1px solid #26324A;border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:600;letter-spacing:2px;color:#2DD4BF">NEXT</p>
+<p style="font-size:28px;font-weight:700">Smarter detection</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px">
+<p style="font-size:24px;font-weight:700">Semantic detector</p>
+<p style="font-size:24px;line-height:1.4;color:#A0AABB">Classify tool text as data or instruction, robust to rewording</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px">
+<p style="font-size:24px;font-weight:700">Permission policies</p>
+<p style="font-size:24px;line-height:1.4;color:#A0AABB">Ask whether an action is allowed for this request</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px">
+<p style="font-size:24px;font-weight:700">Sequence monitoring</p>
+<p style="font-size:24px;line-height:1.4;color:#A0AABB">Flag risky chains, e.g. read a secret, then write a file</p>
+</div>
+</div>
+<div data-build-in="rise 3" style="position:absolute;left:1270px;top:356px;width:522px;height:540px;background:#161F2D;border:1px solid #26324A;border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:600;letter-spacing:2px;color:#2DD4BF">LONGER TERM</p>
+<p style="font-size:28px;font-weight:700">Prove it generalizes</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px">
+<p style="font-size:24px;font-weight:700">Unseen-attack tests</p>
+<p style="font-size:24px;line-height:1.4;color:#A0AABB">Renamed fields, paraphrased payloads, new tools</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px">
+<p style="font-size:24px;font-weight:700">Full MSB grid</p>
+<p style="font-size:24px;line-height:1.4;color:#A0AABB">All 12 types, more and larger models, MSB's 10 steps</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px">
+<p style="font-size:24px;font-weight:700">Retrieval-injection judge</p>
+<p style="font-size:24px;line-height:1.4;color:#A0AABB">A valid oracle so it can finally be scored</p>
+</div>
+</div>
+<aside>And this is the delta we propose next, ordered from the smallest step to the most ambitious. To be clear, none of this is done yet. It's the plan.
+
+Near term, close the gaps we found ourselves. Scan the full system prompt so MSB's prompt injection is covered. Match near-miss tool names instead of exact duplicates. And measure usefulness: task completion and false positives on benign tasks, so we know what the guard costs.
+
+Next, smarter detection. A semantic detector that judges what text means rather than matching keywords. Permission policies that ask whether an action is allowed for this request, not just whether it looks malicious. And monitoring of risky action sequences, like reading a secret and then writing it to a file.
+
+Longer term, prove it generalizes. Test on attacks the guard has never seen: renamed fields, paraphrased payloads, new tools. Run the full MSB grid on more and larger models with MSB's ten steps. And build a valid judge for retrieval injection so it can finally be scored.</aside>
+</section>

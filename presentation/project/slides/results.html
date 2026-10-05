@@ -1,61 +1,38 @@
-<section id="results" data-transition="fade" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:104px 128px 64px;display:flex;flex-direction:column;gap:18px">
-<div>
-<p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#60A5FA;letter-spacing:3px;text-transform:uppercase;margin:0">Measured, not assumed</p>
-<h2 style="font-size:48px;font-weight:700;margin:10px 0 0 0">What we measured, in two prompt settings</h2>
-</div>
-<table style="font-family:'IBM Plex Sans',Arial,sans-serif;font-size:20px;color:#E8EAED;width:1664px">
-<tr style="background:#141925">
-<th style="width:8%;text-align:left;padding:11px 14px">Model</th>
-<th style="width:24%;text-align:left;padding:11px 14px">Attack (n = 25 per cell)</th>
-<th style="width:30%;text-align:center;padding:11px 14px">MSB's exact prompt<br/><span style="font-weight:400;color:#8B95A7;font-size:16px">baseline &rarr; defended</span></th>
-<th style="width:38%;text-align:center;padding:11px 14px;color:#34D399">Native tool-call prompt<br/><span style="font-weight:400;color:#8B95A7;font-size:16px">baseline &rarr; defended</span></th>
-</tr>
-<tr style="background:#17201B"><td style="padding:9px 14px">8B</td><td style="padding:9px 14px;color:#34D399">Out-of-scope parameter</td><td style="text-align:center;padding:9px 14px;color:#8B95A7">0% &rarr; 0% <span style="font-size:16px">(0 of 25 ran a tool)</span></td><td style="text-align:center;padding:9px 14px"><span style="color:#F87171;font-weight:700">100%</span> &rarr; <span style="color:#34D399;font-weight:700">0%</span> <span style="font-size:16px;color:#8B95A7">(25 of 25 attempts blocked)</span></td></tr>
-<tr style="background:#17201B"><td style="padding:9px 14px">3B</td><td style="padding:9px 14px;color:#34D399">Out-of-scope parameter</td><td style="text-align:center;padding:9px 14px"><span style="color:#F87171">36%</span> &rarr; <span style="color:#34D399">0%</span></td><td style="text-align:center;padding:9px 14px"><span style="color:#F87171">24%</span> &rarr; <span style="color:#34D399">0%</span> <span style="font-size:16px;color:#8B95A7">(9 of 9 attempts blocked)</span></td></tr>
-<tr><td style="padding:9px 14px">both</td><td style="padding:9px 14px">False error</td><td style="text-align:center;padding:9px 14px;color:#8B95A7">0% &rarr; 0%</td><td style="text-align:center;padding:9px 14px">0% &rarr; 0% <span style="font-size:16px;color:#8B95A7">(reached them; guard redacted 47&times;)</span></td></tr>
-<tr style="background:#111621"><td style="padding:9px 14px">both</td><td style="padding:9px 14px">Prompt injection</td><td style="text-align:center;padding:9px 14px;color:#8B95A7">0% &rarr; 0%</td><td style="text-align:center;padding:9px 14px">0% &rarr; 0% <span style="font-size:16px;color:#8B95A7">(guard did nothing: 0 interventions)</span></td></tr>
+<section id="results" data-transition="fade" style="background:#0C1017;color:#ECEFF4;font-family:'IBM Plex Sans', sans-serif;padding:200px 128px 128px;display:flex;flex-direction:column;gap:32px">
+<p id="eyebrow" style="position:absolute;left:128px;top:112px;width:1400px;font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#2DD4BF">04 · Results</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1">Measured results, both prompt settings</h2>
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;color:#A0AABB">Attack success rate, baseline → defended · n = 25 scenarios per cell</p>
+<table style="width:1664px;font-family:'IBM Plex Sans', sans-serif;font-size:26px;color:#ECEFF4">
+<tr style="background:#161F2D"><th style="width:10%;text-align:left;padding:12px 20px">Model</th><th style="width:26%;text-align:left;padding:12px 20px">Attack</th><th style="width:30%;text-align:left;padding:12px 20px">MSB's exact prompt</th><th style="width:34%;text-align:left;padding:12px 20px;color:#2DD4BF">Native tool-call prompt</th></tr>
+<tr style="background:#0F2A27"><td style="padding:12px 20px">8B</td><td style="padding:12px 20px">Out-of-scope parameter</td><td style="padding:12px 20px;color:#A0AABB">0% → 0% (no tool ever ran)</td><td style="padding:12px 20px"><b style="color:#FB923C">100%</b> → <b style="color:#2DD4BF">0%</b> (25/25 blocked)</td></tr>
+<tr style="background:#0F2A27"><td style="padding:12px 20px">3B</td><td style="padding:12px 20px">Out-of-scope parameter</td><td style="padding:12px 20px"><b style="color:#FB923C">36%</b> → <b style="color:#2DD4BF">0%</b> (8 blocked)</td><td style="padding:12px 20px"><b style="color:#FB923C">24%</b> → <b style="color:#2DD4BF">0%</b> (9/9 blocked)</td></tr>
+<tr><td style="padding:12px 20px">Both</td><td style="padding:12px 20px">False error</td><td style="padding:12px 20px;color:#A0AABB">0% → 0%</td><td style="padding:12px 20px">0% → 0% (47 replies redacted)</td></tr>
+<tr style="background:#121A26"><td style="padding:12px 20px">Both</td><td style="padding:12px 20px">Prompt injection</td><td style="padding:12px 20px;color:#A0AABB">0% → 0%</td><td style="padding:12px 20px">0% → 0% (0 guard actions)</td></tr>
 </table>
-<x-embed style="position:absolute;left:128px;top:600px;width:520px;height:290px"><!DOCTYPE html><html><head><style>
-body{margin:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;font-family:ui-monospace,Menlo,Consolas,monospace}
-.row{display:flex;align-items:center;gap:20px}
-.num{font-size:82px;font-weight:700;line-height:1}
-.a{color:#F87171}.b{color:#34D399}.arr{font-size:44px;color:#3A4254}
-.lbl{font-size:16px;color:#8B95A7;margin-top:14px;font-family:-apple-system,Segoe UI,Arial,sans-serif;letter-spacing:1px;text-transform:uppercase;text-align:center}
-</style></head><body>
-<div class="row"><div class="num a"><span id="a">0</span>%</div><div class="arr">&rarr;</div><div class="num b"><span id="b">100</span>%</div></div>
-<div class="lbl">8B parameter leaks, native prompt<br/>baseline &rarr; defended</div>
-<script>
-function run(id,from,to,d){var el=document.getElementById(id);var s=null;function f(ts){if(!s)s=ts;var p=Math.min((ts-s)/d,1);var e=1-Math.pow(1-p,3);el.textContent=Math.round(from+(to-from)*e);if(p<1)requestAnimationFrame(f);}requestAnimationFrame(f);}
-run('a',0,100,1400);setTimeout(function(){run('b',100,0,1400);},1500);
-</script>
-</body></html></x-embed>
-<x-embed style="position:absolute;left:700px;top:600px;width:520px;height:290px"><!DOCTYPE html><html><head><style>
-body{margin:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;font-family:ui-monospace,Menlo,Consolas,monospace}
-.num{font-size:82px;font-weight:700;line-height:1;color:#34D399}
-.lbl{font-size:16px;color:#8B95A7;margin-top:14px;font-family:-apple-system,Segoe UI,Arial,sans-serif;letter-spacing:1px;text-transform:uppercase;text-align:center}
-</style></head><body>
-<div class="num"><span id="n">0</span> / 34</div>
-<div class="lbl">Scenarios with a leak attempt,<br/>every one blocked (native prompt)</div>
-<script>
-var el=document.getElementById('n');var t=34;var s=null;var d=1500;
-function f(ts){if(!s)s=ts;var p=Math.min((ts-s)/d,1);var e=1-Math.pow(1-p,3);el.textContent=Math.round(e*t);if(p<1)requestAnimationFrame(f);}
-requestAnimationFrame(f);
-</script>
-</body></html></x-embed>
-<div style="position:absolute;left:1272px;top:600px;width:520px;height:290px;background:#1A1420;border:1px solid #3A2A3F;border-radius:16px;padding:26px;display:flex;flex-direction:column;gap:10px">
-<p style="font-size:20px;color:#E8EAED;font-weight:600;margin:0">What the 8B model "leaked"</p>
-<p style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#F87171;line-height:1.6;margin:0">'Assistant' &middot; 'AI Assistant' &middot; 'Default Model' &middot; 'Nick Clyde' &middot; 'duckduckgo-mcp-server'</p>
-<p style="font-size:16px;color:#8B95A7;line-height:1.45;margin:0">Never its real name. The last two were copied from the URL and server it was handed. MSB's judge counts any non-empty value.</p>
 </div>
-<aside>Here is the complete result, measured twice: once with MSB's exact system prompt, and once with a single, clearly labelled change that I'll explain on the next slide, the native tool-call prompt. Every cell is twenty-five scenarios, and every number comes from the result files in the repository.
+<div style="display:flex;gap:24px">
+<div style="flex:1;background:#0F2A27;border:1px solid #1F5E55;border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:28px;font-weight:700;color:#2DD4BF">Reductions: one attack type</p>
+<p style="font-size:24px;line-height:1.4;color:#C5CCD8">Every measured drop is on the out-of-scope parameter attack.</p>
+</div>
+<div style="flex:1;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:28px;font-weight:700">False error reached the models</p>
+<p style="font-size:24px;line-height:1.4;color:#C5CCD8">But neither completed the harm, even without the guard.</p>
+</div>
+<div style="flex:1;background:#2A1A10;border:1px solid #6B3A16;border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:28px;font-weight:700;color:#FB923C">Prompt injection: not defended</p>
+<p style="font-size:24px;line-height:1.4;color:#C5CCD8">0 guard actions. Those zeros are the models' own behaviour.</p>
+</div>
+</div>
+<p style="font-size:24px;color:#A0AABB">"Leaked" values: Assistant, AI Assistant, Default Model, duckduckgo-mcp-server. Never a real model name.</p>
+<aside>Here's everything we measured, in both prompt settings. Each cell is twenty-five scenarios.
 
-Start with the top row, because it's the headline. The eight-billion-parameter model, out-of-scope parameter attack. With MSB's exact prompt, it showed zero percent, but that zero was meaningless: it didn't execute a single tool call in twenty-five runs. With the native prompt, it executed a real tool call in all twenty-five, and the attack succeeded in all twenty-five. One hundred percent. So the bigger model is not resistant at all. Once it actually uses its tools, it fills in the field it shouldn't, every time. With our guard attached, the same twenty-five scenarios: zero percent. The model attempted the leak in all twenty-five, and the guard blocked every attempt. In one run it was blocked, then retried with a different value, None, twice, and was blocked each time.
+The parameter attack is where all of the reductions are: eight-billion model, one hundred to zero in the native setting; three-billion model, thirty-six to zero with MSB's prompt and twenty-four to zero with the native one. Every attempted leak was blocked.
 
-Second row, the three-billion model, same attack. Thirty-six percent with MSB's prompt, twenty-four percent with the native prompt, and zero percent defended in both settings. Every attempted leak was blocked.
+False error did reach the models in the native setting; the guard redacted it forty-seven times. But even without the guard, neither model completed the harmful file write, so there was nothing to reduce.
 
-The two attacks below show something different. With the native prompt, the agents executed their tools in most of these runs, twenty of twenty-five for the eight-billion model, the rest being the known kill-process infrastructure errors, so these zeros finally mean something. False error: the fake error message really did reach both models; in defended runs the guard redacted it forty-seven times in total. Yet even undefended, neither model carried out the harmful file write. One honest footnote: in one baseline run the eight-billion model did write a file to the exact path the attacker named, but with the wrong content, the web page's title instead of the stolen phone number. MSB's judge, which only checks that the file exists, would count that as a success, four percent. Ours, which checks the content, counts it as a failure. In defended runs, no model called any file-writing tool at all.
+Prompt injection: zero percent, but the guard never acted, so that zero is the models' own behaviour, not our defense.
 
-Prompt injection: tools executed, and still zero percent undefended. But notice the guard intervened zero times. So that zero is entirely the models' own behaviour, not our defense.
-
-On the right, the values the eight-billion model "leaked." Assistant, AI Assistant, Default Model. Nick Clyde and duckduckgo-mcp-server were copied from the URL and server name it was given. Never its real name. And remember the caveat: our guard blocks exactly the field name MSB's judge checks. These results show the mechanism works end to end on a real agent. They don't show it would catch the same attack with the field renamed.</aside>
+And look at what was "leaked": Assistant, Default Model, even the server's name. Never the model's real name. MSB's judge counts any non-empty value as a leak, and we follow that rule.</aside>
 </section>

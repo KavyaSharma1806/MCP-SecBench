@@ -1,0 +1,31 @@
+<section id="toolkit" data-transition="fade" style="background:#0C1017;color:#ECEFF4;font-family:'IBM Plex Sans', sans-serif;padding:200px 128px 128px;display:flex;flex-direction:column;gap:40px">
+<p id="eyebrow" style="position:absolute;left:128px;top:112px;width:1400px;font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#2DD4BF">03 · What we built</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1">The toolkit around the guard</h2>
+<div data-build-in="pop 1 auto" style="position:absolute;left:128px;top:330px;width:534px;height:270px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:28px;font-weight:700;color:#2DD4BF">cli_runner.py</p>
+<p style="font-size:24px;line-height:1.4;color:#C5CCD8">One command with three modes: baseline, defended, compare. Writes result CSVs and the comparison table.</p>
+</div>
+<div data-build-in="pop 2 auto" style="position:absolute;left:693px;top:330px;width:534px;height:270px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:28px;font-weight:700;color:#2DD4BF">In-process judge</p>
+<p style="font-size:24px;line-height:1.4;color:#C5CCD8">Scores from the sandbox and the live tool calls: content checks, a parameter-leak oracle, every call recorded.</p>
+</div>
+<div data-build-in="pop 3 auto" style="position:absolute;left:1258px;top:330px;width:534px;height:270px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:28px;font-weight:700;color:#2DD4BF">demo.py</p>
+<p style="font-size:24px;line-height:1.4;color:#C5CCD8">Narrates one real scenario stage by stage, baseline and defended side by side. Built for live demos.</p>
+</div>
+<div data-build-in="pop 4 auto" style="position:absolute;left:128px;top:630px;width:534px;height:270px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:28px;font-weight:700;color:#2DD4BF">coverage_test.py</p>
+<p style="font-size:24px;line-height:1.4;color:#C5CCD8">Runs one scenario of each attack type we had not measured, undefended and defended, so all 12 are checked.</p>
+</div>
+<div data-build-in="pop 5 auto" style="position:absolute;left:693px;top:630px;width:534px;height:270px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:28px;font-weight:700;color:#2DD4BF">Local models</p>
+<p style="font-size:24px;line-height:1.4;color:#C5CCD8">llama3.2:3b and llama3.1:8b through Ollama. No API keys, no cost, fully offline. Windows-safe setup.</p>
+</div>
+<div data-build-in="pop 6 auto" style="position:absolute;left:1258px;top:630px;width:534px;height:270px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:28px;font-weight:700;color:#2DD4BF">--prompt_mode native</p>
+<p style="font-size:24px;line-height:1.4;color:#C5CCD8">A second prompt setting without MSB's text-only tool-call format. Reported beside MSB's, never instead.</p>
+</div>
+<aside>A defense on its own isn't a project, so this is the toolkit we built around it.
+
+cli_runner runs the same scenarios in baseline, defended, or compare mode, and writes the result files and comparison table. Our judge scores every run in-process and records every tool call, so any verdict can be audited afterwards. demo.py narrates a single scenario live, which is what you'll see in a moment. coverage_test runs the attack types we hadn't measured, so all twelve are checked. Everything runs on free local models through Ollama, on Windows. And the native prompt mode adds a second prompt setting, which, as you'll see in the results, matters a lot.</aside>
+</section>

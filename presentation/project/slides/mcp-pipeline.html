@@ -1,0 +1,47 @@
+<section id="mcp-pipeline" data-transition="magic" style="background:#0C1017;color:#ECEFF4;font-family:'IBM Plex Sans', sans-serif;padding:200px 128px 128px;display:flex;flex-direction:column;gap:40px">
+<p id="eyebrow" style="position:absolute;left:128px;top:112px;width:1400px;font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#2DD4BF">01 · How MCP agents work</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1">How an MCP agent is wired</h2>
+<div id="third-party" style="position:absolute;left:1124px;top:400px;width:668px;height:250px;border:2px dashed #6B3A16;border-radius:24px"></div>
+<p style="position:absolute;left:1124px;top:345px;width:668px;font-size:24px;color:#FB923C">Third-party code, not under your control</p>
+<div id="pbox-user" style="position:absolute;left:128px;top:425px;width:260px;height:200px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+<x-icon name="Users" style="color:#A0AABB;width:40px;height:40px"></x-icon>
+<p style="font-size:28px;font-weight:600;text-align:center">User</p>
+<p style="font-size:24px;line-height:1.3;color:#A0AABB;text-align:center">asks for something</p>
+</div>
+<div id="pbox-agent" style="position:absolute;left:468px;top:425px;width:260px;height:200px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+<x-icon name="Lightbulb" style="color:#A0AABB;width:40px;height:40px"></x-icon>
+<p style="font-size:28px;font-weight:600;text-align:center">LLM agent</p>
+<p style="font-size:24px;line-height:1.3;color:#A0AABB;text-align:center">plans and picks tools</p>
+</div>
+<div id="pbox-client" style="position:absolute;left:808px;top:425px;width:260px;height:200px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+<x-icon name="Link" style="color:#A0AABB;width:40px;height:40px"></x-icon>
+<p style="font-size:28px;font-weight:600;text-align:center">MCP client</p>
+<p style="font-size:24px;line-height:1.3;color:#A0AABB;text-align:center">routes the calls</p>
+</div>
+<div id="pbox-server" style="position:absolute;left:1148px;top:425px;width:260px;height:200px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+<x-icon name="Database" style="color:#A0AABB;width:40px;height:40px"></x-icon>
+<p style="font-size:28px;font-weight:600;text-align:center">MCP server</p>
+<p style="font-size:24px;line-height:1.3;color:#A0AABB;text-align:center">exposes tools</p>
+</div>
+<div id="pbox-tools" style="position:absolute;left:1488px;top:425px;width:260px;height:200px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+<x-icon name="Wrench" style="color:#A0AABB;width:40px;height:40px"></x-icon>
+<p style="font-size:28px;font-weight:600;text-align:center">Tool</p>
+<p style="font-size:24px;line-height:1.3;color:#A0AABB;text-align:center">does the work</p>
+</div>
+<x-connector x1="388" y1="495" x2="468" y2="495" head="end" style="color:#A0AABB;border-width:3px"></x-connector>
+<x-connector x1="728" y1="495" x2="808" y2="495" head="end" style="color:#A0AABB;border-width:3px"></x-connector>
+<x-connector x1="1068" y1="495" x2="1148" y2="495" head="end" style="color:#A0AABB;border-width:3px"></x-connector>
+<x-connector x1="1408" y1="495" x2="1488" y2="495" head="end" style="color:#A0AABB;border-width:3px"></x-connector>
+<x-connector x1="468" y1="555" x2="388" y2="555" head="end" style="color:#2DD4BF;border-width:3px"></x-connector>
+<x-connector x1="808" y1="555" x2="728" y2="555" head="end" style="color:#2DD4BF;border-width:3px"></x-connector>
+<x-connector x1="1148" y1="555" x2="1068" y2="555" head="end" style="color:#2DD4BF;border-width:3px"></x-connector>
+<x-connector x1="1488" y1="555" x2="1408" y2="555" head="end" style="color:#2DD4BF;border-width:3px"></x-connector>
+<p style="position:absolute;left:128px;top:690px;width:800px;font-size:28px;color:#A0AABB"><span style="color:#ECEFF4">→</span> request: tool name and arguments</p>
+<p style="position:absolute;left:928px;top:690px;width:864px;font-size:28px;color:#A0AABB"><span style="color:#2DD4BF">←</span> reply: the tool's output text</p>
+<p data-build-in="fade 1 auto" style="position:absolute;left:128px;top:800px;width:1664px;font-size:40px;font-weight:600;line-height:1.3">Everything that crosses these arrows is text the model will read.</p>
+<aside>Here's how it's wired. The user asks for something. The agent, which is the language model, plans and picks a tool. The MCP client is the plumbing: it sends the call using the Model Context Protocol. The MCP server is a separate process that exposes tools, and the tool does the real work.
+
+The important part is the dashed box. Servers and tools are usually third-party code that you didn't write and can't fully trust.
+
+Requests go to the right, replies come back to the left, and everything crossing those arrows ends up as text in front of the model.</aside>
+</section>

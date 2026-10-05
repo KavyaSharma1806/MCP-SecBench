@@ -1,42 +1,45 @@
-<section id="guard-architecture" data-transition="fade" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:128px 128px 96px;display:flex;flex-direction:column">
-<p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#34D399;letter-spacing:3px;text-transform:uppercase;margin:0">mcp_guard.py</p>
-<h2 style="font-size:52px;font-weight:700;margin:10px 0 0 0">Three components, one proxy</h2>
-<div id="pbox-guard" style="position:absolute;left:710px;top:180px;width:500px;height:180px;background:#17201B;border:2px solid #34D399;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
-<x-icon name="Lock" style="color:#34D399;width:40px;height:40px"></x-icon>
-<p style="font-size:30px;font-weight:700;margin:0;color:#34D399">SecurityGuard</p>
-<p style="font-size:18px;color:#8B95A7;margin:0;font-family:'JetBrains Mono',monospace">apply_defense(agent)</p>
+<section id="guard-architecture" data-transition="fade" style="background:#0C1017;color:#ECEFF4;font-family:'IBM Plex Sans', sans-serif;padding:200px 128px 128px;display:flex;flex-direction:column;gap:40px">
+<p id="eyebrow" style="position:absolute;left:128px;top:112px;width:1400px;font-family:'JetBrains Mono', monospace;font-size:24px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#2DD4BF">03 · What we built</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.1">Three checks inside mcp_guard</h2>
+<div id="pbox-guard" style="position:absolute;left:660px;top:290px;width:600px;height:120px;background:#0F2A27;border:2px solid #2DD4BF;border-radius:16px;box-shadow:0 0 48px rgba(45,212,191,0.3);display:flex;align-items:center;justify-content:center;gap:20px">
+<x-icon name="Lock" style="color:#2DD4BF;width:40px;height:40px"></x-icon>
+<div style="display:flex;flex-direction:column;gap:2px">
+<p style="font-family:'JetBrains Mono', monospace;font-size:40px;font-weight:700;line-height:1.1;color:#2DD4BF">mcp_guard</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:24px;color:#A0AABB">apply_defense(agent)</p>
 </div>
-<x-connector x1="960" y1="360" x2="960" y2="480" head="end" route="straight" style="color:#34D399;border-width:3px"></x-connector>
-<x-connector x1="960" y1="360" x2="392" y2="480" head="end" route="hv" style="color:#34D399;border-width:3px"></x-connector>
-<x-connector x1="960" y1="360" x2="1528" y2="480" head="end" route="hv" style="color:#34D399;border-width:3px"></x-connector>
-<div style="position:absolute;left:128px;top:480px;width:528px;height:320px;background:#141925;border:1px solid #232A3B;border-radius:18px;padding:36px;display:flex;flex-direction:column;gap:14px">
-<x-icon name="Verified" style="color:#60A5FA;width:32px;height:32px"></x-icon>
-<h3 style="font-size:26px;font-weight:600;margin:0">Tool Signature Validation</h3>
-<p style="font-size:19px;color:#8B95A7;line-height:1.45;margin:0">Drops exact duplicate tool names. Strips known injection markers out of each tool's description field.</p>
-<p style="font-size:16px;color:#4A6B5C;font-family:'JetBrains Mono',monospace;margin:0">catches: &lt;INFORMATION&gt;, &lt;IMPORTANT&gt;, exact duplicates</p>
-<p style="font-size:16px;color:#C97A7A;font-family:'JetBrains Mono',monospace;margin:0">misses: near-miss names, MSB's prompt injection</p>
 </div>
-<div style="position:absolute;left:696px;top:480px;width:528px;height:320px;background:#141925;border:1px solid #232A3B;border-radius:18px;padding:36px;display:flex;flex-direction:column;gap:14px">
-<x-icon name="Wrench" style="color:#60A5FA;width:32px;height:32px"></x-icon>
-<h3 style="font-size:26px;font-weight:600;margin:0">Parameter Gating</h3>
-<p style="font-size:19px;color:#8B95A7;line-height:1.45;margin:0">Refuses tool calls carrying out-of-scope keys, secret-like keys, or high-risk payloads before dispatch.</p>
-<p style="font-size:16px;color:#4A6B5C;font-family:'JetBrains Mono',monospace;margin:0">catches: llm_model_name, api_key, ssh-rsa content</p>
+<x-connector x1="960" y1="410" x2="960" y2="445" head="none" style="color:#2DD4BF;border-width:3px"></x-connector>
+<x-connector x1="392" y1="445" x2="1528" y2="445" head="none" style="color:#2DD4BF;border-width:3px"></x-connector>
+<x-connector data-build-in="fade 1 auto" x1="392" y1="445" x2="392" y2="480" head="end" style="color:#2DD4BF;border-width:3px"></x-connector>
+<x-connector data-build-in="fade 2 auto" x1="960" y1="445" x2="960" y2="480" head="end" style="color:#2DD4BF;border-width:3px"></x-connector>
+<x-connector data-build-in="fade 3 auto" x1="1528" y1="445" x2="1528" y2="480" head="end" style="color:#2DD4BF;border-width:3px"></x-connector>
+<div data-build-in="rise 1 auto" style="position:absolute;left:128px;top:480px;width:528px;height:400px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<x-icon name="Verified" style="color:#2DD4BF;width:40px;height:40px"></x-icon>
+<p style="font-size:28px;font-weight:700">Signature validation</p>
+<p style="font-size:24px;line-height:1.4;color:#A0AABB">Drops duplicate tool names and strips injection markers from descriptions.</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:24px;line-height:1.4;color:#2DD4BF">catches &lt;INFORMATION&gt;, &lt;IMPORTANT&gt;</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:24px;line-height:1.4;color:#FB923C">misses near-miss names</p>
 </div>
-<div style="position:absolute;left:1264px;top:480px;width:528px;height:320px;background:#141925;border:1px solid #232A3B;border-radius:18px;padding:36px;display:flex;flex-direction:column;gap:14px">
-<x-icon name="Chat" style="color:#60A5FA;width:32px;height:32px"></x-icon>
-<h3 style="font-size:26px;font-weight:600;margin:0">Response Sanitization</h3>
-<p style="font-size:19px;color:#8B95A7;line-height:1.45;margin:0">Scans tool observations for MSB's canned attack templates and redacts them before the LLM reads them.</p>
-<p style="font-size:16px;color:#4A6B5C;font-family:'JetBrains Mono',monospace;margin:0">catches: fake "Error", fake "new user query"</p>
+<div data-build-in="rise 2 auto" style="position:absolute;left:696px;top:480px;width:528px;height:400px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<x-icon name="Wrench" style="color:#2DD4BF;width:40px;height:40px"></x-icon>
+<p style="font-size:28px;font-weight:700">Parameter gate</p>
+<p style="font-size:24px;line-height:1.4;color:#A0AABB">Refuses calls with out-of-scope or secret-like fields, or SSH keys and private-file paths in risky tools.</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:24px;line-height:1.4;color:#2DD4BF">catches llm_model_name, api_key, ssh-rsa</p>
 </div>
-<aside>Let's zoom into the guard. The green box from the previous slide has grown, and you can see it has three components, one for each attack surface that is reachable at this point in the pipeline.
+<div data-build-in="rise 3 auto" style="position:absolute;left:1264px;top:480px;width:528px;height:400px;background:#161F2D;border:1px solid #26324A;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<x-icon name="Chat" style="color:#2DD4BF;width:40px;height:40px"></x-icon>
+<p style="font-size:28px;font-weight:700">Response sanitizer</p>
+<p style="font-size:24px;line-height:1.4;color:#A0AABB">Replaces any reply that matches known attack phrasing with a redaction notice.</p>
+<p style="font-family:'JetBrains Mono', monospace;font-size:24px;line-height:1.4;color:#2DD4BF">catches fake "Error", fake "new user query"</p>
+</div>
+<p data-build-in="fade 4 auto" style="position:absolute;left:128px;top:900px;width:1664px;font-size:24px;color:#A0AABB">Plus a security policy added to the system prompt: tool output is data, not instructions.</p>
+<aside>Inside the guard are three checks.
 
-Left: tool signature validation. This runs once, when the agent is set up. It looks at the list of tools the servers advertised. If two tools have exactly the same name, it keeps the first and drops the duplicate. And it scans every description for phrases that are known injection patterns, like the information-block wrapper or the word IMPORTANT in angle brackets, and strips them out before the description ever reaches the model's system prompt. We found two real gaps here, shown in the red line. First, it only catches exact duplicate names, and MSB's real name-collision attacks use near-miss names like an extra "v1" on the end. Second, and more surprising: it does nothing against MSB's prompt injection attack. MSB doesn't put that injection inside any tool's description field; it appends it to the system prompt text itself, and this component only scans description fields. We confirmed it from the intervention counts: zero, in fifty defended runs.
+Signature validation runs once at start-up. It drops duplicate tool names and strips known injection markers out of the descriptions. Its weakness: it only catches exact duplicates, so a near-miss name like execute_command_v1 gets through.
 
-Middle: parameter gating. This runs before every single tool call. It looks at the arguments the agent wants to send. It refuses calls that carry MSB's out-of-scope field, llm_model_name; calls that carry anything shaped like a secret, an API key or a password; and calls to dangerous tools like write_file whose payload contains an SSH key or references the personal data file.
+The parameter gate runs before every call. It refuses calls carrying out-of-scope fields like llm_model_name, anything that looks like a secret, or SSH keys and private-file paths sent to risky tools like write_file.
 
-Right: response sanitization. This runs after every tool call, on whatever came back. It scans for known attack phrasing, MSB's fake error message, the fake new-user message, and generic "ignore previous instructions" style text, and if it finds any, the reply is withheld and replaced with an explanation.
+The response sanitizer runs after every call. If the reply matches known attack phrasing, such as MSB's fake error or fake new-user message, the whole reply is replaced with a notice.
 
-There's also a fourth, quieter piece not shown as a box: a security policy appended to the system prompt, telling the model that tool output is data, not instructions.
-
-One more thing to notice in the small grey text: everything here is pattern matching against known phrases. That makes it fast and transparent, and it also makes it beatable by an attacker who simply words things differently. We'll come back to that.</aside>
+And there's a short policy in the system prompt: tool output is data, not instructions. All of this is pattern matching. That makes it fast and transparent, but beatable by rewording, which we come back to in the limitations.</aside>
 </section>
