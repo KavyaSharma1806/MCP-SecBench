@@ -1,0 +1,38 @@
+<section id="attack-surface" data-transition="magic" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:128px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#F87171;letter-spacing:3px;text-transform:uppercase;margin:0">The attack surface</p>
+<h2 style="font-size:60px;font-weight:700;margin:12px 0 0 0">Four entry points, one pipeline</h2>
+<div id="pbox-user" style="position:absolute;left:128px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+<x-icon name="Users" style="color:#60A5FA;width:36px;height:36px"></x-icon>
+<p style="font-size:26px;font-weight:600;margin:0">User</p>
+</div>
+<div id="pbox-agent" style="position:absolute;left:479px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+<x-icon name="Code" style="color:#60A5FA;width:36px;height:36px"></x-icon>
+<p style="font-size:26px;font-weight:600;margin:0">LLM Agent</p>
+</div>
+<div id="pbox-client" style="position:absolute;left:830px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+<x-icon name="Link" style="color:#60A5FA;width:36px;height:36px"></x-icon>
+<p style="font-size:26px;font-weight:600;margin:0">MCP Client</p>
+</div>
+<div id="pbox-server" style="position:absolute;left:1181px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+<x-icon name="Database" style="color:#60A5FA;width:36px;height:36px"></x-icon>
+<p style="font-size:26px;font-weight:600;margin:0">MCP Server</p>
+</div>
+<div id="pbox-tools" style="position:absolute;left:1532px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+<x-icon name="Wrench" style="color:#60A5FA;width:36px;height:36px"></x-icon>
+<p style="font-size:26px;font-weight:600;margin:0">Tools</p>
+</div>
+<x-connector x1="388" y1="530" x2="479" y2="530" head="end" route="straight" style="color:#2A303E;border-width:3px"></x-connector>
+<x-connector x1="739" y1="530" x2="830" y2="530" head="end" route="straight" style="color:#2A303E;border-width:3px"></x-connector>
+<x-connector x1="1090" y1="530" x2="1181" y2="530" head="end" route="straight" style="color:#2A303E;border-width:3px"></x-connector>
+<x-connector x1="1441" y1="530" x2="1532" y2="530" head="end" route="straight" style="color:#2A303E;border-width:3px"></x-connector>
+<x-shape kind="arrow-up" data-build-in="rise 1" style="position:absolute;left:589px;top:630px;width:40px;height:55px;background:#F87171"></x-shape>
+<p data-build-in="rise 1" style="position:absolute;left:479px;top:695px;width:260px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:600;color:#F87171;margin:0">Tool Signature</p>
+<x-shape kind="arrow-up" data-build-in="rise 2" style="position:absolute;left:940px;top:630px;width:40px;height:55px;background:#F87171"></x-shape>
+<p data-build-in="rise 2" style="position:absolute;left:830px;top:695px;width:260px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:600;color:#F87171;margin:0">Tool Parameter</p>
+<x-shape kind="arrow-up" data-build-in="rise 3" style="position:absolute;left:1291px;top:630px;width:40px;height:55px;background:#F87171"></x-shape>
+<p data-build-in="rise 3" style="position:absolute;left:1181px;top:695px;width:260px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:600;color:#F87171;margin:0">Tool Response</p>
+<x-shape kind="arrow-up" data-build-in="rise 4" style="position:absolute;left:1642px;top:630px;width:40px;height:55px;background:#F87171"></x-shape>
+<p data-build-in="rise 4" style="position:absolute;left:1532px;top:695px;width:260px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:600;color:#F87171;margin:0">Retrieval Injection</p>
+<p style="position:absolute;left:128px;bottom:64px;font-size:22px;color:#8B95A7;font-family:'JetBrains Mono',monospace;margin:0">A malicious name, a smuggled parameter, a faked response, a poisoned document</p>
+<aside>Each red arrow is one of MSB's four attack surfaces, mapped onto the exact pipeline stage it corrupts: tool signature attacks target what the agent is shown about a tool; parameter attacks target the call itself; response attacks target what comes back; retrieval injection hides instructions inside legitimate-looking content.</aside>
+</section>

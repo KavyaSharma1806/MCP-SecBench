@@ -1,0 +1,37 @@
+<section id="coverage" data-transition="fade" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:90px 110px 50px 110px;display:flex;flex-direction:column;gap:18px">
+<div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:600;color:#60A5FA;letter-spacing:3px;text-transform:uppercase;margin:0">Full coverage matrix</p>
+<h2 style="font-size:46px;font-weight:700;margin:8px 0 0 0">All 12 of MSB's attack types, checked</h2>
+</div>
+<table style="font-family:'JetBrains Mono',monospace;font-size:20px;color:#E8EAED;width:1700px">
+<tr style="background:#141925">
+<th style="width:44%;text-align:left;padding:10px 16px;font-family:'IBM Plex Sans',Arial,sans-serif">MSB attack type</th>
+<th style="width:18%;text-align:center;padding:10px 16px;font-family:'IBM Plex Sans',Arial,sans-serif">Present</th>
+<th style="width:19%;text-align:center;padding:10px 16px;font-family:'IBM Plex Sans',Arial,sans-serif">Executable</th>
+<th style="width:19%;text-align:center;padding:10px 16px;font-family:'IBM Plex Sans',Arial,sans-serif">Scored</th>
+</tr>
+<tr><td style="padding:9px 16px">prompt_injection</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td></tr>
+<tr style="background:#111621"><td style="padding:9px 16px">false_error</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td></tr>
+<tr><td style="padding:9px 16px">out_of_scope_parameter</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td></tr>
+<tr style="background:#111621"><td style="padding:9px 16px">simulated_user</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td></tr>
+<tr><td style="padding:9px 16px">name_overlap</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td></tr>
+<tr style="background:#111621"><td style="padding:9px 16px">preference_manipulation</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td></tr>
+<tr><td style="padding:9px 16px">tool_transfer</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td></tr>
+<tr style="background:#111621"><td style="padding:9px 16px">search_term_deception</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#F87171;padding:9px 16px">No</td></tr>
+<tr><td style="padding:9px 16px">preference_manipulation-out_of_scope_parameter</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td></tr>
+<tr style="background:#111621"><td style="padding:9px 16px">preference_manipulation-simulated_user</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td></tr>
+<tr><td style="padding:9px 16px">prompt_injection-simulated_user</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td></tr>
+<tr style="background:#111621"><td style="padding:9px 16px">prompt_injection-false_error</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td><td style="text-align:center;color:#34D399;padding:9px 16px">Yes</td></tr>
+</table>
+<div style="display:flex;gap:28px">
+<div style="flex:1;background:#1A1420;border:1px solid #3A2A3F;border-radius:12px;padding:20px 26px;display:flex;align-items:center;gap:16px">
+<x-icon name="Warning" style="color:#FBBF24;width:28px;height:28px"></x-icon>
+<p style="font-size:18px;color:#E8EAED;margin:0;line-height:1.4">Signature validator catches exact name matches, not near-miss decoys like <b style="font-family:'JetBrains Mono',monospace">execute_command_v1</b> &mdash; saved by response-level redundancy.</p>
+</div>
+<div style="flex:1;background:#1A1420;border:1px solid #3A2A3F;border-radius:12px;padding:20px 26px;display:flex;align-items:center;gap:16px">
+<x-icon name="Warning" style="color:#F87171;width:28px;height:28px"></x-icon>
+<p style="font-size:18px;color:#E8EAED;margin:0;line-height:1.4">search_term_deception has no wrapper template to match &mdash; genuinely unscored <i>and</i> undefended today. Reported, not hidden.</p>
+</div>
+</div>
+<aside>18 additional single-scenario runs (one per untested attack type, undefended and defended) all completed without crashing, confirming executability. Guard behavior was cross-checked against direct inspection of each attack's real source code, not assumed.</aside>
+</section>

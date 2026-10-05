@@ -1,0 +1,23 @@
+<section id="conclusion" data-transition="fade" style="background:linear-gradient(160deg,#0B0E14 0%,#0D1420 60%,#0B0E14 100%);color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:128px;display:flex;flex-direction:column;gap:40px">
+<div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#34D399;letter-spacing:3px;text-transform:uppercase;margin:0">Conclusion</p>
+<h2 style="font-size:54px;font-weight:700;margin:12px 0 0 0">What this project actually proves</h2>
+</div>
+<div style="background:#141925;border:1px solid #232A3B;border-left:5px solid #34D399;border-radius:4px 16px 16px 4px;padding:40px 48px">
+<p style="font-size:28px;color:#E8EAED;line-height:1.55;margin:0">MCP-SecBench provides a <b style="color:#34D399">benchmark-integrated defensive middleware</b> for MCP-based LLM agents. It evaluates whether tool-signature validation, parameter gating, and tool-response sanitization can reduce attack success against MCP security threats, comparing undefended and defended agents under identical conditions.</p>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;background:#17201B;border:1px solid #2A4A36;border-radius:16px;padding:36px;display:flex;flex-direction:column;gap:14px">
+<x-icon name="CheckCircle" style="color:#34D399;width:32px;height:32px"></x-icon>
+<h3 style="font-size:25px;font-weight:600;margin:0">We showed</h3>
+<p style="font-size:20px;color:#BFD8D5;line-height:1.5;margin:0">All 12 MSB attack types execute end to end. The guard measurably intercepts real MSB attack payloads &mdash; verified live, with no API key, against real source code.</p>
+</div>
+<div style="flex:1;background:#1A1420;border:1px solid #3A2A3F;border-radius:16px;padding:36px;display:flex;flex-direction:column;gap:14px">
+<x-icon name="Warning" style="color:#F87171;width:32px;height:32px"></x-icon>
+<h3 style="font-size:25px;font-weight:600;margin:0">We did not show</h3>
+<p style="font-size:20px;color:#D9B8B8;line-height:1.5;margin:0">General MCP security, protection against unseen or paraphrased attacks, or a statistically validated ASR reduction on a model actually vulnerable to these attacks.</p>
+</div>
+</div>
+<p style="font-size:24px;color:#8B95A7;text-align:center;margin:0">github.com/KavyaSharma1806/MCP-SecBench</p>
+<aside>The system provides a prototype middleware defense against selected MCP attack classes. It is not claimed to solve MCP security or to detect all prompt injection. That distinction is the whole point of presenting it this way.</aside>
+</section>

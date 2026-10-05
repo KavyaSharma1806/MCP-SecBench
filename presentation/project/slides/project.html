@@ -1,0 +1,36 @@
+<section id="project" data-transition="magic" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:128px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#34D399;letter-spacing:3px;text-transform:uppercase;margin:0">Our project</p>
+<h2 style="font-size:60px;font-weight:700;margin:12px 0 0 0">MSB + a defensive proxy</h2>
+<p style="font-size:26px;color:#8B95A7;margin:8px 0 0 0;max-width:1300px">We insert one new component into the pipeline, between the client and the server, without changing MSB itself.</p>
+<div id="pbox-user" style="position:absolute;left:128px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+<x-icon name="Users" style="color:#60A5FA;width:34px;height:34px"></x-icon>
+<p style="font-size:24px;font-weight:600;margin:0">User</p>
+</div>
+<div id="pbox-agent" style="position:absolute;left:479px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+<x-icon name="Code" style="color:#60A5FA;width:34px;height:34px"></x-icon>
+<p style="font-size:24px;font-weight:600;margin:0">LLM Agent</p>
+</div>
+<div id="pbox-client" style="position:absolute;left:830px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+<x-icon name="Link" style="color:#60A5FA;width:34px;height:34px"></x-icon>
+<p style="font-size:24px;font-weight:600;margin:0">MCP Client</p>
+</div>
+<div id="pbox-guard" data-build-in="pop" style="position:absolute;left:1104px;top:450px;width:220px;height:160px;background:#17201B;border:2px solid #34D399;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+<x-icon name="Lock" style="color:#34D399;width:32px;height:32px"></x-icon>
+<p style="font-size:21px;font-weight:700;margin:0;color:#34D399;text-align:center">Security<br/>Guard</p>
+</div>
+<div id="pbox-server" style="position:absolute;left:1338px;top:450px;width:220px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+<x-icon name="Database" style="color:#60A5FA;width:32px;height:32px"></x-icon>
+<p style="font-size:22px;font-weight:600;margin:0">MCP Server</p>
+</div>
+<div id="pbox-tools" style="position:absolute;left:1572px;top:450px;width:220px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+<x-icon name="Wrench" style="color:#60A5FA;width:32px;height:32px"></x-icon>
+<p style="font-size:22px;font-weight:600;margin:0">Tools</p>
+</div>
+<x-connector x1="388" y1="530" x2="479" y2="530" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
+<x-connector x1="739" y1="530" x2="830" y2="530" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
+<x-connector x1="1090" y1="530" x2="1104" y2="530" head="end" route="straight" style="color:#34D399;border-width:3px"></x-connector>
+<x-connector x1="1324" y1="530" x2="1338" y2="530" head="end" route="straight" style="color:#34D399;border-width:3px"></x-connector>
+<x-connector x1="1558" y1="530" x2="1572" y2="530" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
+<p style="position:absolute;left:128px;bottom:64px;font-size:22px;color:#8B95A7;font-family:'JetBrains Mono',monospace;margin:0">baseline/ stays byte-for-byte unmodified &mdash; defenses/mcp_guard.py composes with it</p>
+<aside>This is the architectural core of the project: a proxy, not a patch. The guard wraps an already-initialized agent instance rather than editing mcp_use or langchain source, so a baseline run and a defended run are an apples-to-apples comparison of the identical scenario.</aside>
+</section>

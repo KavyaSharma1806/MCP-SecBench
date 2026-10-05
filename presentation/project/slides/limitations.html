@@ -1,0 +1,39 @@
+<section id="limitations" data-transition="fade" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:128px 128px 96px;display:flex;flex-direction:column;gap:36px">
+<div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#F87171;letter-spacing:3px;text-transform:uppercase;margin:0">Said plainly</p>
+<h2 style="font-size:56px;font-weight:700;margin:12px 0 0 0">What this does not solve</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr 1fr;gap:28px;flex:1">
+<div style="background:#141925;border:1px solid #232A3B;border-radius:16px;padding:30px;display:flex;gap:18px;align-items:flex-start">
+<x-icon name="Search" style="color:#F87171;width:30px;height:30px"></x-icon>
+<div><h3 style="font-size:23px;font-weight:600;margin:0 0 8px 0">Heuristic, pattern-based detection</h3>
+<p style="font-size:18px;color:#8B95A7;margin:0;line-height:1.45">"Ignore previous instructions" is caught. "Disregard the instructions supplied earlier" may not be.</p></div>
+</div>
+<div style="background:#141925;border:1px solid #232A3B;border-radius:16px;padding:30px;display:flex;gap:18px;align-items:flex-start">
+<x-icon name="Lock" style="color:#F87171;width:30px;height:30px"></x-icon>
+<div><h3 style="font-size:23px;font-weight:600;margin:0 0 8px 0">Tuned against a known corpus</h3>
+<p style="font-size:18px;color:#8B95A7;margin:0;line-height:1.45">Several checks match MSB's exact template strings. Low ASR here does not imply general MCP security.</p></div>
+</div>
+<div style="background:#141925;border:1px solid #232A3B;border-radius:16px;padding:30px;display:flex;gap:18px;align-items:flex-start">
+<x-icon name="Globe" style="color:#F87171;width:30px;height:30px"></x-icon>
+<div><h3 style="font-size:23px;font-weight:600;margin:0 0 8px 0">Retrieval Injection unscored</h3>
+<p style="font-size:18px;color:#8B95A7;margin:0;line-height:1.45">No oracle exists yet for "was the agent deceived into the wrong document." Excluded, not faked.</p></div>
+</div>
+<div style="background:#141925;border:1px solid #232A3B;border-radius:16px;padding:30px;display:flex;gap:18px;align-items:flex-start">
+<x-icon name="Link" style="color:#F87171;width:30px;height:30px"></x-icon>
+<div><h3 style="font-size:23px;font-weight:600;margin:0 0 8px 0">External dependency</h3>
+<p style="font-size:18px;color:#8B95A7;margin:0;line-height:1.45">kill_process scenarios rely on a third-party tool registry currently returning errors.</p></div>
+</div>
+<div style="background:#141925;border:1px solid #232A3B;border-radius:16px;padding:30px;display:flex;gap:18px;align-items:flex-start">
+<x-icon name="Code" style="color:#F87171;width:30px;height:30px"></x-icon>
+<div><h3 style="font-size:23px;font-weight:600;margin:0 0 8px 0">Monkey-patching, not an API</h3>
+<p style="font-size:18px;color:#8B95A7;margin:0;line-height:1.45">The guard attaches via a per-instance patch to the agent executor &mdash; effective here, not portable by design.</p></div>
+</div>
+<div style="background:#141925;border:1px solid #232A3B;border-radius:16px;padding:30px;display:flex;gap:18px;align-items:flex-start">
+<x-icon name="Warning" style="color:#F87171;width:30px;height:30px"></x-icon>
+<div><h3 style="font-size:23px;font-weight:600;margin:0 0 8px 0">False positives &amp; negatives unmeasured</h3>
+<p style="font-size:18px;color:#8B95A7;margin:0;line-height:1.45">We have not yet measured how often legitimate tool text gets flagged, or how often a novel attack slips through.</p></div>
+</div>
+</div>
+<aside>This slide exists on purpose. A prototype that cannot state its own limits is not trustworthy regardless of its numbers.</aside>
+</section>

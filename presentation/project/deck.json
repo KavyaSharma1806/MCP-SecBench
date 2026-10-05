@@ -1,0 +1,18 @@
+{
+  "v": 4,
+  "createdOnFiles": {"v": 1, "at": "2026-10-05T12:00:00Z"},
+  "lists": "css",
+  "title": "MCP-SecBench",
+  "order": ["cover", "motivation", "architecture", "msb", "attack-surface", "project", "guard-architecture", "methodology", "results", "live-demo", "coverage", "limitations", "future-work", "conclusion"],
+  "sections": {
+    "intro": {"description": "The security problem and the benchmark this builds on", "start": "cover"},
+    "system": {"description": "How MCP works and where mcp_guard fits in the pipeline", "start": "architecture"},
+    "evaluation": {"description": "Methodology, measured results, and a live zero-cost demo", "start": "methodology"},
+    "coverage": {"description": "Full attack-type coverage and what we actually found", "start": "coverage"},
+    "close": {"description": "Limitations, future work, and conclusion", "start": "limitations"}
+  },
+  "faces": {
+    "ibm-plex-sans": {"family": "IBM Plex Sans", "href": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"},
+    "jetbrains-mono": {"family": "JetBrains Mono", "href": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"}
+  }
+}
