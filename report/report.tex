@@ -27,7 +27,7 @@
 
 \title{MCP-SecBench: A Defensive Proxy for Mitigating\\ Attacks Against MCP-Based AI Agents}
 \author{Kavya Sharma}
-\date{October 5, 2026 \\ \normalsize Version 3}
+\date{October 5, 2026 \\ \normalsize Version 4}
 
 \begin{document}
 
@@ -46,11 +46,14 @@ surfaces. Our contribution is \texttt{mcp\_guard}, a defensive proxy layer
 that validates tool signatures, gates tool parameters, and sanitizes tool
 responses without modifying MSB or its underlying agent framework, plus a
 unified CLI tool for running baseline-vs-defended comparisons entirely on
-free, local, offline language models. We report results from a 300-scenario
-batch run (75 scenarios per condition, across two model sizes), discuss what
-the data does and does not show, and outline the concrete next steps (full
-attack-surface coverage, a dedicated Retrieval Injection oracle) needed to
-turn this from a working first implementation into a complete evaluation.
+free, local, offline language models. Across 300 scenario runs on two local
+models, we measure one clear reduction -- out-of-scope-parameter leaks on a
+3B model fall from 36\% to 0\%, every attempted leak blocked by the guard --
+and we report, with evidence, where the guard does not help (MSB's prompt
+injection, near-miss tool names, half of the retrieval documents) and why
+most zero-success results are uninformative (the local models frequently
+did not execute tool calls at all). The guard is a prototype tuned to MSB's
+attack text; we make no claim of general MCP security.
 \end{abstract}
 
 \paragraph{Revision note (v2).} This version adds a live, zero-API-cost
@@ -71,6 +74,20 @@ attacks actually use) and confirms that \texttt{search\_term\_deception} is
 not meaningfully defended by the current response sanitizer, in addition to
 not being scored (Section~\ref{sec:results} already documented the scoring
 gap; this revision explains why the defense gap exists too).
+
+\paragraph{Revision note (v4) -- corrections.} Preparing the presentation
+surfaced three errors in earlier versions, all fixed here.
+(1)~Our judge scored the three parameter-leak attack types by an output file
+those attacks never write, so their 0\% ASR was guaranteed rather than
+measured; re-measured with MSB's own rule, the 3B model's out-of-scope
+parameter ASR is 36\% undefended and 0\% defended
+(Section~\ref{sec:oraclefix}). (2)~Version 2's claim that the 8B model's 0\%
+ASR ``rules out model size'' is withdrawn: that model executed a real tool
+call in 0 of 25 baseline parameter-attack runs (Section~\ref{sec:validity}).
+(3)~Version 3 called retrieval injection undefended and prompt injection
+defended; the opposite is closer to the truth -- retrieval injection is caught
+in 2 of 4 documents, and MSB's prompt injection is not caught at all
+(Section~\ref{sec:coverage}).
 
 \tableofcontents
 
@@ -205,9 +222,15 @@ python cli_runner.py --mode compare
 
 It reuses MSB's own scenario-construction helpers
 (\texttt{tool\_exist}, \texttt{complete\_server\_config}) directly from
-\texttt{baseline/main.py}, and implements a success oracle that reads the
-sandboxed \texttt{operation\_space/output} artifact directly, rather than
-regex-parsing MSB's own log text as \texttt{metrics.py} does.
+\texttt{baseline/main.py}, drives the agent through \texttt{stream()} so
+that every executed tool call is recorded, and judges each scenario
+in-process rather than by regex-parsing log text as MSB's \texttt{metrics.py}
+does: file-planting goals are judged from the sandboxed
+\texttt{operation\_space/output} artifact (by content, which is stricter than
+MSB's existence check for three of the five goals), and parameter-leak
+attacks are judged from the recorded tool calls, matching MSB's own rule
+(Section~\ref{sec:oraclefix}). Each result row also records the guard's
+interventions per component and a summary of the agent's tool calls.
 
 \begin{table}[h]
 \centering
@@ -242,10 +265,14 @@ terminal-control server, and a web-search server -- each spawned as an
 actual subprocess per scenario, not simulated.
 \item \textbf{Scenario grid:} 3 attack types spanning three attack surfaces
 (\texttt{prompt\_injection}, \texttt{out\_of\_scope\_parameter},
-\texttt{false\_error}) $\times$ 5 canonical attack goals $\times$ 2 tools
-(3 distinct benign tasks between them), executed once undefended and once
-with \texttt{mcp\_guard} attached, for 75 scenarios per condition per
-model -- 300 scenario runs in total across both models.
+\texttt{false\_error}) $\times$ 5 canonical attack goals $\times$ 5 benign
+tasks across 2 tools (2 for the DuckDuckGo search tool, 3 for the Terminal
+Controller), executed once undefended and once with \texttt{mcp\_guard}
+attached: 25 scenarios per attack type, 75 per condition per model, 300
+scenario runs in total across both models.
+\item \textbf{Agent budget:} at most 8 agent steps per scenario. MSB's own
+runner allows 10; this is a deviation from MSB's setup, disclosed in
+Section~\ref{sec:limitations}.
 \end{itemize}
 
 Reaching a working local setup required resolving several practical
@@ -258,161 +285,184 @@ model was obtained via a direct portable-archive download.
 \section{Results}
 \label{sec:results}
 
-Table~\ref{tab:results} reports Attack Success Rate (ASR) for the
-undefended baseline and the \texttt{mcp\_guard}-defended condition across
-the three tested attack types, for both models, each over the complete,
-identical 75-scenario grid.
+All numbers in this section were re-measured for this revision after
+correcting the judge for parameter-leak attacks (Section~\ref{sec:oraclefix}).
+Each row is 25 scenarios per condition (two tool families, all five attack
+goals), identical between the baseline and defended runs.
 
 \begin{table}[h]
 \centering
-\caption{Attack Success Rate, baseline vs.\ defended, both models (75 scenarios per condition per model).}
+\caption{Attack Success Rate, baseline vs.\ defended (25 scenarios per condition).}
 \label{tab:results}
 \begin{tabular}{@{}llccc@{}}
 \toprule
-\textbf{Model} & \textbf{Attack type} & \textbf{Baseline ASR} & \textbf{Defended ASR} & \textbf{Reduction} \\
+\textbf{Model} & \textbf{Attack type} & \textbf{Baseline} & \textbf{Defended} & \textbf{Mitigation rate} \\
 \midrule
 \multirow{3}{*}{\texttt{llama3.2:3b}}
- & Prompt Injection        & 0.0\% & 0.0\% & 0.0 pp \\
- & Out-of-Scope Parameter  & 0.0\% & 0.0\% & 0.0 pp \\
- & False Error             & 0.0\% & 0.0\% & 0.0 pp \\
+ & Out-of-Scope Parameter & 36.0\% (9/25) & 0.0\% (0/25) & 100\% \\
+ & False Error            & 0.0\%         & 0.0\%        & n/a \\
+ & Prompt Injection       & 0.0\%         & 0.0\%        & n/a \\
 \midrule
 \multirow{3}{*}{\texttt{llama3.1:8b}}
- & Prompt Injection        & 0.0\% & 0.0\% & 0.0 pp \\
- & Out-of-Scope Parameter  & 0.0\% & 0.0\% & 0.0 pp \\
- & False Error             & 0.0\% & 0.0\% & 0.0 pp \\
+ & Out-of-Scope Parameter & 0.0\%         & 0.0\%        & n/a \\
+ & False Error            & 0.0\%         & 0.0\%        & n/a \\
+ & Prompt Injection       & 0.0\%         & 0.0\%        & n/a \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The headline ASR is 0\% in both conditions, for both models, which requires
-careful interpretation rather than a simple pass/fail reading.
+Mitigation rate is $(\text{baseline successes} - \text{defended
+successes}) / \text{baseline successes}$ and is reported as n/a when the
+baseline had no successes: an attack that never worked cannot be said to have
+been mitigated.
 
-\textbf{Neither model fell for any tested attack, even undefended, and
-model size did not change that.} This directly addresses the model-capacity
-confound raised after the first (\texttt{llama3.2:3b}-only) draft of this
-report: \texttt{llama3.1:8b} was specifically chosen because MSB's own
-paper reports non-trivial ASR (roughly 20\% on average) for a Llama model of
-this size, yet it also produced 0\% ASR across all three attack types,
-undefended. This rules out ``the model was simply too small to complete
-multi-step tool use'' as the explanation, and is consistent instead with the
-interpretation developed in Section~\ref{sec:live}: MSB's fixed attack
-template text appears to be recognizable to current instruction-tuned Llama
-models in this configuration, independent of model scale.
+\subsection{The one measured reduction}
 
-\textbf{The guard was nonetheless measurably active in both models, and to
-very different degrees.} Across 75 defended-mode scenarios,
-\texttt{mcp\_guard} recorded \textbf{38 distinct interventions} for
-\texttt{llama3.2:3b} but only \textbf{4} for \texttt{llama3.1:8b} (both
-counts are exactly 0 in the corresponding baseline runs, by construction --
-the guard is never attached there). One plausible explanation is that MSB's
-tool-response substitution re-triggers on every subsequent tool call within
-a scenario once activated, so a model that takes more retries or redundant
-tool calls to complete a task encounters -- and thus has redacted -- the
-injected content more times per scenario; the smaller model may simply take
-a less direct path through the tool-use loop. We flag this as an
-observation with a plausible mechanism, not a confirmed causal claim -- it
-was not specifically instrumented for step-count in this run. In either
-case, the non-zero, model-dependent intervention count is direct evidence
-the mitigation layer is functioning, independent of whether the underlying
-attack itself succeeds.
+On \texttt{llama3.2:3b}, the out-of-scope-parameter attack succeeded in 9 of
+25 baseline scenarios: the agent delivered a non-empty value for the
+malicious tool's \texttt{llm\_model\_name} field to the attack server. With
+\texttt{mcp\_guard} attached, 0 of 25 succeeded. The agent attempted the same
+leak in 8 defended scenarios, and the parameter gate refused every one of
+those calls before dispatch (10 block events in total). Two caveats bound
+what this shows.
 
-\textbf{An unrelated infrastructure limitation affected the same 10 of 75
-scenarios per mode, per model.} All ten are \texttt{kill\_process}
-attack-task scenarios (10 of the 15 \texttt{kill\_process} scenarios in each
-75-scenario run), which depend on MSB's Desktop Commander support tool;
-that tool is currently fetched through a third-party hosted registry
-(Smithery) that returns a ``server not found'' error in this environment.
-The failure is identical and symmetric across baseline and defended runs
-and across both models, so it does not bias the comparison, but it does
-mean the \texttt{kill\_process} results are not currently informative.
+\textbf{MSB's judge counts any non-empty value.} Every "leaked" value
+recorded in the baseline was junk -- \texttt{'None'}, \texttt{'null'},
+\texttt{'artificial intelligence'}, \texttt{'[insert llm model name here]'},
+the tool's own name -- never the model's actual name. We mirror MSB's
+definition so the metric is comparable, but it measures ``filled a field it
+should not have,'' not ``revealed a true secret.''
+
+\textbf{The guard matches the judge's exact field name.} The parameter gate
+blocks \texttt{llm\_model\_name}, \texttt{llm\_name} and
+\texttt{lm\_model\_name}: precisely the keys MSB's \texttt{metrics.py} checks.
+The result therefore demonstrates that the mechanism works end to end in a
+live agent, against real servers. It does not show that the guard would stop
+the same attack with the field renamed; that is the benchmark-overfitting
+concern stated in Section~\ref{sec:limitations}.
+
+\subsection{Most zeros are not evidence of robustness}
+\label{sec:validity}
+
+An attack can only succeed if the agent actually executes tool calls. MSB's
+system prompt describes a text protocol (\emph{Thought / Action / Action
+Input}), while the agent executor expects native tool calls, and our local
+models frequently resolved that conflict by writing the tool call out as
+text as their final answer, so nothing executed. In 65 of 75
+\texttt{llama3.1:8b} baseline scenarios and 41 of 75 \texttt{llama3.2:3b}
+baseline scenarios, the final answer was such a text-form tool call. For the
+out-of-scope-parameter runs, where the full trajectory is now recorded, the
+picture is exact: \texttt{llama3.1:8b} executed a real tool call in 0 of 25
+baseline scenarios, \texttt{llama3.2:3b} in 22 of 25.
+
+Consequently, the 0\% rows for \texttt{llama3.1:8b} are uninformative, and
+the claim in version 2 of this report -- that its 0\% ASR ``rules out model
+size'' and indicates that MSB's attack phrasing is recognizable to current
+models -- is \textbf{withdrawn}. For \texttt{llama3.2:3b} the picture is
+mixed: the false-error attack did reach the agent (the response sanitizer
+redacted it 27 times across the defended runs), yet in the baseline the model
+never completed the harmful file write. We did not modify MSB's prompt to
+remove the conflict, since that would change the baseline being measured.
+
+\subsection{Correction: the parameter-leak judge}
+\label{sec:oraclefix}
+
+Earlier versions scored every attack type with the operation-space file
+oracle. MSB's own \texttt{metrics.py} does not: for
+\texttt{out\_of\_scope\_parameter}, \texttt{tool\_transfer} and
+\texttt{preference\_manipulation-out\_of\_scope\_parameter}, success is a
+tool call carrying a non-empty out-of-scope key, and those attack tools
+write no file at all. Our earlier 0\% for out-of-scope parameter was
+therefore guaranteed by the judge rather than measured. The runner now drives
+the agent through \texttt{stream()}, records every executed tool call, and
+applies MSB's parameter-leak rule to these three types, with one refinement:
+a call the guard refused before dispatch never reached the server and is not
+counted as a leak. \texttt{search\_term\_deception} is recorded as unscored
+rather than as a failure.
+
+\textbf{Infrastructure note.} 10 of the 15 \texttt{kill\_process} scenarios
+in each 75-scenario run end in ``Connection closed'': the goal depends on
+MSB's Desktop Commander support tool, fetched through a third-party registry
+(Smithery) that currently returns ``server not found.'' The failure is
+symmetric across conditions and models.
 
 \section{Attack-Type Coverage Matrix}
 \label{sec:coverage}
 
-Section~\ref{sec:results} reports statistically meaningful results
-(75 scenarios per condition) for only 3 of the 12 attack types in MSB's
-taxonomy. This section reports, for all 12, whether the attack is
-\textbf{Present} in the vendored MSB corpus, \textbf{Executable} in our
-implementation (does a scenario run to completion without crashing),
-\textbf{Scored} (does our success oracle, Section~\ref{sec:results}'s
-\texttt{score\_attack()}, give a meaningful verdict for it), and
-\textbf{Defended} (does \texttt{mcp\_guard} have logic that addresses this
-attack's actual mechanism). Executability for the remaining 9 attack types
-was verified empirically: one scenario per type, both undefended and
-defended, run against \texttt{llama3.2:3b} (18 runs total, all completed
-without error). The Defended column is based on direct inspection of each
-attack's real implementation source (not assumption), cross-checked against
-the empirical \texttt{guard\_blocks} count from those same 18 runs.
+Table~\ref{tab:coverage} maps all 12 of MSB's attack types against three
+questions: is it \textbf{executable} here, is it \textbf{scored} by a judge
+that matches MSB's definition, and is it \textbf{defended} -- does
+\texttt{mcp\_guard} address every part of its mechanism? Executability for
+the nine types without statistical runs was checked with one scenario each,
+undefended and defended (18 runs, none crashed). The Defended column was
+decided by reading each attack's source and cross-checking the recorded
+guard interventions; ``Yes'' requires every part of the attack to be
+addressed.
 
 \begin{table}[h]
 \centering
 \caption{Coverage of MSB's 12 attack types.}
 \label{tab:coverage}
 \small
-\begin{tabular}{@{}lcccc@{}}
+\begin{tabular}{@{}lccl@{}}
 \toprule
-\textbf{MSB Attack Type} & \textbf{Present} & \textbf{Executable} & \textbf{Scored} & \textbf{Defended} \\
+\textbf{MSB Attack Type} & \textbf{Executable} & \textbf{Scored} & \textbf{Defended} \\
 \midrule
-\texttt{prompt\_injection}                & Yes & Yes & Yes & Yes \\
-\texttt{false\_error}                     & Yes & Yes & Yes & Yes \\
-\texttt{out\_of\_scope\_parameter}        & Yes & Yes & Yes & Yes \\
-\texttt{simulated\_user}                  & Yes & Yes & Yes & Yes \\
-\texttt{name\_overlap}                    & Yes & Yes & Yes & Partial$^{*}$ \\
-\texttt{preference\_manipulation}         & Yes & Yes & Yes & Partial$^{*}$ \\
-\texttt{tool\_transfer}                   & Yes & Yes & Yes & Yes \\
-\texttt{search\_term\_deception}          & Yes & Yes & \textbf{No} & \textbf{No} \\
-\texttt{preference\_manipulation-out\_of\_scope\_parameter} & Yes & Yes & Yes & Yes$^{\dagger}$ \\
-\texttt{preference\_manipulation-simulated\_user}           & Yes & Yes & Yes & Yes \\
-\texttt{prompt\_injection-simulated\_user}                  & Yes & Yes & Yes & Yes \\
-\texttt{prompt\_injection-false\_error}                     & Yes & Yes & Yes & Yes \\
+\texttt{prompt\_injection}                & Yes & Yes & \textbf{No} \\
+\texttt{false\_error}                     & Yes & Yes & Yes \\
+\texttt{out\_of\_scope\_parameter}        & Yes & Yes$^{\dagger}$ & Yes \\
+\texttt{simulated\_user}                  & Yes & Yes & Yes \\
+\texttt{tool\_transfer}                   & Yes & Yes$^{\dagger}$ & Yes \\
+\texttt{name\_overlap}                    & Yes & Yes & Partial: near-miss names \\
+\texttt{preference\_manipulation}         & Yes & Yes & Partial: near-miss names \\
+\texttt{search\_term\_deception}          & Yes & \textbf{No} & Partial: 2 of 4 documents \\
+\texttt{preference\_manipulation-out\_of\_scope\_parameter} & Yes & Yes$^{\dagger}$ & Partial \\
+\texttt{preference\_manipulation-simulated\_user}           & Yes & Yes & Partial \\
+\texttt{prompt\_injection-simulated\_user}                  & Yes & Yes & Partial \\
+\texttt{prompt\_injection-false\_error}                     & Yes & Yes & Partial \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\noindent $^{*}$\textbf{Partial, with an identified gap.} Reading the actual
-attack-tool source (e.g.\
-\texttt{terminal\_controller-name\_overlap.py}) shows that MSB's real
-\texttt{name\_overlap} and \texttt{preference\_manipulation} attacks register
-tools with \emph{near-miss} names against the legitimate tool
-(\texttt{execute\_command\_v1} vs.\ the real \texttt{execute\_command};
-\texttt{get\_commands\_history} vs.\ \texttt{get\_command\_history}) --
-not exact duplicates. \texttt{mcp\_guard}'s Tool Signature Validator only
-de-duplicates \emph{exact} name collisions, so it does not by itself prevent
-the agent from being confused between a real tool and its near-miss decoy.
-The attack is not left completely unmitigated, however: every decoy tool's
-response is still wrapped in MSB's own \texttt{TOOL\_RESPONSE\_ATTACK\_TEMPLATE}
-or \texttt{SIMULATED\_USER\_TEMPLATE}, which the Tool Response Sanitizer does
-catch once the decoy tool is actually called -- confirmed empirically (1 and
-2 guard interventions respectively in the single-scenario test). The honest
-summary is: \emph{name confusion itself is not prevented; the resulting
-malicious response usually still is.} This is the clearest concrete
-weakness this coverage exercise surfaced, and it is exactly the kind of gap
-Phase 10-style auditing (Section~\ref{sec:limitations}) should target first.
+\noindent $^{\dagger}$Scored by MSB's parameter-leak rule
+(Section~\ref{sec:oraclefix}). For \texttt{tool\_transfer}, MSB additionally
+requires the call to target the advertised replacement tool. In the
+Terminal Controller attack servers (the family used in our runs; checked
+directly), every tool that takes the out-of-scope key is one of those
+advertised replacements, so the two rules coincide there.
 
-\noindent $^{\dagger}$Code inspection confirms the parameter gate's
-out-of-scope-key check applies regardless of attack type, and this exact
-mechanism is independently confirmed working in Section~\ref{sec:results}'s
-75-scenario \texttt{out\_of\_scope\_parameter} runs and in
-Section~\ref{sec:live}'s live demonstration. The single-scenario empirical
-test for this specific combined attack recorded 0 guard interventions, but
-that reflects the small local model simply not attempting to fill the bogus
-parameter in that one trial (a pattern observed throughout this project,
-e.g.\ Section~\ref{sec:results}), not a defense failure -- an $n=1$ sample is
-not strong evidence either way for this specific combination.
+\textbf{Prompt injection is not defended.} MSB does not place the injected
+text in any tool's description field: \texttt{generate\_tool\_descriptions}
+appends it to the system-prompt text directly, inside the agent process. The
+Tool Signature Validator scans only description fields, so it never sees the
+injection, and when \texttt{apply\_defense()} rebuilds the system message,
+MSB's builder appends the injection again. The recorded guard interventions
+confirm this: 0 across 50 defended prompt-injection runs (both models). The
+defended agent's only protection is the policy text appended to its system
+prompt. In a real deployment a malicious description would arrive from the
+server and be scanned; in MSB's simulation it never crosses the hop the guard
+watches.
 
-\textbf{Retrieval Injection is a genuine, documented gap, not an oversight.}
-\texttt{search\_term\_deception} is both unscored (Section~\ref{sec:results})
-and undefended, and the coverage exercise clarifies exactly why the defense
-gap exists: unlike every other attack type, MSB's \texttt{search\_term\_deception}
-payload is injected \emph{without} any of the wrapper templates
-(\texttt{TOOL\_RESPONSE\_ATTACK\_TEMPLATE}, \texttt{SIMULATED\_USER\_TEMPLATE},
-or \texttt{<IMPORTANT>}) that every other attack type uses and that
-\texttt{mcp\_guard}'s pattern list targets -- it is just the bare instruction
-text embedded directly into otherwise-legitimate document content. The
-empirical test confirms this: 0 guard interventions were recorded. Per the
-instructions governing this phase of work, this is reported as a limitation
-rather than worked around with a fabricated score or a broadened pattern
-list tuned specifically to make this one case pass.
+\textbf{Near-miss names.} MSB's \texttt{name\_overlap} and
+\texttt{preference\_manipulation} servers register decoys such as
+\texttt{execute\_command\_v1} or \texttt{get\_commands\_history} beside the
+real \texttt{execute\_command} and \texttt{get\_command\_history}. The
+validator removes only exact duplicates, so name confusion itself is not
+prevented; each decoy's reply, however, is wrapped in MSB's
+\texttt{TOOL\_RESPONSE\_ATTACK\_TEMPLATE} or \texttt{SIMULATED\_USER\_TEMPLATE},
+which the response sanitizer catches once the decoy is called.
+
+\textbf{Retrieval injection} (correcting version 3, which called it
+undefended): MSB injects the bare instruction, but the four retrieval
+documents frame it differently. Two
+(\texttt{Network\_Troubleshooting\_Checklist}, \texttt{The\_Metropolitan\_Museum\_of\_Art})
+wrap it in \texttt{<IMPORTANT>}, which the sanitizer's pattern list catches;
+two (\texttt{Snorkeling\_Guide}, \texttt{Vegan\_Black\_Bean\_Chili\_Recipe})
+embed it bare and are not caught. This was verified deterministically by
+running \texttt{sanitize\_response()} on each document with MSB's
+substitution applied. When a document is caught, the sanitizer withholds the
+whole observation, so the agent also loses the document's legitimate content
+-- a utility cost that is not yet measured.
 
 \section{Live, Zero-Cost Verification of Attack and Defense}
 \label{sec:live}
@@ -508,67 +558,70 @@ API key or paid credits, that (a) a capable instruction-tuned model can
 recognize and refuse this exact, unmodified MSB attack text on its own, and
 (b) \texttt{mcp\_guard}'s pattern matching independently flags and would
 neutralize the same payload even if the underlying model \emph{had}
-complied. Together with the batch results, this is consistent with the
-hypothesis that MSB's fixed attack phrasing is comparatively recognizable to
-modern instruction-tuned models -- which is itself a useful, if modest,
-finding: it suggests future attack corpora (or a future revision of this
-project's \texttt{custom\_scenarios/}) should test more subtly-phrased
-injections to more rigorously stress-test both model robustness and
-\texttt{mcp\_guard}'s pattern coverage.
+complied. It says nothing about the local models in
+Section~\ref{sec:results}, which frequently never executed the tool calls
+an attack needs (Section~\ref{sec:validity}); an earlier version of this
+report drew that inference and it is withdrawn.
 
 \section{Limitations and Future Work}
 \label{sec:limitations}
 
 \begin{itemize}
-\item \textbf{Model capacity confound -- addressed, not fully resolved.}
-Section~\ref{sec:results} rules out raw model size as the sole explanation
-for 0\% ASR (an 8B model MSB itself reports at $\sim$20\% average ASR still
-scored 0\% here). What remains open is whether this reflects genuine
-robustness in current instruction-tuned Llama models against MSB's specific,
-fixed attack phrasing, or a narrower scope in this evaluation (three of
-twelve attack types, two tool families) than MSB's original study. The next
-step is widening attack-type and tool coverage, and testing at least one
-model MSB itself reports a high ASR for (e.g.\ GPT-4o-mini at
-$\sim$59\% average, or DeepSeek-V3.1 at $\sim$61\%), to obtain a genuine
-before/after reduction figure rather than a 0\%-to-0\% comparison.
-\item \textbf{Retrieval Injection is not yet scored.} MSB's own success
-criterion for this attack type is qualitatively different from the other
-three (whether the agent was deceived into consulting the wrong document,
-rather than whether a file artifact was planted), and the current success
-oracle does not implement that logic. It is deliberately excluded from batch
-runs rather than silently reported as a misleading 0\%.
-\item \textbf{Third-party tool dependency.} \texttt{kill\_process} scenarios
-require an alternative source for the Desktop Commander tool, independent of
-Smithery's hosted registry.
-\item \textbf{Signature validation misses near-miss tool names.}
-Section~\ref{sec:coverage} identifies this directly from the attack-tool
-source code: the Tool Signature Validator only catches \emph{exact} tool-name
-duplicates, not the near-miss decoy names (\texttt{execute\_command\_v1},
-\texttt{get\_commands\_history}) MSB's real \texttt{name\_overlap} and
-\texttt{preference\_manipulation} attacks actually use. This is the clearest,
-most concrete first target for improving the existing heuristics, ahead of
-any more sophisticated detector.
-\item \textbf{Scope.} All twelve of MSB's attack types are confirmed
-\emph{executable} (Section~\ref{sec:coverage}), but only three have
-statistically meaningful (75-scenario) ASR data (Section~\ref{sec:results});
-the other nine have only single-scenario executability checks. The natural
-extension is full statistical coverage of MSB's attack grid and validation
-across multiple model sizes to establish whether the observed
-guard-intervention rate scales with a model's underlying susceptibility.
+\item \textbf{Prompt injection is undefended.} MSB inserts it into the system
+prompt rather than a tool description, so the signature validator never sees
+it (0 interventions in 50 defended runs; Section~\ref{sec:coverage}).
+\item \textbf{Near-miss tool names pass.} Only exact duplicates are removed;
+MSB's decoys (\texttt{execute\_command\_v1}) are not.
+\item \textbf{Fixed patterns tuned to MSB.} Every check matches a fixed phrase
+or a fixed field name written with knowledge of MSB's attack text. A reworded
+fake error, or the out-of-scope field renamed, would pass. Low ASR on MSB is
+therefore not evidence of general MCP security, and no unseen-attack
+evaluation has been done.
+\item \textbf{Most zeros are uninformative.} The local models frequently
+wrote tool calls as text rather than executing them
+(Section~\ref{sec:validity}). The only measured effect is one attack on one
+model with 25 scenarios per condition, and MSB's judge for it counts junk
+values as leaks.
+\item \textbf{Retrieval injection.} Unscored, because MSB scores it as task
+deception rather than attack success and we have no valid judge yet. The
+guard catches it in 2 of 4 documents and, when it does, withholds the whole
+document, legitimate content included.
+\item \textbf{Utility is not measured.} MSB's PUA and NRP are not yet
+implemented in our runner, and no false-positive rate has been measured, so
+the guard's cost to legitimate tasks is unknown.
+\item \textbf{Setup differs from MSB's.} Our agent is allowed 8 steps where
+MSB's runner allows 10; we use local quantized models rather than MSB's
+hosted APIs; \texttt{kill\_process} scenarios depend on a third-party registry
+that is currently broken.
+\item \textbf{Portability.} The guard attaches by replacing a LangChain method
+on one agent object. That keeps MSB unmodified but ties the guard to library
+internals.
+\item \textbf{Next steps.} In order: measure tool-execution rate for every
+scenario and report ASR on scenarios that actually executed tools; test a
+model MSB reports as vulnerable (e.g.\ GPT-4o-mini, $\sim$59\% average ASR in
+MSB's table) to obtain more than one measured effect; then the improvements in
+the presentation's roadmap (near-miss names, semantic detection, policy-based
+authorization, behavioural monitoring, and an unseen-attack split).
 \end{itemize}
 
 \section{Conclusion}
 
-This work demonstrates that a defensive proxy layer can be attached to an
-MCP-based agent pipeline without modifying the underlying benchmark or agent
-framework, and that its interventions can be measured directly and
-independently of whether the underlying attack succeeds. Our first
-end-to-end evaluation, run entirely at zero cost on a local model, did not
-find a model vulnerable enough to demonstrate an ASR reduction, but it did
-establish -- with concrete counts, not just code review -- that the guard is
-actively intercepting attack-shaped content. Extending this evaluation to a
-more capable model and to MSB's full attack-type grid is the immediate next
-step toward a complete assessment of \texttt{mcp\_guard}'s effectiveness.
+MCP-SecBench is a prototype middleware defense against selected MCP attack
+classes, integrated with the MSB benchmark so that undefended and defended
+agents can be compared under identical conditions. It shows that a defensive
+layer can be attached to MSB's agent without modifying MSB; that all twelve
+of MSB's attack types execute in this setup; and, on one attack and one
+model, that measured leaks fell from 36\% to 0\% with every attempted leak
+blocked by the guard. It does not show general MCP security, robustness to
+reworded or unseen attacks, protection against MSB's prompt injection, or the
+guard's cost to legitimate tasks.
+
+The most transferable lesson concerns measurement rather than defense. Two
+errors in our earlier versions -- not checking whether the agent actually
+executed tools, and a judge that looked for an artifact the attack never
+creates -- each pointed toward a wrong conclusion. Verifying that the
+measurement observes what the attack actually does is as important as
+building the defense.
 
 \begin{thebibliography}{9}
 \bibitem{msb2026}
