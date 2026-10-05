@@ -1,0 +1,41 @@
+<section id="delta-overview" data-transition="fade" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:110px 128px 80px;display:flex;flex-direction:column;gap:24px">
+<div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#34D399;letter-spacing:3px;text-transform:uppercase;margin:0">Our delta</p>
+<h2 style="font-size:50px;font-weight:700;margin:10px 0 0 0">What exists here and not in MSB</h2>
+</div>
+<table style="font-family:'IBM Plex Sans',Arial,sans-serif;font-size:19px;color:#E8EAED;width:1664px">
+<tr style="background:#141925">
+<th style="width:17%;text-align:left;padding:12px 16px">Area</th>
+<th style="width:35%;text-align:left;padding:12px 16px">In MSB</th>
+<th style="width:48%;text-align:left;padding:12px 16px;color:#34D399">Added by MCP-SecBench</th>
+</tr>
+<tr><td style="padding:11px 16px">Attack corpus</td><td style="padding:11px 16px;color:#8B95A7">12 attack types, 5 goals, 10 personas, malicious servers</td><td style="padding:11px 16px;color:#8B95A7">Used as-is &mdash; baseline/ is not edited</td></tr>
+<tr style="background:#111621"><td style="padding:11px 16px">Defense</td><td style="padding:11px 16px;color:#F87171">None in the repository</td><td style="padding:11px 16px;color:#34D399">mcp_guard: signature validation, parameter gating, response sanitization, security-policy prompt</td></tr>
+<tr><td style="padding:11px 16px">Experiment</td><td style="padding:11px 16px;color:#8B95A7">Undefended agents only</td><td style="padding:11px 16px;color:#34D399">Paired baseline vs defended runs on identical scenarios</td></tr>
+<tr style="background:#111621"><td style="padding:11px 16px">Metrics</td><td style="padding:11px 16px;color:#8B95A7">ASR, PUA, NRP</td><td style="padding:11px 16px;color:#34D399">+ Mitigation Rate, + guard interventions per component, + each scenario's tool calls recorded</td></tr>
+<tr><td style="padding:11px 16px">Judging</td><td style="padding:11px 16px;color:#8B95A7">Parses its own log text after the run</td><td style="padding:11px 16px;color:#34D399">Judged in-process from the sandbox and the live tool-call trajectory</td></tr>
+<tr style="background:#111621"><td style="padding:11px 16px">Models</td><td style="padding:11px 16px;color:#8B95A7">Hosted APIs that need keys (OpenRouter, DeepSeek, Tongyi)</td><td style="padding:11px 16px;color:#34D399">+ local Ollama models: zero cost, fully offline</td></tr>
+<tr><td style="padding:11px 16px">Platform</td><td style="padding:11px 16px;color:#8B95A7">Linux / macOS setup script</td><td style="padding:11px 16px;color:#34D399">Windows-safe setup that keeps baseline/ intact</td></tr>
+<tr style="background:#111621"><td style="padding:11px 16px">Audit</td><td style="padding:11px 16px;color:#8B95A7">&mdash;</td><td style="padding:11px 16px;color:#34D399">12/12 attack types executability-checked; guard gaps and our own judge bug found and documented</td></tr>
+</table>
+<p style="font-size:20px;color:#8B95A7;margin:0">Rule we followed: if MSB already does it, it is not our contribution &mdash; even if we re-implemented it.</p>
+<aside>This is the slide that answers "so what did you actually do?" And I want to be strict about it: if MSB already does something, it is not our contribution, even if we wrote our own version of it.
+
+The first row is what we did not change. MSB's attacks, its five goals, its ten personas and its malicious servers are the benchmark. We used them untouched. The baseline folder in our repository is MSB's code, unedited, apart from redacting some API keys its authors had accidentally committed.
+
+Everything in green is new.
+
+Defense: MSB's repository contains no defensive code at all. It measures how often attacks work. We built mcp_guard, a middleware layer with three components plus a security policy added to the system prompt. Most of the remaining slides are about how it works.
+
+Experiment design: because MSB has no defense, it only ever runs undefended agents. We run every scenario twice, once without the guard and once with it, holding everything else identical: same model, same task, same attack, same servers. That pairing is what turns a measurement into a comparison.
+
+Metrics: MSB's three metrics measure an attack. A defense needs different questions answered, so we added mitigation rate, guard interventions per component, and we record the agent's actual tool calls for every scenario, so anyone can audit why a scenario was scored the way it was.
+
+Judging: MSB writes logs during the run and parses that text afterwards with pattern matching. We judge in-process, directly from the sandbox files and from the live trajectory of tool calls. That's simpler, it doesn't break if a log format changes, and as you saw on the previous slide, our file checks are stricter about content.
+
+Models: MSB is wired to hosted APIs that need keys. We added local models through Ollama, so this entire study costs nothing and runs offline, which is how every number in this deck was produced.
+
+Platform: MSB's setup script assumes Linux or macOS and moves a file in a way that would delete it from the benchmark folder. Ours runs on Windows and keeps the benchmark intact.
+
+And audit: we checked that all twelve attack types actually execute, we read each attack's source code to see what our guard really catches, and in doing so we found gaps in our own guard and a bug in our own judge. All of that is documented, not hidden.</aside>
+</section>

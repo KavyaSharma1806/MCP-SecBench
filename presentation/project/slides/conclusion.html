@@ -1,0 +1,38 @@
+<section id="conclusion" data-transition="fade" style="background:linear-gradient(160deg,#0B0E14 0%,#0D1420 60%,#0B0E14 100%);color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:110px 128px 80px;display:flex;flex-direction:column;gap:30px">
+<div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#34D399;letter-spacing:3px;text-transform:uppercase;margin:0">Conclusion</p>
+<h2 style="font-size:52px;font-weight:700;margin:10px 0 0 0">What this project actually shows</h2>
+</div>
+<div style="background:#141925;border:1px solid #232A3B;border-left:5px solid #34D399;border-radius:4px 16px 16px 4px;padding:32px 42px">
+<p style="font-size:25px;color:#E8EAED;line-height:1.55;margin:0">MCP-SecBench is a <b style="color:#34D399">prototype middleware defense against selected MCP attack classes</b>, integrated with the MSB benchmark so that undefended and defended agents can be compared under identical conditions.</p>
+</div>
+<div style="display:flex;gap:32px;flex:1">
+<div style="flex:1;background:#17201B;border:1px solid #2A4A36;border-radius:16px;padding:30px;display:flex;flex-direction:column;gap:14px">
+<x-icon name="CheckCircle" style="color:#34D399;width:30px;height:30px"></x-icon>
+<h3 style="font-size:24px;font-weight:600;margin:0">We showed</h3>
+<p style="font-size:19px;color:#BFD8D5;line-height:1.5;margin:0">A proxy can be attached to MSB's agent without changing MSB. All 12 attack types execute. On one attack and one model, measured leaks fell from 36% to 0%, with every attempt blocked by the guard.</p>
+</div>
+<div style="flex:1;background:#1A1420;border:1px solid #3A2A3F;border-radius:16px;padding:30px;display:flex;flex-direction:column;gap:14px">
+<x-icon name="Warning" style="color:#F87171;width:30px;height:30px"></x-icon>
+<h3 style="font-size:24px;font-weight:600;margin:0">We did not show</h3>
+<p style="font-size:19px;color:#D9B8B8;line-height:1.5;margin:0">General MCP security, defense against reworded or unseen attacks, protection from MSB's prompt injection, or anything about the cost to legitimate tasks.</p>
+</div>
+<div style="flex:1;background:#141925;border:1px solid #232A3B;border-radius:16px;padding:30px;display:flex;flex-direction:column;gap:14px">
+<x-icon name="Search" style="color:#FBBF24;width:30px;height:30px"></x-icon>
+<h3 style="font-size:24px;font-weight:600;margin:0">We learned</h3>
+<p style="font-size:19px;color:#C8C2A8;line-height:1.5;margin:0">Check that the agent really used its tools, and that your judge measures what the attack does. Both mistakes were in our first draft.</p>
+</div>
+</div>
+<p style="font-size:22px;color:#8B95A7;text-align:center;margin:0">github.com/KavyaSharma1806/MCP-SecBench</p>
+<aside>Let's close by being precise about what this project actually shows.
+
+The box at the top is the claim, and I've chosen the words carefully: MCP-SecBench is a prototype middleware defense against selected MCP attack classes, integrated with the MSB benchmark so undefended and defended agents can be compared under identical conditions. Not "a solution to MCP security." Not "detects prompt injection." A prototype, against selected classes, measured under controlled conditions.
+
+What we showed. First, that a defensive layer can be attached to MSB's agent from the outside, without editing MSB, which is what makes the comparison trustworthy. Second, that all twelve of MSB's attack types execute in this setup. Third, one measured effect: on the out-of-scope parameter attack with the three-billion-parameter model, leaks fell from thirty-six percent to zero, and in every defended scenario where the model attempted the leak, the guard was the reason it failed.
+
+What we did not show. We didn't show general MCP security. We didn't show the guard holds up against attacks that are reworded or that it has never seen, and given that it matches fixed patterns, we expect it often wouldn't. It doesn't protect against MSB's prompt injection at all. And we haven't measured what it costs legitimate tasks.
+
+And the third card is the lesson I'd most like you to take away, because it applies to any security evaluation, not just this one. Two mistakes in our first draft nearly led us to the wrong conclusions. One: we didn't check whether the agent was actually executing tools, so we read "zero percent" as "resisted" when often the attack never arrived. Two: our judge for parameter attacks was looking for a file that attack never creates, which hid the one real effect we had. Verifying the measurement is as important as building the defense.
+
+Thank you. The code, the results, and this analysis are all in the repository.</aside>
+</section>

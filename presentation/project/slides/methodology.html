@@ -1,0 +1,49 @@
+<section id="methodology" data-transition="fade" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:128px 128px 96px;display:flex;flex-direction:column">
+<p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#60A5FA;letter-spacing:3px;text-transform:uppercase;margin:0">Evaluation</p>
+<h2 style="font-size:56px;font-weight:700;margin:10px 0 0 0">Same attack, two conditions</h2>
+<div style="position:absolute;left:860px;top:150px;width:200px;height:100px;background:#1A1420;border:2px solid #F87171;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+<x-icon name="Warning" style="color:#F87171;width:26px;height:26px"></x-icon>
+<p style="font-size:19px;font-weight:700;margin:0;color:#F87171">MSB Attack</p>
+</div>
+<div style="position:absolute;left:280px;top:370px;width:460px;height:130px;background:#141925;border:1px solid #232A3B;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+<p style="font-size:26px;font-weight:700;margin:0">Baseline Agent</p>
+<p style="font-size:17px;color:#8B95A7;margin:0;font-family:'JetBrains Mono',monospace">no defensive proxy</p>
+</div>
+<div style="position:absolute;left:1180px;top:370px;width:460px;height:130px;background:#17201B;border:2px solid #34D399;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+<x-icon name="Lock" style="color:#34D399;width:24px;height:24px"></x-icon>
+<p style="font-size:26px;font-weight:700;margin:0;color:#34D399">Defended Agent</p>
+<p style="font-size:17px;color:#8B95A7;margin:0;font-family:'JetBrains Mono',monospace">mcp_guard attached</p>
+</div>
+<div style="position:absolute;left:280px;top:590px;width:460px;height:90px;background:#0D1117;border:1px solid #2A303E;border-radius:12px;display:flex;align-items:center;justify-content:center">
+<p style="font-size:20px;color:#8B95A7;margin:0">Result recorded</p>
+</div>
+<div style="position:absolute;left:1180px;top:590px;width:460px;height:90px;background:#0D1117;border:1px solid #2A303E;border-radius:12px;display:flex;align-items:center;justify-content:center">
+<p style="font-size:20px;color:#8B95A7;margin:0">Result recorded</p>
+</div>
+<div style="position:absolute;left:760px;top:770px;width:400px;height:100px;background:#141925;border:1px solid #60A5FA;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+<x-icon name="Chart" style="color:#60A5FA;width:26px;height:26px"></x-icon>
+<p style="font-size:24px;font-weight:700;margin:0;color:#60A5FA">Compare ASR</p>
+</div>
+<x-connector x1="920" y1="250" x2="510" y2="370" head="end" route="hv" style="color:#3A4254;border-width:3px"></x-connector>
+<x-connector x1="1000" y1="250" x2="1410" y2="370" head="end" route="hv" style="color:#3A4254;border-width:3px"></x-connector>
+<x-connector x1="510" y1="500" x2="510" y2="590" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
+<x-connector x1="1410" y1="500" x2="1410" y2="590" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
+<x-connector x1="510" y1="680" x2="860" y2="770" head="end" route="hv" style="color:#3A4254;border-width:3px"></x-connector>
+<x-connector x1="1410" y1="680" x2="1060" y2="770" head="end" route="hv" style="color:#3A4254;border-width:3px"></x-connector>
+<div style="position:absolute;right:128px;top:200px;width:380px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:20px;font-weight:600;color:#E8EAED;margin:0;font-family:'JetBrains Mono',monospace">Held identical:</p>
+<p style="font-size:19px;color:#8B95A7;margin:0;line-height:1.6">attack &middot; task &middot; model &middot; tool &middot; parameters &middot; environment</p>
+<p style="font-size:19px;color:#34D399;margin:8px 0 0 0;font-weight:600">Only the defensive layer differs.</p>
+</div>
+<aside>How do we know whether the guard helps? With the oldest idea in experimental science: a controlled comparison.
+
+At the top is one MSB attack scenario: a specific attack type, a specific innocent task, a specific attack goal. We run it twice.
+
+On the left, the baseline agent: MSB exactly as published, no guard. On the right, the defended agent: the identical scenario, with our guard attached. Each run produces a result, the judge decides whether the attack succeeded, and at the bottom we compare the two attack success rates.
+
+The list on the right is the heart of it. Held identical: the attack, the task, the model, the tool, the parameters, and the environment. Only the defensive layer differs. If we changed anything else at the same time, say a different model or a different task, and the numbers changed, we couldn't tell whether the guard caused it.
+
+In practice this is three commands. cli_runner.py with mode baseline runs the grid without the guard. Mode defended runs the same grid with it. Mode compare reads both result files and produces the table you'll see in a moment, with attack success rates, mitigation rate, and guard interventions.
+
+One caveat worth saying out loud: language models are not fully deterministic. Run the same scenario twice and the model may behave slightly differently even with no guard at all. That's one reason we run many scenarios and report rates rather than trusting any single run.</aside>
+</section>

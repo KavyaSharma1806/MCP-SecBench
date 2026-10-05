@@ -1,0 +1,48 @@
+<section id="architecture" data-transition="magic" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:128px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#60A5FA;letter-spacing:3px;text-transform:uppercase;margin:0">System</p>
+<h2 style="font-size:60px;font-weight:700;margin:12px 0 0 0">How MCP works</h2>
+<p style="font-size:26px;color:#8B95A7;margin:8px 0 0 0;max-width:1300px">A user's request flows through an agent, out to a tool server, and back &mdash; five stages, every one of them a hop of trust.</p>
+<div id="pbox-user" style="position:absolute;left:128px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+<x-icon name="Users" style="color:#60A5FA;width:36px;height:36px"></x-icon>
+<p style="font-size:26px;font-weight:600;margin:0">User</p>
+<p style="font-size:17px;color:#8B95A7;margin:0">Issues the request</p>
+</div>
+<div id="pbox-agent" style="position:absolute;left:479px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+<x-icon name="Code" style="color:#60A5FA;width:36px;height:36px"></x-icon>
+<p style="font-size:26px;font-weight:600;margin:0">LLM Agent</p>
+<p style="font-size:17px;color:#8B95A7;margin:0">Plans &amp; calls tools</p>
+</div>
+<div id="pbox-client" style="position:absolute;left:830px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+<x-icon name="Link" style="color:#60A5FA;width:36px;height:36px"></x-icon>
+<p style="font-size:26px;font-weight:600;margin:0">MCP Client</p>
+<p style="font-size:17px;color:#8B95A7;margin:0">Routes the call</p>
+</div>
+<div id="pbox-server" style="position:absolute;left:1181px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+<x-icon name="Database" style="color:#60A5FA;width:36px;height:36px"></x-icon>
+<p style="font-size:26px;font-weight:600;margin:0">MCP Server</p>
+<p style="font-size:17px;color:#8B95A7;margin:0">Hosts the tools</p>
+</div>
+<div id="pbox-tools" style="position:absolute;left:1532px;top:450px;width:260px;height:160px;background:#141925;border:1px solid #232A3B;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+<x-icon name="Wrench" style="color:#60A5FA;width:36px;height:36px"></x-icon>
+<p style="font-size:26px;font-weight:600;margin:0">Tools</p>
+<p style="font-size:17px;color:#8B95A7;margin:0">Files, APIs, shell</p>
+</div>
+<x-connector x1="388" y1="530" x2="479" y2="530" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
+<x-connector x1="739" y1="530" x2="830" y2="530" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
+<x-connector x1="1090" y1="530" x2="1181" y2="530" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
+<x-connector x1="1441" y1="530" x2="1532" y2="530" head="end" route="straight" style="color:#3A4254;border-width:3px"></x-connector>
+<p style="position:absolute;left:128px;bottom:64px;font-size:22px;color:#8B95A7;font-family:'JetBrains Mono',monospace;margin:0">Tool results flow back the same path, right to left</p>
+<aside>Now let's place that tool loop inside the full system. This is the architecture of any MCP-based agent, and it has five stages.
+
+On the far left is the user, who types an ordinary request, for example "get me the current working directory."
+
+Next is the LLM agent. This is the language model plus a small amount of code that runs the think, act, observe loop we just saw. It reads the request, reads the descriptions of the tools available, and decides which tool to call and with what arguments.
+
+The MCP client is the plumbing on the agent's side. It turns the agent's decision into a protocol message and routes it to the right server. Think of it as the agent's network card for tools.
+
+The MCP server is a separate program that hosts one or more tools. It might be written by the same team, or downloaded from a third party. Crucially, it is the server that tells the agent what its tools are called and what they do.
+
+Finally, the tools themselves: the code that actually touches files, APIs or the shell.
+
+The request flows left to right, and the tool's reply flows all the way back right to left, into the agent's context. Every arrow on this slide is a hop where one component trusts the text it receives from the next. On the next slide, we'll mark the four hops an attacker targets.</aside>
+</section>

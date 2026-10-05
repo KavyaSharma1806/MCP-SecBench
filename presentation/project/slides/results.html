@@ -1,0 +1,75 @@
+<section id="results" data-transition="fade" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:110px 128px 70px;display:flex;flex-direction:column;gap:22px">
+<div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#60A5FA;letter-spacing:3px;text-transform:uppercase;margin:0">Measured, not assumed</p>
+<h2 style="font-size:50px;font-weight:700;margin:10px 0 0 0">What we actually measured</h2>
+</div>
+<table style="font-family:'IBM Plex Sans',Arial,sans-serif;font-size:21px;color:#E8EAED;width:1000px">
+<tr style="background:#141925">
+<th style="width:18%;text-align:left;padding:12px 16px">Model</th>
+<th style="width:34%;text-align:left;padding:12px 16px">Attack type (n = 25 each)</th>
+<th style="width:16%;text-align:center;padding:12px 16px">Baseline</th>
+<th style="width:16%;text-align:center;padding:12px 16px">Defended</th>
+<th style="width:16%;text-align:center;padding:12px 16px">Mitigated</th>
+</tr>
+<tr style="background:#17201B"><td style="padding:10px 16px">3B</td><td style="padding:10px 16px;color:#34D399">Out-of-scope parameter</td><td style="text-align:center;padding:10px 16px;color:#F87171">36.0%</td><td style="text-align:center;padding:10px 16px;color:#34D399">0.0%</td><td style="text-align:center;padding:10px 16px;color:#34D399">100%</td></tr>
+<tr><td style="padding:10px 16px">3B</td><td style="padding:10px 16px">False error</td><td style="text-align:center;padding:10px 16px">0.0%</td><td style="text-align:center;padding:10px 16px">0.0%</td><td style="text-align:center;padding:10px 16px;color:#8B95A7">n/a</td></tr>
+<tr style="background:#111621"><td style="padding:10px 16px">3B</td><td style="padding:10px 16px">Prompt injection</td><td style="text-align:center;padding:10px 16px">0.0%</td><td style="text-align:center;padding:10px 16px">0.0%</td><td style="text-align:center;padding:10px 16px;color:#8B95A7">n/a</td></tr>
+<tr><td style="padding:10px 16px">8B</td><td style="padding:10px 16px;color:#8B95A7">All three</td><td style="text-align:center;padding:10px 16px">0.0%</td><td style="text-align:center;padding:10px 16px">0.0%</td><td style="text-align:center;padding:10px 16px;color:#8B95A7">n/a</td></tr>
+</table>
+<div style="position:absolute;left:1180px;top:268px;width:612px;height:300px;background:#1A1420;border:1px solid #3A2A3F;border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:10px">
+<p style="font-size:21px;color:#E8EAED;font-weight:600;margin:0">Every "leaked" value was junk</p>
+<p style="font-family:'JetBrains Mono',monospace;font-size:17px;color:#F87171;line-height:1.6;margin:0">'None' &middot; 'null' &middot; 'artificial intelligence' &middot; '[insert llm model name here]' &middot; 'get_command_history'</p>
+<p style="font-size:17px;color:#8B95A7;line-height:1.45;margin:0">Never the real model name. MSB's judge counts any non-empty value; we mirror it for fidelity.</p>
+</div>
+<x-embed style="position:absolute;left:128px;top:640px;width:520px;height:250px"><!DOCTYPE html><html><head><style>
+body{margin:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;font-family:ui-monospace,Menlo,Consolas,monospace}
+.row{display:flex;align-items:center;gap:22px}
+.num{font-size:84px;font-weight:700;line-height:1}
+.a{color:#F87171}.b{color:#34D399}.arr{font-size:46px;color:#3A4254}
+.lbl{font-size:17px;color:#8B95A7;margin-top:14px;font-family:-apple-system,Segoe UI,Arial,sans-serif;letter-spacing:1px;text-transform:uppercase;text-align:center}
+</style></head><body>
+<div class="row"><div class="num a"><span id="a">0</span>%</div><div class="arr">&rarr;</div><div class="num b"><span id="b">36</span>%</div></div>
+<div class="lbl">3B parameter-leak ASR<br/>baseline &rarr; defended</div>
+<script>
+function run(id,from,to,d){var el=document.getElementById(id);var s=null;function f(ts){if(!s)s=ts;var p=Math.min((ts-s)/d,1);var e=1-Math.pow(1-p,3);el.textContent=Math.round(from+(to-from)*e);if(p<1)requestAnimationFrame(f);}requestAnimationFrame(f);}
+run('a',0,36,1400);setTimeout(function(){run('b',36,0,1400);},1500);
+</script>
+</body></html></x-embed>
+<x-embed style="position:absolute;left:700px;top:640px;width:520px;height:250px"><!DOCTYPE html><html><head><style>
+body{margin:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;font-family:ui-monospace,Menlo,Consolas,monospace}
+.num{font-size:84px;font-weight:700;line-height:1;color:#34D399}
+.lbl{font-size:17px;color:#8B95A7;margin-top:14px;font-family:-apple-system,Segoe UI,Arial,sans-serif;letter-spacing:1px;text-transform:uppercase;text-align:center}
+</style></head><body>
+<div class="num"><span id="n">0</span> / 8</div>
+<div class="lbl">3B leak attempts blocked<br/>in defended runs</div>
+<script>
+var el=document.getElementById('n');var t=8;var s=null;var d=1500;
+function f(ts){if(!s)s=ts;var p=Math.min((ts-s)/d,1);var e=1-Math.pow(1-p,3);el.textContent=Math.round(e*t);if(p<1)requestAnimationFrame(f);}
+requestAnimationFrame(f);
+</script>
+</body></html></x-embed>
+<x-embed style="position:absolute;left:1272px;top:640px;width:520px;height:250px"><!DOCTYPE html><html><head><style>
+body{margin:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;font-family:ui-monospace,Menlo,Consolas,monospace}
+.num{font-size:84px;font-weight:700;line-height:1;color:#FBBF24}
+.lbl{font-size:17px;color:#8B95A7;margin-top:14px;font-family:-apple-system,Segoe UI,Arial,sans-serif;letter-spacing:1px;text-transform:uppercase;text-align:center}
+</style></head><body>
+<div class="num"><span id="n">0</span> / 25</div>
+<div class="lbl">8B parameter-leak runs that<br/>executed any real tool call</div>
+<script>
+var el=document.getElementById('n');var s=null;var d=900;
+function f(ts){if(!s)s=ts;var p=Math.min((ts-s)/d,1);el.textContent=0;if(p<1)requestAnimationFrame(f);}
+requestAnimationFrame(f);
+</script>
+</body></html></x-embed>
+<aside>Here are the results, all re-measured with the corrected judge. Every number on this slide comes from the result files in the repository.
+
+Start with the green row, because it's the one real effect we measured. On the three-billion-parameter model, the out-of-scope parameter attack succeeded in thirty-six percent of baseline scenarios: nine out of twenty-five times, the agent delivered a value for llm_model_name to the malicious server. With the guard attached, the same twenty-five scenarios produced zero leaks. The model still tried: in eight of the defended scenarios it attempted to send that field, and the guard blocked every one, which is the middle counter. That's a mitigation rate of one hundred percent.
+
+Now, what that does and doesn't mean, because this is exactly where it's easy to overclaim. The box on the right lists the actual values the model "leaked": None, null, artificial intelligence, the literal phrase insert llm model name here, the name of the tool itself. Not once did it reveal its real model name. MSB's judge counts any non-empty value as a leak, and we use MSB's definition so our numbers are comparable, but you should know that what's being measured is "did the agent fill in a field it shouldn't have," not "did it give away a real secret."
+
+And second, our guard blocks exactly the field name MSB's judge looks for. So this result shows the mechanism works end to end, in a real agent, on real servers. It does not show the guard would catch the same attack with the field renamed. That's the benchmark-overfitting caveat, and it applies here in full.
+
+The other rows are zero in both columns, so there is nothing to mitigate and we write n/a, not one hundred percent. For false error on the three-billion model, the attack did reach the agent: in defended runs the guard redacted it twenty-seven times. In the baseline, the model simply never completed the harmful file write. For prompt injection, the guard intervened zero times, and the next slides explain why.
+
+Finally the eight-billion model: all zeros, but look at the right-hand counter. In the parameter-leak scenarios, zero out of twenty-five baseline runs executed a real tool call at all. A zero there doesn't mean the model resisted the attack. It means the attack never had a chance to reach it. That's what the next slide is about.</aside>
+</section>

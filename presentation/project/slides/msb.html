@@ -1,0 +1,40 @@
+<section id="msb" data-transition="fade" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#60A5FA;letter-spacing:3px;text-transform:uppercase;margin:0">Existing research</p>
+<h2 style="font-size:60px;font-weight:700;margin:12px 0 0 0">MCP Security Bench (MSB)</h2>
+</div>
+<div style="display:flex;gap:56px;flex:1">
+<div style="flex:1.1;display:flex;flex-direction:column;justify-content:center;gap:24px">
+<p style="font-size:28px;color:#BFD8D5;line-height:1.55;margin:0">MSB is an ICLR 2026 benchmark that automates exactly this test: a real LLM agent, connected to real MCP tools, given an everyday task &mdash; while an attack is covertly injected somewhere in the pipeline.</p>
+<p style="font-size:28px;color:#8B95A7;line-height:1.55;margin:0">It then checks whether the attack's concrete goal was reached: a planted SSH key, a leaked phone number, a killed process.</p>
+<div style="background:#1A1420;border:1px solid #3A2A3F;border-radius:14px;padding:28px 32px;margin-top:8px">
+<p style="font-size:24px;color:#F87171;font-weight:500;margin:0">MSB measures the problem. Its repository contains no defense code.</p>
+</div>
+</div>
+<div style="flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:24px">
+<div style="background:#141925;border:1px solid #232A3B;border-radius:16px;padding:32px;display:flex;flex-direction:column;justify-content:center;gap:8px">
+<p style="font-size:64px;font-weight:700;color:#34D399;font-family:'JetBrains Mono',monospace;margin:0">12</p>
+<p style="font-size:20px;color:#8B95A7;margin:0">attack types, 4 surfaces</p>
+</div>
+<div style="background:#141925;border:1px solid #232A3B;border-radius:16px;padding:32px;display:flex;flex-direction:column;justify-content:center;gap:8px">
+<p style="font-size:64px;font-weight:700;color:#34D399;font-family:'JetBrains Mono',monospace;margin:0">2000+</p>
+<p style="font-size:20px;color:#8B95A7;margin:0">attack instances</p>
+</div>
+<div style="background:#141925;border:1px solid #232A3B;border-radius:16px;padding:32px;display:flex;flex-direction:column;justify-content:center;gap:8px">
+<p style="font-size:64px;font-weight:700;color:#34D399;font-family:'JetBrains Mono',monospace;margin:0">10</p>
+<p style="font-size:20px;color:#8B95A7;margin:0">LLM backbones tested</p>
+</div>
+<div style="background:#1A1420;border:1px solid #3A2A3F;border-radius:16px;padding:32px;display:flex;flex-direction:column;justify-content:center;gap:8px">
+<p style="font-size:64px;font-weight:700;color:#F87171;font-family:'JetBrains Mono',monospace;margin:0">40.3%</p>
+<p style="font-size:20px;color:#8B95A7;margin:0">average attack success rate</p>
+</div>
+</div>
+</div>
+<aside>Now the research we built on. MCP Security Bench, MSB, is a benchmark published at ICLR 2026 by Zhang, Li, Luo, Liu, Li and Xu. Its contribution is turning these attacks from anecdotes into measurements.
+
+Before MSB, you might read a blog post saying "I tricked an agent with a malicious tool description." That tells you an attack is possible, not how often it works, against which models, or which kind of attack is most dangerous. MSB answers those questions by automating the whole experiment. It sets up a real agent with real tools, gives it a completely ordinary task, secretly injects an attack at one of the four surfaces, and then checks whether the attack's concrete goal was achieved.
+
+The numbers on the right are MSB's own, from its repository's README, not ours. Twelve attack types across the four surfaces. More than two thousand attack instances. Ten different language models tested, including GPT, Claude, Gemini, Llama, Qwen and DeepSeek models. And the headline: across all of them, the average attack success rate was about forty percent. Some individual attacks were far higher. For example, the out-of-scope parameter attack averaged seventy-six and a half percent.
+
+The red box is the key observation for our project. MSB is a thermometer, not a medicine. It tells you how sick the patient is. Its repository contains measurement code, attack code and data, but no defense. That gap is where we come in. And because MSB already provides a careful, repeatable measurement, we can use the exact same instrument to ask: does adding a defense make the number go down?</aside>
+</section>

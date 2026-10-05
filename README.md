@@ -59,9 +59,19 @@ Add `--attack_task`, `--agent`, `--tool`, and `--limit` to narrow scope, or
 run `python run_batch.py` for a pre-curated multi-scenario batch across all
 three implemented attack surfaces.
 
+## Live demo
+
+`python demo.py --mode both` runs one MSB scenario through the same code path
+as the benchmark and narrates each backend stage (servers spawned, attack
+injected, tool calls, guard decisions, verdict). `DEMO.md` is a shot-by-shot
+guide for screen-recording it.
+
 ## Status
 
-See `results/comparison.md` for the latest generated comparison and
-`CONTRIBUTIONS.md`'s "Known limitations" section for what isn't measured yet
-(Retrieval Injection scoring, and dependence on Smithery-hosted tools for the
-`kill_process` attack task).
+Latest comparisons: `results/comparison__ollama_llama3_2_3b.md` and
+`results/comparison__ollama_llama3_1_8b.md`. The one measured reduction is
+out-of-scope-parameter leaks on `llama3.2:3b` (36% → 0%, n=25 per side).
+`report/report.tex` (v4) and `CONTRIBUTIONS.md` document the corrections made
+in this version and the known gaps: MSB's prompt injection is not defended,
+near-miss tool names pass, retrieval injection is unscored and only partly
+caught, and most zero-ASR results reflect agents that never executed tools.

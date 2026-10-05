@@ -1,0 +1,47 @@
+<section id="coverage" data-transition="fade" style="background:#0B0E14;color:#E8EAED;font-family:'IBM Plex Sans',Arial,sans-serif;padding:84px 110px 44px 110px;display:flex;flex-direction:column;gap:16px">
+<div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:600;color:#60A5FA;letter-spacing:3px;text-transform:uppercase;margin:0">Full coverage matrix</p>
+<h2 style="font-size:44px;font-weight:700;margin:8px 0 0 0">All 12 of MSB's attack types, checked</h2>
+</div>
+<table style="font-family:'JetBrains Mono',monospace;font-size:19px;color:#E8EAED;width:1700px">
+<tr style="background:#141925">
+<th style="width:40%;text-align:left;padding:9px 14px;font-family:'IBM Plex Sans',Arial,sans-serif">MSB attack type</th>
+<th style="width:13%;text-align:center;padding:9px 14px;font-family:'IBM Plex Sans',Arial,sans-serif">Executable</th>
+<th style="width:13%;text-align:center;padding:9px 14px;font-family:'IBM Plex Sans',Arial,sans-serif">Scored</th>
+<th style="width:34%;text-align:left;padding:9px 14px;font-family:'IBM Plex Sans',Arial,sans-serif">Defended by mcp_guard</th>
+</tr>
+<tr><td style="padding:8px 14px">prompt_injection</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes</td><td style="color:#F87171;padding:8px 14px">No &mdash; injection stays in prompt</td></tr>
+<tr style="background:#111621"><td style="padding:8px 14px">false_error</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes</td><td style="color:#34D399;padding:8px 14px">Yes &mdash; response sanitizer</td></tr>
+<tr><td style="padding:8px 14px">out_of_scope_parameter</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes*</td><td style="color:#34D399;padding:8px 14px">Yes &mdash; parameter gate</td></tr>
+<tr style="background:#111621"><td style="padding:8px 14px">simulated_user</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes</td><td style="color:#34D399;padding:8px 14px">Yes &mdash; response sanitizer</td></tr>
+<tr><td style="padding:8px 14px">tool_transfer</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes*</td><td style="color:#34D399;padding:8px 14px">Yes &mdash; &lt;IMPORTANT&gt; + gate</td></tr>
+<tr style="background:#111621"><td style="padding:8px 14px">name_overlap</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes</td><td style="color:#FBBF24;padding:8px 14px">Partial &mdash; near-miss names pass</td></tr>
+<tr><td style="padding:8px 14px">preference_manipulation</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes</td><td style="color:#FBBF24;padding:8px 14px">Partial &mdash; near-miss names pass</td></tr>
+<tr style="background:#111621"><td style="padding:8px 14px">search_term_deception</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes</td><td style="text-align:center;color:#F87171;padding:8px 14px">No</td><td style="color:#FBBF24;padding:8px 14px">Partial &mdash; 2 of 4 documents</td></tr>
+<tr><td style="padding:8px 14px">preference_manipulation-out_of_scope_parameter</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes*</td><td style="color:#FBBF24;padding:8px 14px">Partial &mdash; gate yes, names no</td></tr>
+<tr style="background:#111621"><td style="padding:8px 14px">preference_manipulation-simulated_user</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes</td><td style="color:#FBBF24;padding:8px 14px">Partial &mdash; reply yes, names no</td></tr>
+<tr><td style="padding:8px 14px">prompt_injection-simulated_user</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes</td><td style="color:#FBBF24;padding:8px 14px">Partial &mdash; reply yes, PI no</td></tr>
+<tr style="background:#111621"><td style="padding:8px 14px">prompt_injection-false_error</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes</td><td style="text-align:center;color:#34D399;padding:8px 14px">Yes</td><td style="color:#FBBF24;padding:8px 14px">Partial &mdash; reply yes, PI no</td></tr>
+</table>
+<div style="display:flex;gap:24px">
+<div style="flex:1;background:#1A1420;border:1px solid #3A2A3F;border-radius:12px;padding:16px 22px">
+<p style="font-size:17px;color:#E8EAED;margin:0;line-height:1.4"><b style="color:#F87171">Prompt injection:</b> MSB appends it to the system prompt itself; our validator only scans each tool's description. 0 interventions in 50 defended runs.</p>
+</div>
+<div style="flex:1;background:#141925;border:1px solid #232A3B;border-radius:12px;padding:16px 22px">
+<p style="font-size:17px;color:#8B95A7;margin:0;line-height:1.4"><b style="color:#E8EAED">* Scored</b> by MSB's parameter-leak rule (fixed in this version). Only 3 types have 25-run statistics; the other 9 are single-run executability checks.</p>
+</div>
+</div>
+<aside>This is the full map of MSB's twelve attack types against our implementation, with three questions for each.
+
+Executable: does a scenario of this type run end to end in our setup? All twelve do. We verified the nine we hadn't run statistically with one scenario each, undefended and defended, and none crashed.
+
+Scored: does our judge give a meaningful verdict? Eleven yes. The asterisks mark the three parameter-leak types, whose judge we fixed in this version to match MSB's definition. Retrieval injection is the exception, because MSB doesn't score it as attack success at all and we have no valid judge yet.
+
+Defended: does our guard actually address this attack's mechanism? We decided this by reading each attack's real source code and checking it against the guard's intervention counts, not by assuming. And the rule is strict: "Yes" only if every part of the attack is addressed.
+
+Four are a clean yes. False error and simulated user, because their replies carry text the response sanitizer recognizes. Out-of-scope parameter, through the parameter gate, which is where our one measured reduction comes from. And tool transfer, whose fake "this tool is no longer available" reply starts with IMPORTANT in angle brackets, plus a parameter-gated follow-up.
+
+Seven are partial. Name overlap and preference manipulation use near-miss tool names like execute_command_v1, which our exact-match check misses, though the decoy's reply is still caught once it's called. Retrieval injection is caught in two of MSB's four documents, the two that wrap the instruction in IMPORTANT. And the four combined attacks are partial because one of their two halves isn't covered.
+
+And one is a flat no, the red row: prompt injection. When we first built this table we marked it defended, and that was wrong. MSB doesn't place the injection inside any tool's description field. It appends it to the system prompt text directly. Our signature validator only scans description fields, so it never sees it, and when the guard rebuilds the system prompt, MSB's own code appends the injection again. The intervention count confirms it: zero, across fifty defended runs. All the defended agent gets is our policy text telling it not to follow instructions from tool content. That's a real gap, and per our project plan we're documenting it rather than quietly patching it.</aside>
+</section>
