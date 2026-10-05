@@ -54,7 +54,7 @@ from defenses.mcp_guard import OUT_OF_SCOPE_PARAM_KEYS, SSH_KEY_PATTERN, apply_d
 
 mcp_use.set_debug(0)
 
-DEFAULT_LLM = "ollama/llama3.2:3b"
+DEFAULT_LLM = "ollama/llama3"
 
 # --prompt_mode native: MSB's own template with only its legacy text-protocol
 # section ("Use the following format: Question/Thought/Action/Action Input...")

@@ -1,13 +1,13 @@
 {
-  "mcpServers": {
-    "pubmed-mcp-server": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@smithery/cli@latest",
-        "run",
-        "@JackKuo666/pubmed-mcp-server"
-      ]
+    "mcpServers": {
+        "pubmed-mcp-server": {
+            "command": "C:\\Users\\shrey\\.local\\bin\\uv.EXE",
+            "args": [
+                "-y",
+                "@smithery/cli@latest",
+                "run",
+                "@JackKuo666/pubmed-mcp-server"
+            ]
+        }
     }
-  }
 }

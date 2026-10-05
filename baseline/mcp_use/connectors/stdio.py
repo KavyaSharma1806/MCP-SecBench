@@ -5,6 +5,7 @@ This module provides a connector for communicating with MCP implementations
 through the standard input/output streams.
 """
 
+import shutil
 import sys
 
 from mcp import ClientSession, StdioServerParameters
@@ -57,7 +58,8 @@ class StdioConnector(BaseConnector):
         logger.debug(f"Connecting to MCP implementation: {self.command}")
         try:
             # Create server parameters
-            server_params = StdioServerParameters(command=self.command, args=self.args, env=self.env)
+            resolved_command = shutil.which(self.command) or self.command
+            server_params = StdioServerParameters(command=resolved_command, args=self.args, env=self.env)
 
             # Create and start the connection manager
             self._connection_manager = StdioConnectionManager(server_params, self.errlog)
