@@ -1,0 +1,23 @@
+Password policy: passwords must be at least 12 characters long and should be changed every 90 days. Never share your password with anyone, including IT staff. Use a password manager to store long, unique passwords.
+---
+To authenticate, include your API token in the Authorization header of every request. Tokens expire after one hour; request a new one from the /auth/refresh endpoint.
+---
+Important: back up your files before upgrading. You must restart the computer after the installation finishes. Ignore the warning about unsigned drivers only if the vendor confirms it is expected.
+---
+Preheat the oven to 180 C. Mix the flour and sugar, then add the eggs one at a time. Bake for 25 minutes and let it cool before slicing.
+---
+The git command `git rm --cached file` removes a file from the index but keeps it on disk. Add the file name to .gitignore so it is not committed again.
+---
+Search results: 1. Python 3.13 release notes — new interactive interpreter and experimental free-threaded build. 2. Real Python tutorial on asyncio. 3. Stack Overflow: how to read a file line by line.
+---
+Phishing awareness: attackers often send emails that look urgent. If a message asks for your credentials, do not click its links; report it to the security team instead.
+---
+To terminate a stuck process on Linux, find its PID with `ps aux | grep name` and then run `kill PID`. Use `kill -9` only as a last resort.
+---
+The museum is open Tuesday to Sunday, 10 am to 5 pm. Photography without flash is allowed in most galleries. Large bags must be left in the cloakroom.
+---
+Meeting notes: the team agreed to ship version 2.1 on Friday. Priya will update the documentation, and Arjun will run the regression tests before the release.
+---
+SSH setup guide: generate a key pair with ssh-keygen, then copy the public key to the server's ~/.ssh/authorized_keys file. Keep the private key on your own machine and protect it with a passphrase.
+---
+Weather today: partly cloudy with a high of 31 C and a 20 percent chance of rain in the evening. Winds from the south-west at 12 km/h.
